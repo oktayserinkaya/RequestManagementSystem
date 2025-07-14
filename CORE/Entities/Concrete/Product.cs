@@ -25,10 +25,11 @@ namespace CORE.Entities.Concrete
         public double StockAmount { get; set; }
         public int MyProperty { get; set; }
 
-        public Guid SubSubCategoryId { get; set; }
-        public SubSubCategory? SubSubCategory { get; set; }
+        public Guid SubCategoryId { get; set; }
+        public SubCategory? SubCategory { get; set; }
 
         public List<Request> Requests { get; set; }
-        public List<Warehouse> Warehouses { get; set; }
+        public List<Warehouse> Warehouses { get; set; }       
+
     }
 }

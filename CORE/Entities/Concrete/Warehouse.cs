@@ -24,9 +24,6 @@ namespace CORE.Entities.Concrete
         public Guid SubCategoryId { get; set; }
         public SubCategory? SubCategory { get; set; }
 
-        public Guid SubSubCategoryId { get; set; }
-        public SubSubCategory? SubSubCategory { get; set; }
-
         public Guid EmployeeId { get; set; }
         public Employee? Employee { get; set; }
 

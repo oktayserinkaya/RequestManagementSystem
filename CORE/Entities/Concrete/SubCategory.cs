@@ -12,13 +12,16 @@ namespace CORE.Entities.Concrete
         public SubCategory()
         {
             Warehouses = [];
+            Products = [];
         }
         public required string SubCategoryName { get; set; }
-        public Guid CategoryId { get; set; }
+        public Guid CategoryId { get; set; }       
 
         public Category? Category { get; set; }
 
         public List<Warehouse> Warehouses { get; set; }
+
+        public List<Product> Products { get; set; }
 
     }
 }
