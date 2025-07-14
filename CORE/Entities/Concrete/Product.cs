@@ -23,7 +23,6 @@ namespace CORE.Entities.Concrete
         public IFormFile? Image { get; set; }
 
         public double StockAmount { get; set; }
-        public int MyProperty { get; set; }
 
         public Guid SubCategoryId { get; set; }
         public SubCategory? SubCategory { get; set; }
