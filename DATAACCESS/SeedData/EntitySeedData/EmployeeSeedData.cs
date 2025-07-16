@@ -14,117 +14,52 @@ namespace DATAACCESS.SeedData.EntitySeedData
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
             builder.HasData(
-                    new Employee
-                    {
-                        Id = Guid.NewGuid(),
-                        AppUserId = Guid.NewGuid(),
-                        FirstName = "Ahmet",
-                        LastName = "Yılmaz",
-                        Email = "ahmet.yilmaz@example.com",
-                        TitleId = Guid.NewGuid(),
-                        DepartmentId = Guid.NewGuid(),
-                        ImagePath = null
-                    },
-    new Employee
-    {
-        Id = Guid.NewGuid(),
-        AppUserId = Guid.NewGuid(),
-        FirstName = "Elif",
-        LastName = "Kara",
-        Email = "elif.kara@example.com",
-        TitleId = Guid.NewGuid(),
-        DepartmentId = Guid.NewGuid(),
-        ImagePath = null
-    },
-    new Employee
-    {
-        Id = Guid.NewGuid(),
-        AppUserId = Guid.NewGuid(),
-        FirstName = "Mehmet",
-        LastName = "Demir",
-        Email = "mehmet.demir@example.com",
-        TitleId = Guid.NewGuid(),
-        DepartmentId = Guid.NewGuid(),
-        ImagePath = null
-    },
-    new Employee
-    {
-        Id = Guid.NewGuid(),
-        AppUserId = Guid.NewGuid(),
-        FirstName = "Zeynep",
-        LastName = "Şahin",
-        Email = "zeynep.sahin@example.com",
-        TitleId = Guid.NewGuid(),
-        DepartmentId = Guid.NewGuid(),
-        ImagePath = null
-    },
-    new Employee
-    {
-        Id = Guid.NewGuid(),
-        AppUserId = Guid.NewGuid(),
-        FirstName = "Ali",
-        LastName = "Çelik",
-        Email = "ali.celik@example.com",
-        TitleId = Guid.NewGuid(),
-        DepartmentId = Guid.NewGuid(),
-        ImagePath = null
-    },
-    new Employee
-    {
-        Id = Guid.NewGuid(),
-        AppUserId = Guid.NewGuid(),
-        FirstName = "Merve",
-        LastName = "Koç",
-        Email = "merve.koc@example.com",
-        TitleId = Guid.NewGuid(),
-        DepartmentId = Guid.NewGuid(),
-        ImagePath = null
-    },
-    new Employee
-    {
-        Id = Guid.NewGuid(),
-        AppUserId = Guid.NewGuid(),
-        FirstName = "Emre",
-        LastName = "Aydın",
-        Email = "emre.aydin@example.com",
-        TitleId = Guid.NewGuid(),
-        DepartmentId = Guid.NewGuid(),
-        ImagePath = null
-    },
-    new Employee
-    {
-        Id = Guid.NewGuid(),
-        AppUserId = Guid.NewGuid(),
-        FirstName = "Selin",
-        LastName = "Aslan",
-        Email = "selin.aslan@example.com",
-        TitleId = Guid.NewGuid(),
-        DepartmentId = Guid.NewGuid(),
-        ImagePath = null
-    },
-    new Employee
-    {
-        Id = Guid.NewGuid(),
-        AppUserId = Guid.NewGuid(),
-        FirstName = "Burak",
-        LastName = "Güneş",
-        Email = "burak.gunes@example.com",
-        TitleId = Guid.NewGuid(),
-        DepartmentId = Guid.NewGuid(),
-        ImagePath = null
-    },
-    new Employee
-    {
-        Id = Guid.NewGuid(),
-        AppUserId = Guid.NewGuid(),
-        FirstName = "Gamze",
-        LastName = "Kurt",
-        Email = "gamze.kurt@example.com",
-        TitleId = Guid.NewGuid(),
-        DepartmentId = Guid.NewGuid(),
-        ImagePath = null
-    }
+                new Employee
+                {
+                    Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
+                    AppUserId = Guid.NewGuid(),
+                    FirstName = "Ahmet",
+                    LastName = "Yılmaz",
+                    Email = "ahmet.yilmaz@example.com",
+                    TitleId = Guid.Parse("aaaaaaa1-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+                    DepartmentId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
+                    ImagePath = null
+                },
+                new Employee
+                {
+                    Id = Guid.Parse("22222222-2222-2222-2222-222222222222"),
+                    AppUserId = Guid.NewGuid(),
+                    FirstName = "Elif",
+                    LastName = "Kara",
+                    Email = "elif.kara@example.com",
+                    TitleId = Guid.Parse("aaaaaaa2-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+                    DepartmentId = Guid.Parse("22222222-2222-2222-2222-222222222222"),
+                    ImagePath = null
+                },
+                new Employee
+                {
+                    Id = Guid.Parse("33333333-3333-3333-3333-333333333333"),
+                    AppUserId = Guid.NewGuid(),
+                    FirstName = "Mehmet",
+                    LastName = "Demir",
+                    Email = "mehmet.demir@example.com",
+                    TitleId = Guid.Parse("aaaaaaa3-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+                    DepartmentId = Guid.Parse("33333333-3333-3333-3333-333333333333"),
+                    ImagePath = null
+                },
+                new Employee
+                {
+                    Id = Guid.Parse("44444444-4444-4444-4444-444444444444"),
+                    AppUserId = Guid.NewGuid(),
+                    FirstName = "Zeynep",
+                    LastName = "Şahin",
+                    Email = "zeynep.sahin@example.com",
+                    TitleId = Guid.Parse("aaaaaaa4-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+                    DepartmentId = Guid.Parse("44444444-4444-4444-4444-444444444444"),
+                    ImagePath = null
+                }
             );
         }
     }
+
 }

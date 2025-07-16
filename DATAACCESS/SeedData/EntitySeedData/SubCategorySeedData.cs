@@ -15,107 +15,42 @@ namespace DATAACCESS.SeedData.EntitySeedData
         public void Configure(EntityTypeBuilder<SubCategory> builder)
         {
             builder.HasData(
-                    new SubCategory
-                    {
-                        Id = Guid.Parse("c0000000-0000-0000-0000-000000000001"),
-                        SubCategoryName = "Laptoplar",
-                        CategoryId = Guid.Parse("cat00000-0000-0000-0000-000000000001"),
-                        CreatedDate = DateTime.Parse("2025-07-01"),
-                        UpdatedDate = null,
-                        DeletedDate = null,
-                        Status = Status.Active
-                    },
-    new SubCategory
-    {
-        Id = Guid.Parse("c0000000-0000-0000-0000-000000000002"),
-        SubCategoryName = "Fare ve Klavye",
-        CategoryId = Guid.Parse("cat00000-0000-0000-0000-000000000002"),
-        CreatedDate = DateTime.Parse("2025-07-01"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new SubCategory
-    {
-        Id = Guid.Parse("c0000000-0000-0000-0000-000000000003"),
-        SubCategoryName = "Monitörler",
-        CategoryId = Guid.Parse("cat00000-0000-0000-0000-000000000001"),
-        CreatedDate = DateTime.Parse("2025-07-01"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new SubCategory
-    {
-        Id = Guid.Parse("c0000000-0000-0000-0000-000000000004"),
-        SubCategoryName = "Yazıcılar",
-        CategoryId = Guid.Parse("cat00000-0000-0000-0000-000000000003"),
-        CreatedDate = DateTime.Parse("2025-07-01"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new SubCategory
-    {
-        Id = Guid.Parse("c0000000-0000-0000-0000-000000000005"),
-        SubCategoryName = "Ağ Donanımları",
-        CategoryId = Guid.Parse("cat00000-0000-0000-0000-000000000004"),
-        CreatedDate = DateTime.Parse("2025-07-01"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new SubCategory
-    {
-        Id = Guid.Parse("c0000000-0000-0000-0000-000000000006"),
-        SubCategoryName = "Depolama Aygıtları",
-        CategoryId = Guid.Parse("cat00000-0000-0000-0000-000000000004"),
-        CreatedDate = DateTime.Parse("2025-07-01"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new SubCategory
-    {
-        Id = Guid.Parse("c0000000-0000-0000-0000-000000000007"),
-        SubCategoryName = "Güvenlik Kameraları",
-        CategoryId = Guid.Parse("cat00000-0000-0000-0000-000000000005"),
-        CreatedDate = DateTime.Parse("2025-07-01"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new SubCategory
-    {
-        Id = Guid.Parse("c0000000-0000-0000-0000-000000000008"),
-        SubCategoryName = "Ofis Bilgisayarları",
-        CategoryId = Guid.Parse("cat00000-0000-0000-0000-000000000001"),
-        CreatedDate = DateTime.Parse("2025-07-01"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new SubCategory
-    {
-        Id = Guid.Parse("c0000000-0000-0000-0000-000000000009"),
-        SubCategoryName = "Gaming Aksesuarlar",
-        CategoryId = Guid.Parse("cat00000-0000-0000-0000-000000000002"),
-        CreatedDate = DateTime.Parse("2025-07-01"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new SubCategory
-    {
-        Id = Guid.Parse("c0000000-0000-0000-0000-000000000010"),
-        SubCategoryName = "Yazılım Lisansları",
-        CategoryId = Guid.Parse("cat00000-0000-0000-0000-000000000005"),
-        CreatedDate = DateTime.Parse("2025-07-01"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    }
+                new SubCategory
+                {
+                    Id = Guid.Parse("0f111111-0000-0000-0000-0000000000ab"),
+                    SubCategoryName = "Tabletler",
+                    CategoryId = Guid.Parse("688b4c8a-1db3-41e8-9e4f-afec71eb2b81"), // Bilgisayarlar
+                    CreatedDate = DateTime.Parse("2025-07-01"),
+                    Status = Status.Active
+                },
+                new SubCategory
+                {
+                    Id = Guid.Parse("0f111111-0000-0000-0000-0000000000ac"),
+                    SubCategoryName = "Web Kameraları",
+                    CategoryId = Guid.Parse("b92c7bc3-5dc4-4b12-b3de-f10ed70e32bb"), // Çevre Birimleri
+                    CreatedDate = DateTime.Parse("2025-07-01"),
+                    Status = Status.Active
+                },
+                new SubCategory
+                {
+                    Id = Guid.Parse("0f111111-0000-0000-0000-0000000000ad"),
+                    SubCategoryName = "Switch & Hub",
+                    CategoryId = Guid.Parse("c011479a-fb3e-4c30-a2a5-bc5ee9c650ef"), // Ağ Cihazları
+                    CreatedDate = DateTime.Parse("2025-07-01"),
+                    Status = Status.Active
+                },
+                new SubCategory
+                {
+                    Id = Guid.Parse("0f111111-0000-0000-0000-0000000000ae"),
+                    SubCategoryName = "Antivirüs Yazılımları",
+                    CategoryId = Guid.Parse("74e94f07-2064-46a4-a7b1-77e16b45df46"), // Güvenlik
+                    CreatedDate = DateTime.Parse("2025-07-01"),
+                    Status = Status.Active
+                }
             );
         }
     }
+
+
+
 }

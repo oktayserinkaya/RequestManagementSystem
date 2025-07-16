@@ -1,9 +1,23 @@
+using DATAACCESS.Context;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Baðlantý cümlesini oku
+var entitySQLConnection = builder.Configuration.GetConnectionString("EntityPostgreSQLConnection");
+
+// DbContext'i DI sistemine ekle
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseNpgsql(entitySQLConnection);
+});
+
+// Uygulamayý oluþtur (Build iþlemi buraya kadar yapýlandýrýlmýþ tüm servisleri içerir)
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

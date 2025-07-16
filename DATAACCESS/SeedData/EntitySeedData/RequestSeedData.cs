@@ -15,177 +15,76 @@ namespace DATAACCESS.SeedData.EntitySeedData
         public void Configure(EntityTypeBuilder<Request> builder)
         {
             builder.HasData(
-                    new Request
-                    {
-                        Id = Guid.Parse("r0000000-0000-0000-0000-000000000001"),
-                        RequestDate = DateTime.Parse("2025-06-01"),
-                        SpecialProductName = null,
-                        Amount = 2,
-                        ProductFeaturesFilePath = null,
-                        ProductFeatures = null,
-                        CommissionNote = "Acil ihtiyaç",
-                        IsApproved = false,
-                        EmployeeId = Guid.Parse("e0000000-0000-0000-0000-000000000001"),
-                        ProductId = Guid.Parse("p0000000-0000-0000-0000-000000000001"),
-                        CreatedDate = DateTime.Parse("2025-06-01"),
-                        UpdatedDate = null,
-                        DeletedDate = null,
-                        Status = Status.Active
-                    },
-    new Request
-    {
-        Id = Guid.Parse("r0000000-0000-0000-0000-000000000002"),
-        RequestDate = DateTime.Parse("2025-06-05"),
-        SpecialProductName = "Özel masaüstü PC",
-        Amount = 1,
-        ProductFeaturesFilePath = null,
-        ProductFeatures = "16GB RAM, 1TB SSD",
-        CommissionNote = null,
-        IsApproved = true,
-        EmployeeId = Guid.Parse("e0000000-0000-0000-0000-000000000002"),
-        ProductId = Guid.Parse("p0000000-0000-0000-0000-000000000002"),
-        CreatedDate = DateTime.Parse("2025-06-05"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new Request
-    {
-        Id = Guid.Parse("r0000000-0000-0000-0000-000000000003"),
-        RequestDate = DateTime.Parse("2025-06-10"),
-        SpecialProductName = null,
-        Amount = 3,
-        ProductFeaturesFilePath = null,
-        ProductFeatures = null,
-        CommissionNote = "Ofis için",
-        IsApproved = false,
-        EmployeeId = Guid.Parse("e0000000-0000-0000-0000-000000000003"),
-        ProductId = Guid.Parse("p0000000-0000-0000-0000-000000000003"),
-        CreatedDate = DateTime.Parse("2025-06-10"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new Request
-    {
-        Id = Guid.Parse("r0000000-0000-0000-0000-000000000004"),
-        RequestDate = DateTime.Parse("2025-06-12"),
-        SpecialProductName = null,
-        Amount = 1,
-        ProductFeaturesFilePath = null,
-        ProductFeatures = null,
-        CommissionNote = "İhale kapsamında",
-        IsApproved = true,
-        EmployeeId = Guid.Parse("e0000000-0000-0000-0000-000000000004"),
-        ProductId = Guid.Parse("p0000000-0000-0000-0000-000000000004"),
-        CreatedDate = DateTime.Parse("2025-06-12"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new Request
-    {
-        Id = Guid.Parse("r0000000-0000-0000-0000-000000000005"),
-        RequestDate = DateTime.Parse("2025-06-15"),
-        SpecialProductName = "Yüksek hızlı modem",
-        Amount = 5,
-        ProductFeaturesFilePath = null,
-        ProductFeatures = "Dual Band, 5 GHz",
-        CommissionNote = null,
-        IsApproved = false,
-        EmployeeId = Guid.Parse("e0000000-0000-0000-0000-000000000005"),
-        ProductId = Guid.Parse("p0000000-0000-0000-0000-000000000005"),
-        CreatedDate = DateTime.Parse("2025-06-15"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new Request
-    {
-        Id = Guid.Parse("r0000000-0000-0000-0000-000000000006"),
-        RequestDate = DateTime.Parse("2025-06-18"),
-        SpecialProductName = null,
-        Amount = 10,
-        ProductFeaturesFilePath = null,
-        ProductFeatures = null,
-        CommissionNote = "Okul için toplu alım",
-        IsApproved = true,
-        EmployeeId = Guid.Parse("e0000000-0000-0000-0000-000000000006"),
-        ProductId = Guid.Parse("p0000000-0000-0000-0000-000000000006"),
-        CreatedDate = DateTime.Parse("2025-06-18"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new Request
-    {
-        Id = Guid.Parse("r0000000-0000-0000-0000-000000000007"),
-        RequestDate = DateTime.Parse("2025-06-20"),
-        SpecialProductName = null,
-        Amount = 2,
-        ProductFeaturesFilePath = null,
-        ProductFeatures = null,
-        CommissionNote = null,
-        IsApproved = false,
-        EmployeeId = Guid.Parse("e0000000-0000-0000-0000-000000000007"),
-        ProductId = Guid.Parse("p0000000-0000-0000-0000-000000000007"),
-        CreatedDate = DateTime.Parse("2025-06-20"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new Request
-    {
-        Id = Guid.Parse("r0000000-0000-0000-0000-000000000008"),
-        RequestDate = DateTime.Parse("2025-06-21"),
-        SpecialProductName = "Güvenlik kamerası",
-        Amount = 4,
-        ProductFeaturesFilePath = null,
-        ProductFeatures = "Gece görüşlü, 360 derece",
-        CommissionNote = "Deneme amaçlı",
-        IsApproved = true,
-        EmployeeId = Guid.Parse("e0000000-0000-0000-0000-000000000008"),
-        ProductId = Guid.Parse("p0000000-0000-0000-0000-000000000009"),
-        CreatedDate = DateTime.Parse("2025-06-21"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new Request
-    {
-        Id = Guid.Parse("r0000000-0000-0000-0000-000000000009"),
-        RequestDate = DateTime.Parse("2025-06-22"),
-        SpecialProductName = null,
-        Amount = 3,
-        ProductFeaturesFilePath = null,
-        ProductFeatures = null,
-        CommissionNote = "Dış mekan kullanımı",
-        IsApproved = false,
-        EmployeeId = Guid.Parse("e0000000-0000-0000-0000-000000000009"),
-        ProductId = Guid.Parse("p0000000-0000-0000-0000-000000000010"),
-        CreatedDate = DateTime.Parse("2025-06-22"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new Request
-    {
-        Id = Guid.Parse("r0000000-0000-0000-0000-000000000010"),
-        RequestDate = DateTime.Parse("2025-06-25"),
-        SpecialProductName = null,
-        Amount = 6,
-        ProductFeaturesFilePath = null,
-        ProductFeatures = null,
-        CommissionNote = "Yıl sonu bütçe kullanımı",
-        IsApproved = true,
-        EmployeeId = Guid.Parse("e0000000-0000-0000-0000-000000000010"),
-        ProductId = Guid.Parse("p0000000-0000-0000-0000-000000000008"),
-        CreatedDate = DateTime.Parse("2025-06-25"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    }
+                new Request
+                {
+                    Id = Guid.Parse("10000000-0000-0000-0000-0000000000ab"),
+                    RequestDate = DateTime.Parse("2025-06-26"),
+                    SpecialProductName = "Projeksiyon Cihazı",
+                    Amount = 1,
+                    ProductFeaturesFilePath = null,
+                    ProductFeatures = "Full HD, HDMI destekli",
+                    CommissionNote = "Toplantı odası için",
+                    IsApproved = false,
+                    EmployeeId = Guid.Parse("3e39b574-5a2c-4703-8c28-5ac11dc703d1"), // Ahmet Yılmaz
+                    ProductId = Guid.Parse("11111111-aaaa-bbbb-cccc-111111111111"), // Canon EOS 2000D Kamera
+                    CreatedDate = DateTime.Parse("2025-06-26"),
+                    UpdatedDate = null,
+                    DeletedDate = null,
+                    Status = Status.Active
+                },
+                new Request
+                {
+                    Id = Guid.Parse("10000000-0000-0000-0000-0000000000ac"),
+                    RequestDate = DateTime.Parse("2025-06-27"),
+                    SpecialProductName = null,
+                    Amount = 2,
+                    ProductFeaturesFilePath = null,
+                    ProductFeatures = null,
+                    CommissionNote = "Bilgi İşlem birimi için",
+                    IsApproved = true,
+                    EmployeeId = Guid.Parse("6177b7cc-68bc-4ae8-8020-2f7334a3bb0e"), // Elif Kara
+                    ProductId = Guid.Parse("22222222-aaaa-bbbb-cccc-222222222222"), // Apple Magic Keyboard
+                    CreatedDate = DateTime.Parse("2025-06-27"),
+                    UpdatedDate = null,
+                    DeletedDate = null,
+                    Status = Status.Active
+                },
+                new Request
+                {
+                    Id = Guid.Parse("10000000-0000-0000-0000-0000000000ad"),
+                    RequestDate = DateTime.Parse("2025-06-28"),
+                    SpecialProductName = null,
+                    Amount = 1,
+                    ProductFeaturesFilePath = null,
+                    ProductFeatures = null,
+                    CommissionNote = "Yönetici kullanımı",
+                    IsApproved = true,
+                    EmployeeId = Guid.Parse("cf54b94f-51fa-4b70-a9a6-3a53a1df4f1b"), // Mehmet Demir
+                    ProductId = Guid.Parse("33333333-aaaa-bbbb-cccc-333333333333"), // Acer Nitro 5 Gaming Laptop
+                    CreatedDate = DateTime.Parse("2025-06-28"),
+                    UpdatedDate = null,
+                    DeletedDate = null,
+                    Status = Status.Active
+                },
+                new Request
+                {
+                    Id = Guid.Parse("10000000-0000-0000-0000-0000000000ae"),
+                    RequestDate = DateTime.Parse("2025-06-30"),
+                    SpecialProductName = null,
+                    Amount = 4,
+                    ProductFeaturesFilePath = null,
+                    ProductFeatures = null,
+                    CommissionNote = "Etkinlik alanı için ses sistemi",
+                    IsApproved = false,
+                    EmployeeId = Guid.Parse("099e365b-2a0c-48a0-91cc-3eecc11215ed"), // Zeynep Şahin
+                    ProductId = Guid.Parse("44444444-aaaa-bbbb-cccc-444444444444"), // JBL Bluetooth Hoparlör
+                    CreatedDate = DateTime.Parse("2025-06-30"),
+                    UpdatedDate = null,
+                    DeletedDate = null,
+                    Status = Status.Active
+                }
             );
         }
     }
+
 }

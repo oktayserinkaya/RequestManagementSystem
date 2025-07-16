@@ -15,127 +15,51 @@ namespace DATAACCESS.SeedData.EntitySeedData
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.HasData(
-                    new Product
-                    {
-                        Id = Guid.Parse("p0000000-0000-0000-0000-000000000001"),
-                        ProductName = "HP Laptop 15s",
-                        ImagePath = null,
-                        StockAmount = 25,
-                        SubCategoryId = Guid.Parse("c0000000-0000-0000-0000-000000000001"),
-                        CreatedDate = DateTime.Parse("2025-07-01"),
-                        UpdatedDate = null,
-                        DeletedDate = null,
-                        Status = Status.Active
-                    },
-    new Product
-    {
-        Id = Guid.Parse("p0000000-0000-0000-0000-000000000002"),
-        ProductName = "Logitech M720 Mouse",
-        ImagePath = null,
-        StockAmount = 100,
-        SubCategoryId = Guid.Parse("c0000000-0000-0000-0000-000000000002"),
-        CreatedDate = DateTime.Parse("2025-07-01"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new Product
-    {
-        Id = Guid.Parse("p0000000-0000-0000-0000-000000000003"),
-        ProductName = "Dell Monitor 24''",
-        ImagePath = null,
-        StockAmount = 40,
-        SubCategoryId = Guid.Parse("c0000000-0000-0000-0000-000000000003"),
-        CreatedDate = DateTime.Parse("2025-07-01"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new Product
-    {
-        Id = Guid.Parse("p0000000-0000-0000-0000-000000000004"),
-        ProductName = "Epson L3250 Yazıcı",
-        ImagePath = null,
-        StockAmount = 10,
-        SubCategoryId = Guid.Parse("c0000000-0000-0000-0000-000000000004"),
-        CreatedDate = DateTime.Parse("2025-07-01"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new Product
-    {
-        Id = Guid.Parse("p0000000-0000-0000-0000-000000000005"),
-        ProductName = "TP-Link Router AX1800",
-        ImagePath = null,
-        StockAmount = 60,
-        SubCategoryId = Guid.Parse("c0000000-0000-0000-0000-000000000005"),
-        CreatedDate = DateTime.Parse("2025-07-01"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new Product
-    {
-        Id = Guid.Parse("p0000000-0000-0000-0000-000000000006"),
-        ProductName = "Kingston 16GB USB 3.0",
-        ImagePath = null,
-        StockAmount = 200,
-        SubCategoryId = Guid.Parse("c0000000-0000-0000-0000-000000000002"),
-        CreatedDate = DateTime.Parse("2025-07-01"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new Product
-    {
-        Id = Guid.Parse("p0000000-0000-0000-0000-000000000007"),
-        ProductName = "Samsung SSD 1TB",
-        ImagePath = null,
-        StockAmount = 30,
-        SubCategoryId = Guid.Parse("c0000000-0000-0000-0000-000000000006"),
-        CreatedDate = DateTime.Parse("2025-07-01"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new Product
-    {
-        Id = Guid.Parse("p0000000-0000-0000-0000-000000000008"),
-        ProductName = "Lenovo ThinkPad T14",
-        ImagePath = null,
-        StockAmount = 12,
-        SubCategoryId = Guid.Parse("c0000000-0000-0000-0000-000000000001"),
-        CreatedDate = DateTime.Parse("2025-07-01"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new Product
-    {
-        Id = Guid.Parse("p0000000-0000-0000-0000-000000000009"),
-        ProductName = "Xiaomi Mi Kamera 360",
-        ImagePath = null,
-        StockAmount = 35,
-        SubCategoryId = Guid.Parse("c0000000-0000-0000-0000-000000000007"),
-        CreatedDate = DateTime.Parse("2025-07-01"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    },
-    new Product
-    {
-        Id = Guid.Parse("p0000000-0000-0000-0000-000000000010"),
-        ProductName = "Asus Gaming Mouse",
-        ImagePath = null,
-        StockAmount = 70,
-        SubCategoryId = Guid.Parse("c0000000-0000-0000-0000-000000000002"),
-        CreatedDate = DateTime.Parse("2025-07-01"),
-        UpdatedDate = null,
-        DeletedDate = null,
-        Status = Status.Active
-    }
+                new Product
+                {
+                    Id = Guid.Parse("11111111-aaaa-bbbb-cccc-111111111111"),
+                    ProductName = "Canon EOS 2000D Kamera",
+                    ImagePath = null,
+                    StockAmount = 8,
+                    SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-0000000000ab"),
+                    CreatedDate = DateTime.Parse("2025-07-01"),
+                    Status = Status.Active
+                },
+                new Product
+                {
+                    Id = Guid.Parse("22222222-aaaa-bbbb-cccc-222222222222"),
+                    ProductName = "Apple Magic Keyboard",
+                    ImagePath = null,
+                    StockAmount = 20,
+                    SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-0000000000ac"),
+                    CreatedDate = DateTime.Parse("2025-07-01"),
+                    Status = Status.Active
+                },
+                new Product
+                {
+                    Id = Guid.Parse("33333333-aaaa-bbbb-cccc-333333333333"),
+                    ProductName = "Acer Nitro 5 Gaming Laptop",
+                    ImagePath = null,
+                    StockAmount = 5,
+                    SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-0000000000ad"),
+                    CreatedDate = DateTime.Parse("2025-07-01"),
+                    Status = Status.Active
+                },
+                new Product
+                {
+                    Id = Guid.Parse("44444444-aaaa-bbbb-cccc-444444444444"),
+                    ProductName = "JBL Bluetooth Hoparlör",
+                    ImagePath = null,
+                    StockAmount = 50,
+                    SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-0000000000ae"),
+                    CreatedDate = DateTime.Parse("2025-07-01"),
+                    Status = Status.Active
+                }
             );
         }
     }
+
+
+
+
 }
