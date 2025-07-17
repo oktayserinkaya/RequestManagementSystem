@@ -25,7 +25,7 @@ namespace DATAACCESS.SeedData.EntitySeedData
                     ProductFeatures = "Full HD, HDMI destekli",
                     CommissionNote = "Toplantı odası için",
                     IsApproved = false,
-                    EmployeeId = Guid.Parse("3e39b574-5a2c-4703-8c28-5ac11dc703d1"), // Ahmet Yılmaz
+                    EmployeeId = Guid.Parse("11111111-1111-1111-1111-111111111111"), // Ahmet Yılmaz
                     ProductId = Guid.Parse("11111111-aaaa-bbbb-cccc-111111111111"), // Canon EOS 2000D Kamera
                     CreatedDate = DateTime.Parse("2025-06-26"),
                     UpdatedDate = null,
@@ -42,7 +42,7 @@ namespace DATAACCESS.SeedData.EntitySeedData
                     ProductFeatures = null,
                     CommissionNote = "Bilgi İşlem birimi için",
                     IsApproved = true,
-                    EmployeeId = Guid.Parse("6177b7cc-68bc-4ae8-8020-2f7334a3bb0e"), // Elif Kara
+                    EmployeeId = Guid.Parse("22222222-2222-2222-2222-222222222222"), // Elif Kara
                     ProductId = Guid.Parse("22222222-aaaa-bbbb-cccc-222222222222"), // Apple Magic Keyboard
                     CreatedDate = DateTime.Parse("2025-06-27"),
                     UpdatedDate = null,
@@ -59,7 +59,7 @@ namespace DATAACCESS.SeedData.EntitySeedData
                     ProductFeatures = null,
                     CommissionNote = "Yönetici kullanımı",
                     IsApproved = true,
-                    EmployeeId = Guid.Parse("cf54b94f-51fa-4b70-a9a6-3a53a1df4f1b"), // Mehmet Demir
+                    EmployeeId = Guid.Parse("33333333-3333-3333-3333-333333333333"), // Mehmet Demir
                     ProductId = Guid.Parse("33333333-aaaa-bbbb-cccc-333333333333"), // Acer Nitro 5 Gaming Laptop
                     CreatedDate = DateTime.Parse("2025-06-28"),
                     UpdatedDate = null,
@@ -76,7 +76,7 @@ namespace DATAACCESS.SeedData.EntitySeedData
                     ProductFeatures = null,
                     CommissionNote = "Etkinlik alanı için ses sistemi",
                     IsApproved = false,
-                    EmployeeId = Guid.Parse("099e365b-2a0c-48a0-91cc-3eecc11215ed"), // Zeynep Şahin
+                    EmployeeId = Guid.Parse("44444444-4444-4444-4444-444444444444"), // Zeynep Şahin
                     ProductId = Guid.Parse("44444444-aaaa-bbbb-cccc-444444444444"), // JBL Bluetooth Hoparlör
                     CreatedDate = DateTime.Parse("2025-06-30"),
                     UpdatedDate = null,

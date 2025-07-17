@@ -21,7 +21,7 @@ namespace DATAACCESS.SeedData.EntitySeedData
                     FirstName = "Ahmet",
                     LastName = "Yılmaz",
                     Email = "ahmet.yilmaz@example.com",
-                    TitleId = Guid.Parse("aaaaaaa1-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+                    TitleId = Guid.Parse("f0000011-aaaa-bbbb-cccc-0000000000ab"),
                     DepartmentId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
                     ImagePath = null
                 },
@@ -32,7 +32,7 @@ namespace DATAACCESS.SeedData.EntitySeedData
                     FirstName = "Elif",
                     LastName = "Kara",
                     Email = "elif.kara@example.com",
-                    TitleId = Guid.Parse("aaaaaaa2-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+                    TitleId = Guid.Parse("f0000012-aaaa-bbbb-cccc-0000000000ac"),
                     DepartmentId = Guid.Parse("22222222-2222-2222-2222-222222222222"),
                     ImagePath = null
                 },
@@ -43,7 +43,7 @@ namespace DATAACCESS.SeedData.EntitySeedData
                     FirstName = "Mehmet",
                     LastName = "Demir",
                     Email = "mehmet.demir@example.com",
-                    TitleId = Guid.Parse("aaaaaaa3-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+                    TitleId = Guid.Parse("f0000013-aaaa-bbbb-cccc-0000000000ad"),
                     DepartmentId = Guid.Parse("33333333-3333-3333-3333-333333333333"),
                     ImagePath = null
                 },
@@ -54,7 +54,7 @@ namespace DATAACCESS.SeedData.EntitySeedData
                     FirstName = "Zeynep",
                     LastName = "Şahin",
                     Email = "zeynep.sahin@example.com",
-                    TitleId = Guid.Parse("aaaaaaa4-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+                    TitleId = Guid.Parse("f0000014-aaaa-bbbb-cccc-0000000000ae"),
                     DepartmentId = Guid.Parse("44444444-4444-4444-4444-444444444444"),
                     ImagePath = null
                 }

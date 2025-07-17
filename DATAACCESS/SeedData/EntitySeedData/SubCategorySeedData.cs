@@ -19,7 +19,7 @@ namespace DATAACCESS.SeedData.EntitySeedData
                 {
                     Id = Guid.Parse("0f111111-0000-0000-0000-0000000000ab"),
                     SubCategoryName = "Tabletler",
-                    CategoryId = Guid.Parse("688b4c8a-1db3-41e8-9e4f-afec71eb2b81"), // Bilgisayarlar
+                    CategoryId = Guid.Parse("11111111-1111-1111-1111-111111111111"), // Bilgisayarlar
                     CreatedDate = DateTime.Parse("2025-07-01"),
                     Status = Status.Active
                 },
@@ -27,7 +27,7 @@ namespace DATAACCESS.SeedData.EntitySeedData
                 {
                     Id = Guid.Parse("0f111111-0000-0000-0000-0000000000ac"),
                     SubCategoryName = "Web Kameraları",
-                    CategoryId = Guid.Parse("b92c7bc3-5dc4-4b12-b3de-f10ed70e32bb"), // Çevre Birimleri
+                    CategoryId = Guid.Parse("22222222-2222-2222-2222-222222222222"), // Çevre Birimleri
                     CreatedDate = DateTime.Parse("2025-07-01"),
                     Status = Status.Active
                 },
@@ -35,7 +35,7 @@ namespace DATAACCESS.SeedData.EntitySeedData
                 {
                     Id = Guid.Parse("0f111111-0000-0000-0000-0000000000ad"),
                     SubCategoryName = "Switch & Hub",
-                    CategoryId = Guid.Parse("c011479a-fb3e-4c30-a2a5-bc5ee9c650ef"), // Ağ Cihazları
+                    CategoryId = Guid.Parse("33333333-3333-3333-3333-333333333333"), // Ağ Cihazları
                     CreatedDate = DateTime.Parse("2025-07-01"),
                     Status = Status.Active
                 },
@@ -43,7 +43,7 @@ namespace DATAACCESS.SeedData.EntitySeedData
                 {
                     Id = Guid.Parse("0f111111-0000-0000-0000-0000000000ae"),
                     SubCategoryName = "Antivirüs Yazılımları",
-                    CategoryId = Guid.Parse("74e94f07-2064-46a4-a7b1-77e16b45df46"), // Güvenlik
+                    CategoryId = Guid.Parse("44444444-4444-4444-4444-444444444444"), // Güvenlik
                     CreatedDate = DateTime.Parse("2025-07-01"),
                     Status = Status.Active
                 }

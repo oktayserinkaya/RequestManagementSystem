@@ -23,12 +23,12 @@ namespace DATAACCESS.SeedData.EntitySeedData
                     GeneralStockAmount = 5,
                     WaybillNumber = "WB-1007",
                     WaybillPrice = "18400",
-                    ProductId = Guid.Parse("a9fbdced-bc2a-4ad6-9ed3-11a54bdf0007"),
-                    CategoryId = Guid.Parse("688b4c8a-1db3-41e8-9e4f-afec71eb2b81"), // Bilgisayarlar
-                    SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-000000000008"), // Ofis Bilgisayarları
-                    EmployeeId = Guid.Parse("80a124bb-b3c5-4bc2-9e3a-e70d889d0d4f"),
-                    RequestId = Guid.Parse("10000000-0000-0000-0000-000000000007"),
-                    DepartmentId = Guid.Parse("ce236df0-cf9e-4e6a-a30a-8c0661dc5a58"), // Ar-Ge
+                    ProductId = Guid.Parse("11111111-aaaa-bbbb-cccc-111111111111"),
+                    CategoryId = Guid.Parse("11111111-1111-1111-1111-111111111111"), // Bilgisayarlar
+                    SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-0000000000ab"), // Ofis Bilgisayarları
+                    EmployeeId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
+                    RequestId = Guid.Parse("10000000-0000-0000-0000-0000000000ab"),
+                    DepartmentId = Guid.Parse("11111111-1111-1111-1111-111111111111"), // Ar-Ge
                     CreatedDate = DateTime.Parse("2025-07-01"),
                     Status = Status.Active
                 },
@@ -40,12 +40,12 @@ new Warehouse
     GeneralStockAmount = 5,
     WaybillNumber = "WB-1008",
     WaybillPrice = "9000",
-    ProductId = Guid.Parse("a9fbdced-bc2a-4ad6-9ed3-11a54bdf0009"),
-    CategoryId = Guid.Parse("74e94f07-2064-46a4-a7b1-77e16b45df46"), // Güvenlik
-    SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-000000000007"), // Güvenlik Kameraları
-    EmployeeId = Guid.Parse("6bc19a61-8421-438f-b8f7-60de51b85955"),
-    RequestId = Guid.Parse("10000000-0000-0000-0000-000000000008"),
-    DepartmentId = Guid.Parse("aa58e7e1-cbc0-4859-b6f0-5375b6d10a7c"), // Kalite Kontrol
+    ProductId = Guid.Parse("22222222-aaaa-bbbb-cccc-222222222222"),
+    CategoryId = Guid.Parse("22222222-2222-2222-2222-222222222222"), // Güvenlik
+    SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-0000000000ac"), // Güvenlik Kameraları
+    EmployeeId = Guid.Parse("22222222-2222-2222-2222-222222222222"),
+    RequestId = Guid.Parse("10000000-0000-0000-0000-0000000000ac"),
+    DepartmentId = Guid.Parse("22222222-2222-2222-2222-222222222222"), // Kalite Kontrol
     CreatedDate = DateTime.Parse("2025-07-01"),
     Status = Status.Active
 },
@@ -57,12 +57,12 @@ new Warehouse
     GeneralStockAmount = 5,
     WaybillNumber = "WB-1009",
     WaybillPrice = "6700",
-    ProductId = Guid.Parse("a9fbdced-bc2a-4ad6-9ed3-11a54bdf0010"),
-    CategoryId = Guid.Parse("c011479a-fb3e-4c30-a2a5-bc5ee9c650ef"), // Ağ Cihazları
-    SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-000000000006"), // Depolama Aygıtları
-    EmployeeId = Guid.Parse("41e60754-30fd-4999-8b2b-b0d7c6c62347"),
-    RequestId = Guid.Parse("10000000-0000-0000-0000-000000000009"),
-    DepartmentId = Guid.Parse("c047423a-5ed4-4c6e-9bb4-5ddf02a6be38"), // Bakım ve Onarım
+    ProductId = Guid.Parse("33333333-aaaa-bbbb-cccc-333333333333"),
+    CategoryId = Guid.Parse("33333333-3333-3333-3333-333333333333"), // Ağ Cihazları
+    SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-0000000000ad"), // Depolama Aygıtları
+    EmployeeId = Guid.Parse("33333333-3333-3333-3333-333333333333"),
+    RequestId = Guid.Parse("10000000-0000-0000-0000-0000000000ad"),
+    DepartmentId = Guid.Parse("33333333-3333-3333-3333-333333333333"), // Bakım ve Onarım
     CreatedDate = DateTime.Parse("2025-07-01"),
     Status = Status.Active
 },
@@ -74,12 +74,12 @@ new Warehouse
     GeneralStockAmount = 8,
     WaybillNumber = "WB-1010",
     WaybillPrice = "10400",
-    ProductId = Guid.Parse("a9fbdced-bc2a-4ad6-9ed3-11a54bdf0008"),
-    CategoryId = Guid.Parse("b92c7bc3-5dc4-4b12-b3de-f10ed70e32bb"), // Çevre Birimleri
-    SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-000000000009"), // Gaming Aksesuarlar
-    EmployeeId = Guid.Parse("b1e6c330-dcd3-402e-b67a-999b65c296c3"),
-    RequestId = Guid.Parse("10000000-0000-0000-0000-00000000000a"),
-    DepartmentId = Guid.Parse("0c5fc66a-75f9-4d09-87e3-3c121cfa059b"), // Yönetim
+    ProductId = Guid.Parse("44444444-aaaa-bbbb-cccc-444444444444"),
+    CategoryId = Guid.Parse("44444444-4444-4444-4444-444444444444"), // Çevre Birimleri
+    SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-0000000000ae"), // Gaming Aksesuarlar
+    EmployeeId = Guid.Parse("44444444-4444-4444-4444-444444444444"),
+    RequestId = Guid.Parse("10000000-0000-0000-0000-0000000000ae"),
+    DepartmentId = Guid.Parse("44444444-4444-4444-4444-444444444444"), // Yönetim
     CreatedDate = DateTime.Parse("2025-07-01"),
     Status = Status.Active
 }
