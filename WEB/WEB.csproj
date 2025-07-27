@@ -9,7 +9,6 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="8.3.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
-    <PackageReference Include="AutoMapper" Version="15.0.1" />
     <PackageReference Include="FluentValidation" Version="12.0.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
@@ -42,7 +41,6 @@
     <Folder Include="Areas\RequestEvaluation\Data\" />
     <Folder Include="Areas\RequestEvaluation\Models\" />
     <Folder Include="Areas\RequestEvaluation\Views\" />
-    <Folder Include="Areas\Request\Controllers\" />
     <Folder Include="Areas\Request\Data\" />
     <Folder Include="Areas\Request\Models\" />
     <Folder Include="Areas\Request\Views\" />
@@ -50,7 +48,6 @@
     <Folder Include="Areas\WarehouseDepartment\Data\" />
     <Folder Include="Areas\WarehouseDepartment\Models\" />
     <Folder Include="Areas\WarehouseDepartment\Views\" />
-    <Folder Include="AutoMapper\" />
   </ItemGroup>
 
 </Project>

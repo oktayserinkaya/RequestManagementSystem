@@ -1,6 +1,9 @@
+using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using DATAACCESS.Context;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using WEB.Autofac;
@@ -14,6 +17,19 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()).Conf
 {
     builder.RegisterModule(new AutofacModule());
 });
+
+
+// Eðer ki FluentValidation kullanmak isteniyorsa aþaðýdaki 3 methodu kullanmak zorundayýz!!!
+
+// Abstract validator'dan miras almýþ validator'larý bulup otomatik olarak sisteme ekler. Örnek : CreateDepartmentValidator
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+// FluentValidation'ý ASP .NET Core model binding sürecine entegre eder. Yani MVC Controller üzerinden gelen request'lerin otomatik olarak validasyonunu saðlar.
+builder.Services.AddFluentValidationAutoValidation();
+
+// FluentValidation'ýn Client-Side(Ön Yüz) validasyon desteðiniz saðlar. MVC View'lerde kullanýlýr.
+builder.Services.AddFluentValidationClientsideAdapters();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
