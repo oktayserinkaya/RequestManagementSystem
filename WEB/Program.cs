@@ -1,7 +1,19 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using DATAACCESS.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using WEB.Autofac;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+// Yaþam Döngüsünü Tanýmladýk (Life Cycle)
+// AutofacServiceProviderFactory : Bu kodun çalýþmasý için Autofac.Extensions.DependencyInjection paketinin kurulmasý gerekir!! 
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()).ConfigureContainer<ContainerBuilder>(builder =>
+{
+    builder.RegisterModule(new AutofacModule());
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -33,6 +45,12 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+
+app.MapControllerRoute(
+  name: "areas",
+  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+);
 
 app.MapControllerRoute(
     name: "default",

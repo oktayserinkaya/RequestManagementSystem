@@ -25,4 +25,32 @@
     <ProjectReference Include="..\BUSINESS\BUSINESS.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Controllers\" />
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Views\" />
+    <Folder Include="Areas\PaymentTransaction\Controllers\" />
+    <Folder Include="Areas\PaymentTransaction\Data\" />
+    <Folder Include="Areas\PaymentTransaction\Models\" />
+    <Folder Include="Areas\PaymentTransaction\Views\" />
+    <Folder Include="Areas\PurchaseTransaction\Controllers\" />
+    <Folder Include="Areas\PurchaseTransaction\Data\" />
+    <Folder Include="Areas\PurchaseTransaction\Models\" />
+    <Folder Include="Areas\PurchaseTransaction\Views\" />
+    <Folder Include="Areas\RequestEvaluation\Controllers\" />
+    <Folder Include="Areas\RequestEvaluation\Data\" />
+    <Folder Include="Areas\RequestEvaluation\Models\" />
+    <Folder Include="Areas\RequestEvaluation\Views\" />
+    <Folder Include="Areas\Request\Controllers\" />
+    <Folder Include="Areas\Request\Data\" />
+    <Folder Include="Areas\Request\Models\" />
+    <Folder Include="Areas\Request\Views\" />
+    <Folder Include="Areas\WarehouseDepartment\Controllers\" />
+    <Folder Include="Areas\WarehouseDepartment\Data\" />
+    <Folder Include="Areas\WarehouseDepartment\Models\" />
+    <Folder Include="Areas\WarehouseDepartment\Views\" />
+    <Folder Include="AutoMapper\" />
+  </ItemGroup>
+
 </Project>
