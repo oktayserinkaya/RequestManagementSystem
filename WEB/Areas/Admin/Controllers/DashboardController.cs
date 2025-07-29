@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace WEB.Areas.Request.Controllers
+namespace WEB.Areas.Admin.Controllers
 {
-    public class RequestController : Controller
+    [Area("Admin")]
+    public class DashboardController : Controller
     {
+        
         public IActionResult Index()
         {
             return View();

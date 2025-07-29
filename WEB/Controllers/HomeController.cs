@@ -2,7 +2,7 @@
 
 namespace WEB.Controllers
 {
-    public class AnasayfaController : Controller
+    public class HomeController : Controller
     {
         public IActionResult Index()
         {
