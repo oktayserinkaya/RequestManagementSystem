@@ -98,10 +98,15 @@ namespace DATAACCESS.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
+                    b.Property<Guid>("TitleId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TitleId");
 
                     b.ToTable("Departments");
 
@@ -111,28 +116,32 @@ namespace DATAACCESS.Migrations
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentName = "Bilgi Teknolojileri",
-                            Status = 1
+                            Status = 1,
+                            TitleId = new Guid("f0000011-aaaa-bbbb-cccc-0000000000ab")
                         },
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentName = "Satın Alma",
-                            Status = 1
+                            Status = 1,
+                            TitleId = new Guid("f0000012-aaaa-bbbb-cccc-0000000000ac")
                         },
                         new
                         {
                             Id = new Guid("33333333-3333-3333-3333-333333333333"),
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentName = "Muhasebe",
-                            Status = 1
+                            Status = 1,
+                            TitleId = new Guid("f0000013-aaaa-bbbb-cccc-0000000000ad")
                         },
                         new
                         {
                             Id = new Guid("44444444-4444-4444-4444-444444444444"),
                             CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentName = "İnsan Kaynakları",
-                            Status = 1
+                            Status = 1,
+                            TitleId = new Guid("f0000014-aaaa-bbbb-cccc-0000000000ae")
                         });
                 });
 
@@ -190,8 +199,8 @@ namespace DATAACCESS.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            AppUserId = new Guid("617a51c6-e572-4350-9095-5fa322c5c0c8"),
-                            CreatedDate = new DateTime(2025, 7, 17, 12, 20, 1, 31, DateTimeKind.Local).AddTicks(8851),
+                            AppUserId = new Guid("7ddc2e8c-e258-4bba-8cc6-3b7e1cffc42c"),
+                            CreatedDate = new DateTime(2025, 8, 2, 17, 44, 36, 105, DateTimeKind.Local).AddTicks(9121),
                             DepartmentId = new Guid("11111111-1111-1111-1111-111111111111"),
                             Email = "ahmet.yilmaz@example.com",
                             FirstName = "Ahmet",
@@ -202,8 +211,8 @@ namespace DATAACCESS.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            AppUserId = new Guid("b1573303-aedc-4da3-8b58-e7b72d8fa0de"),
-                            CreatedDate = new DateTime(2025, 7, 17, 12, 20, 1, 31, DateTimeKind.Local).AddTicks(8884),
+                            AppUserId = new Guid("b09651ff-1e53-44ab-bede-e64e35256995"),
+                            CreatedDate = new DateTime(2025, 8, 2, 17, 44, 36, 105, DateTimeKind.Local).AddTicks(9149),
                             DepartmentId = new Guid("22222222-2222-2222-2222-222222222222"),
                             Email = "elif.kara@example.com",
                             FirstName = "Elif",
@@ -214,8 +223,8 @@ namespace DATAACCESS.Migrations
                         new
                         {
                             Id = new Guid("33333333-3333-3333-3333-333333333333"),
-                            AppUserId = new Guid("62e2a229-fdd2-40cc-9840-f27fb7cbb457"),
-                            CreatedDate = new DateTime(2025, 7, 17, 12, 20, 1, 31, DateTimeKind.Local).AddTicks(8889),
+                            AppUserId = new Guid("44a182e1-39a4-418b-b1cd-9d465597b629"),
+                            CreatedDate = new DateTime(2025, 8, 2, 17, 44, 36, 105, DateTimeKind.Local).AddTicks(9153),
                             DepartmentId = new Guid("33333333-3333-3333-3333-333333333333"),
                             Email = "mehmet.demir@example.com",
                             FirstName = "Mehmet",
@@ -226,8 +235,8 @@ namespace DATAACCESS.Migrations
                         new
                         {
                             Id = new Guid("44444444-4444-4444-4444-444444444444"),
-                            AppUserId = new Guid("d110bc3c-c33b-4f62-b5c3-dae254b69322"),
-                            CreatedDate = new DateTime(2025, 7, 17, 12, 20, 1, 31, DateTimeKind.Local).AddTicks(8893),
+                            AppUserId = new Guid("af1d86fb-4dba-4b97-9939-15562e6fa3c7"),
+                            CreatedDate = new DateTime(2025, 8, 2, 17, 44, 36, 105, DateTimeKind.Local).AddTicks(9156),
                             DepartmentId = new Guid("44444444-4444-4444-4444-444444444444"),
                             Email = "zeynep.sahin@example.com",
                             FirstName = "Zeynep",
@@ -451,6 +460,9 @@ namespace DATAACCESS.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
+                    b.Property<Guid>("TitleId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -459,6 +471,8 @@ namespace DATAACCESS.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("TitleId");
 
                     b.ToTable("Requests");
 
@@ -475,7 +489,8 @@ namespace DATAACCESS.Migrations
                             ProductId = new Guid("11111111-aaaa-bbbb-cccc-111111111111"),
                             RequestDate = new DateTime(2025, 6, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SpecialProductName = "Projeksiyon Cihazı",
-                            Status = 1
+                            Status = 1,
+                            TitleId = new Guid("f0000011-aaaa-bbbb-cccc-0000000000ab")
                         },
                         new
                         {
@@ -487,7 +502,8 @@ namespace DATAACCESS.Migrations
                             IsApproved = true,
                             ProductId = new Guid("22222222-aaaa-bbbb-cccc-222222222222"),
                             RequestDate = new DateTime(2025, 6, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = 1
+                            Status = 1,
+                            TitleId = new Guid("f0000012-aaaa-bbbb-cccc-0000000000ac")
                         },
                         new
                         {
@@ -499,7 +515,8 @@ namespace DATAACCESS.Migrations
                             IsApproved = true,
                             ProductId = new Guid("33333333-aaaa-bbbb-cccc-333333333333"),
                             RequestDate = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = 1
+                            Status = 1,
+                            TitleId = new Guid("f0000013-aaaa-bbbb-cccc-0000000000ad")
                         },
                         new
                         {
@@ -511,7 +528,8 @@ namespace DATAACCESS.Migrations
                             IsApproved = false,
                             ProductId = new Guid("44444444-aaaa-bbbb-cccc-444444444444"),
                             RequestDate = new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = 1
+                            Status = 1,
+                            TitleId = new Guid("f0000014-aaaa-bbbb-cccc-0000000000ae")
                         });
                 });
 
@@ -778,6 +796,17 @@ namespace DATAACCESS.Migrations
                         });
                 });
 
+            modelBuilder.Entity("CORE.Entities.Concrete.Department", b =>
+                {
+                    b.HasOne("CORE.Entities.Concrete.Title", "Title")
+                        .WithMany("Departments")
+                        .HasForeignKey("TitleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Title");
+                });
+
             modelBuilder.Entity("CORE.Entities.Concrete.Employee", b =>
                 {
                     b.HasOne("CORE.Entities.Concrete.Department", "Department")
@@ -841,9 +870,17 @@ namespace DATAACCESS.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CORE.Entities.Concrete.Title", "Title")
+                        .WithMany("Requests")
+                        .HasForeignKey("TitleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Employee");
 
                     b.Navigation("Product");
+
+                    b.Navigation("Title");
                 });
 
             modelBuilder.Entity("CORE.Entities.Concrete.SubCategory", b =>
@@ -954,7 +991,11 @@ namespace DATAACCESS.Migrations
 
             modelBuilder.Entity("CORE.Entities.Concrete.Title", b =>
                 {
+                    b.Navigation("Departments");
+
                     b.Navigation("Employees");
+
+                    b.Navigation("Requests");
                 });
 #pragma warning restore 612, 618
         }

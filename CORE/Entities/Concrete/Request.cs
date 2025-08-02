@@ -33,6 +33,8 @@ namespace CORE.Entities.Concrete
         public Employee? Employee { get; set; }
         public Guid ProductId { get; set; }
         public Product? Product { get; set; }
+        public Guid TitleId { get; set; }
+        public Title? Title { get; set; }
 
         public List<Payment> Payments { get; set; }
         public List<Warehouse> Warehouses { get; set; }

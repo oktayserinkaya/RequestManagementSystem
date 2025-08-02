@@ -27,6 +27,7 @@ namespace DATAACCESS.SeedData.EntitySeedData
                     IsApproved = false,
                     EmployeeId = Guid.Parse("11111111-1111-1111-1111-111111111111"), // Ahmet Yılmaz
                     ProductId = Guid.Parse("11111111-aaaa-bbbb-cccc-111111111111"), // Canon EOS 2000D Kamera
+                    TitleId= Guid.Parse("f0000011-aaaa-bbbb-cccc-0000000000ab"),
                     CreatedDate = DateTime.Parse("2025-06-26"),
                     UpdatedDate = null,
                     DeletedDate = null,
@@ -44,6 +45,7 @@ namespace DATAACCESS.SeedData.EntitySeedData
                     IsApproved = true,
                     EmployeeId = Guid.Parse("22222222-2222-2222-2222-222222222222"), // Elif Kara
                     ProductId = Guid.Parse("22222222-aaaa-bbbb-cccc-222222222222"), // Apple Magic Keyboard
+                    TitleId = Guid.Parse("f0000012-aaaa-bbbb-cccc-0000000000ac"),
                     CreatedDate = DateTime.Parse("2025-06-27"),
                     UpdatedDate = null,
                     DeletedDate = null,
@@ -61,6 +63,7 @@ namespace DATAACCESS.SeedData.EntitySeedData
                     IsApproved = true,
                     EmployeeId = Guid.Parse("33333333-3333-3333-3333-333333333333"), // Mehmet Demir
                     ProductId = Guid.Parse("33333333-aaaa-bbbb-cccc-333333333333"), // Acer Nitro 5 Gaming Laptop
+                    TitleId = Guid.Parse("f0000013-aaaa-bbbb-cccc-0000000000ad"),
                     CreatedDate = DateTime.Parse("2025-06-28"),
                     UpdatedDate = null,
                     DeletedDate = null,
@@ -78,6 +81,7 @@ namespace DATAACCESS.SeedData.EntitySeedData
                     IsApproved = false,
                     EmployeeId = Guid.Parse("44444444-4444-4444-4444-444444444444"), // Zeynep Şahin
                     ProductId = Guid.Parse("44444444-aaaa-bbbb-cccc-444444444444"), // JBL Bluetooth Hoparlör
+                    TitleId = Guid.Parse("f0000014-aaaa-bbbb-cccc-0000000000ae"),
                     CreatedDate = DateTime.Parse("2025-06-30"),
                     UpdatedDate = null,
                     DeletedDate = null,

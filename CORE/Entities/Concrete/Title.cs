@@ -12,10 +12,13 @@ namespace CORE.Entities.Concrete
         public Title()
         {
             Employees = [];
+            Requests = [];
+            Departments = [];
         }
         public required string TitleName { get; set; }
-
         public List<Employee> Employees { get; set; }
+        public List<Request> Requests { get; set; }
+        public List<Department> Departments { get; set; }
 
 
     }

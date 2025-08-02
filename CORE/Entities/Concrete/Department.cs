@@ -14,6 +14,9 @@ namespace CORE.Entities.Concrete
             Employees = [];
             Warehouses = [];
         }
+
+        public Guid TitleId { get; set; }
+        public Title? Title { get; set; }
         public required string DepartmentName { get; set; }
 
         public List<Employee> Employees { get; set; }
