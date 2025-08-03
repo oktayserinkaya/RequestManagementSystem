@@ -1,19 +1,22 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
+using BUSINESS.Manager.Concrete;
 using BUSINESS.Manager.Interface;
 using CORE.Enums;
 using CORE.Extensions;
 using DTO.Concrete.RequestDTO;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WEB.Areas.Request.Models.RequestVM;
 
 namespace WEB.Areas.Request.Controllers
 {
     [Area("Request")]
-    public class RequestsController(IRequestManager requestManager, IMapper mapper) : Controller
+    public class RequestsController(IRequestManager requestManager, ICategoryManager categoryManager, IMapper mapper) : Controller
     {
         private readonly IRequestManager _requestManager = requestManager;
+        private readonly ICategoryManager _categoryManager = categoryManager;
         private readonly IMapper _mapper = mapper;
 
         public async Task<IActionResult> Index()
@@ -57,14 +60,38 @@ namespace WEB.Areas.Request.Controllers
             return View(model);
         }
 
-        public IActionResult CreateRequest() => View();
+        [HttpGet]
+        public async Task<IActionResult> CreateRequest()
+        {
+            var categories = await _categoryManager.GetByDefaultsAsync<GetCategoryForSelectListDTO>(
+        x => x.Status != Status.Passive
+    );
+
+            ViewBag.Categories = new SelectList(categories, "Id", "CategoryName");
+
+            ViewBag.SubCategories = new List<SelectListItem>();
+            ViewBag.Products = new List<SelectListItem>();
+
+            return View();
+        }
+
 
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateRequest(CreateRequestVM model)
         {
             if (!ModelState.IsValid)
             {
+                var categories = await _categoryManager.GetByDefaultsAsync<GetCategoryForSelectListDTO>(
+        x => x.Status != Status.Passive
+    );
+
+                ViewBag.Categories = new SelectList(categories, "Id", "CategoryName");
+
+                ViewBag.SubCategories = new List<SelectListItem>();
+                ViewBag.Products = new List<SelectListItem>();
+
                 TempData["Error"] = "Aşağıdaki kurallara uyunuz!!";
+                return View(model);
             }
 
             var dto = _mapper.Map<CreateRequestDTO>(model);
@@ -72,6 +99,15 @@ namespace WEB.Areas.Request.Controllers
 
             if (!result)
             {
+                ViewBag.Categories = new SelectList(
+    await _categoryManager.GetByDefaultsAsync<GetCategoryForSelectListDTO>(x => x.Status != Status.Passive),
+    "Id",
+    "Name"
+);
+
+                ViewBag.SubCategories = new List<SelectListItem>(); // boş bırakılır ilk açılışta
+                ViewBag.Products = new List<SelectListItem>(); // boş bırakılır ilk açılışta
+
                 TempData["Error"] = "Talep oluşturulamadı!!";
                 return View(model);
             }
@@ -79,5 +115,6 @@ namespace WEB.Areas.Request.Controllers
             TempData["Success"] = "Talep başarılı bir şekilde oluşturuldu";
             return RedirectToAction("Index");
         }
+
     }
 }

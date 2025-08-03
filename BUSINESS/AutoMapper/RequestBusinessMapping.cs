@@ -14,6 +14,12 @@ namespace BUSINESS.AutoMapper
         public RequestBusinessMapping()
         {
             CreateMap<Request, CreateRequestDTO>().ReverseMap();
+            CreateMap<Category, GetCategoryForSelectListDTO>().ReverseMap();
+            CreateMap<SubCategory, GetSubCategoryForSelectListDTO>().ReverseMap();
+            CreateMap<Product, GetProductForSelectListDTO>().ReverseMap();
+
+
+
 
         }
     }

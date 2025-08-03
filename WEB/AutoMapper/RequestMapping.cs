@@ -13,6 +13,9 @@ namespace WEB.AutoMapper
             CreateMap<GetRequestsVM, Request>().ReverseMap().ForMember(dest => dest.Status, src => src.MapFrom(z => z.Status.GetDisplayName())).ForMember(dest => dest.UpdatedDate, src => src.MapFrom(z => z.UpdatedDate.HasValue ? z.UpdatedDate.Value.ToString() : " - "));
 
             CreateMap<CreateRequestVM, CreateRequestDTO>().ReverseMap();
+            CreateMap<Category, GetCategoryForSelectListDTO>().ReverseMap();
+            CreateMap<SubCategory, GetSubCategoryForSelectListDTO>().ReverseMap();
+            CreateMap<Product, GetProductForSelectListDTO>().ReverseMap();
         }
     }
 }

@@ -17,12 +17,13 @@ namespace DTO.Concrete.RequestDTO
         public IFormFile? ProductFeaturesFile { get; set; }
         public double Amount { get; set; }
         public string? SpecialProductName { get; set; }
-        public required string DepartmentName { get; set; }
+
         public Guid? DepartmentId { get; set; }
         public Guid? CategoryId { get; set; }
         public Guid? SubCategoryId { get; set; }
         public Guid? ProductId { get; set; }
-        public string? Description { get; set; }
 
+        public string? Description { get; set; }
     }
+
 }
