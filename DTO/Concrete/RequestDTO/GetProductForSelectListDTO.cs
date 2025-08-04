@@ -9,6 +9,6 @@ namespace DTO.Concrete.RequestDTO
     public class GetProductForSelectListDTO
     {
         public Guid Id { get; set; }
-        public string Name { get; set; } = null!;
+        public string? ProductName { get; set; }
     }
 }

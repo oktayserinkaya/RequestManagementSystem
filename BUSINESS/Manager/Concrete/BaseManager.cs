@@ -26,6 +26,11 @@ namespace BUSINESS.Manager.Concrete
             var entity = _mapper.Map<C>(dto);
             return await _service.AddAsync(entity);
         }
+
+        public async Task<bool> AddEntityAsync(C entity)
+        {
+            return await _service.AddAsync(entity);
+        }
         public async Task<bool> UpdateAsync(BaseDTO dto, Guid id)
         {
             var entity = await _service.GetByIdAsync(id);

@@ -16,6 +16,9 @@ namespace WEB.Areas.Request.Models.Abstract
         [Display(Name = "Doğum Tarihi")]
         public DateOnly? Birthdate { get; set; }
 
-        public string? FullName { get => FirstName + " " + LastName; }
+        // Bu property readonly; sadece FirstName + LastName'ı birleştirir
+        public string? FullName => $"{FirstName} {LastName}";
     }
+
+
 }

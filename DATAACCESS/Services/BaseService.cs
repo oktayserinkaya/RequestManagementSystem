@@ -21,9 +21,13 @@ namespace DATAACCESS.Services
 
         public async Task<bool> AddAsync(T entity)
         {
+            Console.WriteLine($"[DEBUG] AddAsync çağrıldı: {entity.GetType().Name}");
             await _table.AddAsync(entity);
-            return await SaveAsync();
+            var result = await SaveAsync();
+            Console.WriteLine($"[DEBUG] SaveAsync sonucu: {result}");
+            return result;
         }
+
 
         public async Task<bool> UpdateAsync(T entity)
         {

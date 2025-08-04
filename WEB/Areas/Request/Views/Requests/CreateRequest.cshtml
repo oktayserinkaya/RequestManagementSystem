@@ -17,8 +17,7 @@
             <h6 class="text-white text-capitalize ps-3">Satın Alma Talebi Oluştur</h6>
         </div>
         <div class="card-body">
-            <form asp-action="CreateRequest" method="post" enctype="multipart/form-data">
-
+            <form asp-action="CreateRequest" enctype="multipart/form-data" method="post">
                 <div class="row g-4">
                     <!-- Talep Bilgileri -->
                     <div class="col-md-4">
@@ -26,25 +25,23 @@
                         <input asp-for="RequestDate" class="form-control border border-dark shadow-sm" />
                     </div>
                     <div class="col-md-4">
-                        <label asp-for="FullName" class="form-label fw-bold">Talep Eden Personel</label>
-                        <input asp-for="FullName" class="form-control border border-dark shadow-sm" disabled />
+                        <label class="form-label fw-bold">Talep Eden Personel</label>
+                        <input class="form-control border border-dark shadow-sm" value="@Model.FullName" disabled />
                     </div>
                     <div class="col-md-4">
                         <label asp-for="DepartmentName" class="form-label fw-bold">Departman/Birim</label>
-                        <input asp-for="DepartmentName" class="form-control border border-dark shadow-sm" disabled />
+                        <input asp-for="DepartmentName" class="form-control border border-dark shadow-sm" readonly />
                     </div>
                 </div>
 
                 <br />
 
                 <div class="row g-4">
-
                     <!-- Kategori -->
                     <div class="col-md-4">
                         <label asp-for="CategoryId" class="form-label">Kategori</label>
                         <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-select border border-dark shadow-sm" id="categorySelect" onchange="loadSubCategoriesByCategoryId(this.value)">
                             <option selected disabled value="0">Bir kategori seçiniz!</option>
-
                         </select>
                         <span asp-validation-for="CategoryId" class="text-danger"></span>
                     </div>
@@ -103,11 +100,11 @@
                 <div class="col-md-12 text-end">
                     <button type="submit" class="btn btn-dark px-4">Talebi Gönder</button>
                 </div>
-
             </form>
         </div>
     </div>
 </div>
+
 
 <!-- Temel Scriptler -->
 <script src="~/TemplateResources/js/core/popper.min.js"></script>

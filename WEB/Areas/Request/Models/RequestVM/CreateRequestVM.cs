@@ -5,26 +5,36 @@ using WEB.Areas.Request.Models.Abstract;
 namespace WEB.Areas.Request.Models.RequestVM
 {
     public class CreateRequestVM : BasePersonVM
-
     {
         public DateTime? RequestDate { get; set; }
+
         public string? ProductFeaturesFilePath { get; set; }
+
         public IFormFile? ProductFeaturesFile { get; set; }
+
+        [Required(ErrorMessage = "Miktar alanı zorunludur.")]
+        [Range(1, double.MaxValue, ErrorMessage = "Miktar en az 1 olmalıdır.")]
         public double Amount { get; set; }
+
         public string? SpecialProductName { get; set; }
-        public required string DepartmentName { get; set; }
-        public required string CategoryName { get; set; }
-        public required string SubCategoryName { get; set; }
-        public required string ProductName { get; set; }
-        [Required]
-        public Guid? DepartmentId { get; set; }
-        [Required]
+
+        public string? DepartmentName { get; set; } // Sadece görüntü için (readonly input)
+
+        [Required(ErrorMessage = "Kategori seçimi zorunludur.")]
         public Guid? CategoryId { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Alt kategori seçimi zorunludur.")]
         public Guid? SubCategoryId { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Ürün seçimi zorunludur.")]
         public Guid? ProductId { get; set; }
+
         public string? Description { get; set; }
 
+        // Bu alanlar View'da yoksa validation'a sokulmamalı
+        public string? CategoryName { get; set; }
+        public string? SubCategoryName { get; set; }
+        public string? ProductName { get; set; }
+        public Guid? DepartmentId { get; set; }
     }
 }

@@ -21,7 +21,8 @@
 
                 $.each(data, function (index, subCategory) {
                     const selected = subCategory.id === selectedSubCategoryId ? 'selected' : '';
-                    subCategories.append(`<option value="${subCategory.id}" ${selected}>${subCategory.name}</option>`);
+                    // SUBCATEGORYNAME kullanılıyor!
+                    subCategories.append(`<option value="${subCategory.id}" ${selected}>${subCategory.subCategoryName}</option>`);
                 });
 
                 if (selectedSubCategoryId) {
@@ -34,6 +35,7 @@
         });
     }
 }
+
 
 function loadProductsBySubCategoryId(subCategoryId, selectedProductId = null) {
     if (subCategoryId) {
@@ -55,7 +57,8 @@ function loadProductsBySubCategoryId(subCategoryId, selectedProductId = null) {
 
                 $.each(data, function (index, product) {
                     const selected = product.id === selectedProductId ? 'selected' : '';
-                    products.append(`<option value="${product.id}" ${selected}>${product.name}</option>`);
+                    // PRODUCTNAME kullanılıyor!
+                    products.append(`<option value="${product.id}" ${selected}>${product.productName}</option>`);
                 });
             },
             error: function (err) {
@@ -64,3 +67,4 @@ function loadProductsBySubCategoryId(subCategoryId, selectedProductId = null) {
         });
     }
 }
+

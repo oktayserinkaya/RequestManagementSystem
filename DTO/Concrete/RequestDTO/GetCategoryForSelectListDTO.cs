@@ -10,7 +10,7 @@ namespace DTO.Concrete.RequestDTO
     public class GetCategoryForSelectListDTO : BaseDTO
     {
         public Guid Id { get; set; }
-        public string CategoryName { get; set; } = null!;
+        public string? CategoryName { get; set; }
     }
 
 }

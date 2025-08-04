@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
-using DTO.Abstract;
 using Microsoft.AspNetCore.Http;
+using DTO.Abstract;
 
 namespace DTO.Concrete.RequestDTO
 {
@@ -24,6 +18,10 @@ namespace DTO.Concrete.RequestDTO
         public Guid? ProductId { get; set; }
 
         public string? Description { get; set; }
-    }
 
+        // ⬇️ Eksik olan alanlar bunlardı:
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? DepartmentName { get; set; }
+    }
 }

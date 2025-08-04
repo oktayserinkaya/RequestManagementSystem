@@ -2,7 +2,6 @@
 using AutoMapper;
 using CORE.Interface;
 using DATAACCESS.Services;
-using WEB.AutoMapper;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using BUSINESS.AutoMapper;
 using BUSINESS.Manager.Concrete;
