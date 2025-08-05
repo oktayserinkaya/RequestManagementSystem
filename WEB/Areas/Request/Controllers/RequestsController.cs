@@ -71,13 +71,7 @@ namespace WEB.Areas.Request.Controllers
             var firstName = HttpContext.Session.GetString("FirstName");
             var lastName = HttpContext.Session.GetString("LastName");
             var department = HttpContext.Session.GetString("Department");
-
-            // Eğer session boşsa, login'e yönlendir
-            if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(department))
-            {
-                TempData["Error"] = "Oturum süreniz dolmuş olabilir. Lütfen tekrar giriş yapınız.";
-                return RedirectToAction("Login", "Account");
-            }
+                     
 
             await SetDropdownsAsync(); // Dropdown'ları hazırla
 
