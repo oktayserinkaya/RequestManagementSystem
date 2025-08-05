@@ -37,11 +37,10 @@
     <Folder Include="Areas\RequestEvaluation\Data\" />
     <Folder Include="Areas\RequestEvaluation\Models\" />
     <Folder Include="Areas\Request\Data\" />
-    <Folder Include="Areas\Request\Models\" />
     <Folder Include="Areas\WarehouseDepartment\Controllers\" />
     <Folder Include="Areas\WarehouseDepartment\Data\" />
     <Folder Include="Areas\WarehouseDepartment\Models\" />
-    <Folder Include="FluentValidation\RequestValidators\" />
+    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
 </Project>

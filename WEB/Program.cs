@@ -1,57 +1,59 @@
-using System.Reflection;
+ï»¿using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using DATAACCESS.Context;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using WEB.Autofac;
+using Microsoft.Extensions.Logging; // âœ… Gerekli namespace
 
 var builder = WebApplication.CreateBuilder(args);
 
+// ğŸ”¹ Logging (DEBUG iÃ§in)
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
 
-// Yaşam Döngüsünü Tanımladık (Life Cycle)
-// AutofacServiceProviderFactory : Bu kodun çalışması için Autofac.Extensions.DependencyInjection paketinin kurulması gerekir!! 
-builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()).ConfigureContainer<ContainerBuilder>(builder =>
-{
-    builder.RegisterModule(new AutofacModule());
-});
+// ğŸ”¹ Autofac Container
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
+       .ConfigureContainer<ContainerBuilder>(containerBuilder =>
+       {
+           containerBuilder.RegisterModule(new AutofacModule());
+       });
 
-
-// Eğer ki FluentValidation kullanmak isteniyorsa aşağıdaki 3 methodu kullanmak zorundayız!!!
-
-// Abstract validator'dan miras almış validator'ları bulup otomatik olarak sisteme ekler. Örnek : CreateDepartmentValidator
+// ğŸ”¹ FluentValidation
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-
-// FluentValidation'ı ASP .NET Core model binding sürecine entegre eder. Yani MVC Controller üzerinden gelen request'lerin otomatik olarak validasyonunu sağlar.
 builder.Services.AddFluentValidationAutoValidation();
-
-// FluentValidation'ın Client-Side(Ön Yüz) validasyon desteğiniz sağlar. MVC View'lerde kullanılır.
 builder.Services.AddFluentValidationClientsideAdapters();
 
-
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
-// Bağlantı cümlesini oku
-var entitySQLConnection = builder.Configuration.GetConnectionString("EntityPostgreSQLConnection");
-
-// DbContext'i DI sistemine ekle
-builder.Services.AddDbContext<AppDbContext>(options =>
+// ğŸ”¹ Session
+builder.Services.AddSession(options =>
 {
-    options.UseNpgsql(entitySQLConnection);
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
 });
 
-// Uygulamayı oluştur (Build işlemi buraya kadar yapılandırılmış tüm servisleri içerir)
+// ğŸ”¹ HttpContextAccessor (Layout.cshtml iÃ§in gerekli!)
+builder.Services.AddHttpContextAccessor();
+
+// ğŸ”¹ MVC
+builder.Services.AddControllersWithViews();
+
+// ğŸ”¹ DbContext
+var connectionString = builder.Configuration.GetConnectionString("EntityPostgreSQLConnection");
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseNpgsql(connectionString);
+});
+
 var app = builder.Build();
 
-
-// Configure the HTTP request pipeline.
+// ğŸ”¹ Middleware Pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -60,18 +62,25 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// ğŸ”¹ Custom Logging Middleware (opsiyonel)
+app.Use(async (context, next) =>
+{
+    var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
+    logger.LogInformation("â¡ï¸ HTTP Request: {Method} {Path}", context.Request.Method, context.Request.Path);
+    await next();
+    logger.LogInformation("â¬…ï¸ HTTP Response: {StatusCode}", context.Response.StatusCode);
+});
+
+app.UseSession();
 app.UseAuthorization();
 
-
+// ğŸ”¹ Route AyarlarÄ±
 app.MapControllerRoute(
-  name: "areas",
-  pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}"
-);
+    name: "areas",
+    pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-
+    pattern: "{controller=Account}/{action=Login}/{id?}");
 
 app.Run();
