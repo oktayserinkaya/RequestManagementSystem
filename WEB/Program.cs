@@ -1,12 +1,14 @@
 ﻿using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using CORE.IdentityEntities;
 using DATAACCESS.Context;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using WEB.Autofac;
 using Microsoft.Extensions.Logging; // ✅ Gerekli namespace
+using WEB.Autofac;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,10 +45,33 @@ builder.Services.AddControllersWithViews();
 
 // 🔹 DbContext
 var connectionString = builder.Configuration.GetConnectionString("EntityPostgreSQLConnection");
+var identityConnectionString = builder.Configuration.GetConnectionString("IdentityPostgreSQLConnection");
+
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseNpgsql(connectionString);
 });
+builder.Services.AddDbContext<AppIdentityDbContext>(options =>
+{
+    options.UseNpgsql(identityConnectionString);
+});
+
+builder.Services.AddIdentity<AppUser, AppRole>(x =>
+{
+    x.SignIn.RequireConfirmedPhoneNumber = false;
+    x.SignIn.RequireConfirmedEmail = false;
+    x.SignIn.RequireConfirmedAccount = false;
+    x.User.RequireUniqueEmail = true;
+    x.Password.RequiredLength = 3;
+    x.Password.RequiredUniqueChars = 0;
+    x.Password.RequireNonAlphanumeric = false;
+    x.Password.RequireUppercase = false;
+    x.Password.RequireLowercase = false;
+    x.Lockout.MaxFailedAccessAttempts = 5; // Şifreyi 5 kere yanlış girerse
+    x.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5); // 5 dakika boyunca hesabı dondur. 
+}).AddEntityFrameworkStores<AppIdentityDbContext>()
+.AddDefaultTokenProviders();
+
 
 var app = builder.Build();
 
