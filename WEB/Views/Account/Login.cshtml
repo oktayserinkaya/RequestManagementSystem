@@ -6,42 +6,36 @@
 	Layout = "_LayoutAdmin";
 
 }
-
+@{
+	ViewData["Title"] = "Giriş Yap";
+	Layout = "_Layout"; // Ana layout'u kullanacak
+}
 @model LoginVM
-<div class="container">
-	<div class="row justify-content-center">
-		<div class="col-xl-10 col-lg-12 col-md-9">
-			<div class="card o-hidden border-0 shadow-lg my-5">
-				<div class="card-body p-0">
-					<div class="row">
-						<div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-						<div class="col-lg-6">
-							<div class="p-5">
-								<div class="text-center">
-									<h1 class="h4 text-gray-900 mb-4">Hoşgeldiniz</h1>
-								</div>
-								<form class="user" asp-action="Login">
-									<div class="form-group">
-										<input asp-for="UserName" type="text" class="form-control form-control-user"
-											   id="exampleInputEmail" aria-describedby="emailHelp"
-											   placeholder="Kullanıcı adınızı giriniz...">
-									</div>
-									<div class="form-group">
-										<input asp-for="Password" type="password" class="form-control form-control-user"
-											   id="exampleInputPassword" placeholder="Şifre...">
-									</div>
-									<button type="submit" class="btn btn-primary btn-user btn-block">
 
-										Giriş Yap
-									</button>
-								</form>
-								<hr>
-								<div class="text-center">
-									<a class="small" href="forgot-password.html">Şifremi Unuttum?</a>
-								</div>
-							</div>
+<div class="container mt-5">
+	<div class="row justify-content-center">
+		<div class="col-md-6 col-lg-4">
+			<div class="card shadow-lg">
+				<div class="card-header bg-gradient-dark text-white text-center py-3">
+					<h4><i class="fas fa-sign-in-alt me-2"></i>Talep Sistemi</h4>
+				</div>
+				<div class="card-body p-4">
+					<form asp-action="Login" method="post">
+						<div class="mb-3">
+							<label for="username" class="form-label">Kullanıcı Adı</label>
+							<input asp-for="UserName" type="text" class="form-control" id="username" required>
 						</div>
-					</div>
+						<div class="mb-3">
+							<label for="password" class="form-label">Şifre</label>
+							<input asp-for="Password" type="password" class="form-control" id="password" required>
+						</div>
+						<div class="d-grid gap-2">
+							<button type="submit" class="btn btn-dark bg-gradient">Giriş Yap</button>
+						</div>
+					</form>
+				</div>
+				<div class="card-footer text-center py-3">
+					<a href="#" class="text-muted">Şifremi Unuttum?</a>
 				</div>
 			</div>
 		</div>

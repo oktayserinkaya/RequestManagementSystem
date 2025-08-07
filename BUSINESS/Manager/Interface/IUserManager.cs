@@ -25,6 +25,8 @@ namespace BUSINESS.Manager.Interface
         Task<T?> FindUserByClaimsAsync<T>(ClaimsPrincipal user);
         Task<Guid> GetUserIdByClaimsAsync(ClaimsPrincipal user);
 
+        Task<AppUser?> FindByNameAsync(string username);
+
         //Any
         Task<bool> AnyAsync(Expression<Func<AppUser, bool>> expression);
 

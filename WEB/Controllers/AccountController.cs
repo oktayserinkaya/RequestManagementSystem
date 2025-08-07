@@ -51,45 +51,57 @@ namespace WEB.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginVM model)
         {
-            var dto = _mapper.Map<LoginDTO>(model);
-            var result = await _userManager.LoginAsync(dto);
+            if (!ModelState.IsValid)
+                return View(model);
 
-            if (!result.Succeeded)
+            var dto = _mapper.Map<LoginDTO>(model);
+
+            // Giriş
+            var signIn = await _userManager.LoginAsync(dto);
+            if (!signIn.Succeeded)
             {
                 TempData["Error"] = "Kullanıcı adı veya şifre yanlış!";
                 return View(model);
             }
 
-            var appUser = await _userManager.FindUserByClaimsAsync<GetUserDTO>(User);
+            // NOT: Aynı request içinde HttpContext.User'ı kullanma.
+            // Rol ve ilk şifre kontrolünü username ile yap.
+            var username = dto.Username; // sizde "Username" ise: var username = dto.Username;
 
-            if (!appUser.HasFirstPasswordChanged)
+            // İlk şifre değişimi zorunluluğu (AppUser.HasFirstPasswordChanged)
+            var userEntity = await _userManager.FindByNameAsync(username);
+            if (userEntity is not null && userEntity.HasFirstPasswordChanged == false)
             {
                 TempData["Error"] = "İlk kez giriş yaptığınız için e-postanıza gelen linkten şifrenizi değiştiriniz!";
                 await _userManager.LogoutAsync();
                 return RedirectToAction(nameof(Login));
             }
 
-            // Rol yönlendirmeleri
-            if (await _userManager.IsUserInRoleAsync(appUser.UserName, "Admin"))
+            // Rol bazlı yönlendirme
+            if (await _userManager.IsUserInRoleAsync(username, "Admin"))
                 return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
 
-            if (await _userManager.IsUserInRoleAsync(appUser.UserName, "TalepOluşturanBirim"))
-                return RedirectToAction("Index", "Requests", new { area = "Request" });
+            if (await _userManager.IsUserInRoleAsync(username, "TalepOluşturanBirim"))
+                return RedirectToAction("MyRequests", "Requests", new { area = "Request" });
 
-            if (await _userManager.IsUserInRoleAsync(appUser.UserName, "IhtiyacTespitKomisyonu"))
-                return RedirectToAction("Evaluate", "Requests", new { area = "Commission" });
+            if (await _userManager.IsUserInRoleAsync(username, "IhtiyacTespitKomisyonu"))
+                return RedirectToAction("Index", "Review", new { area = "Commission" });
 
-            if (await _userManager.IsUserInRoleAsync(appUser.UserName, "SatinAlmaBirimi"))
-                return RedirectToAction("Approved", "Requests", new { area = "Purchase" });
+            if (await _userManager.IsUserInRoleAsync(username, "SatinAlmaBirimi"))
+                return RedirectToAction("Index", "Orders", new { area = "Procurement" });
 
-            if (await _userManager.IsUserInRoleAsync(appUser.UserName, "DepoBirimi"))
-                return RedirectToAction("Index", "Warehouses", new { area = "Warehouse" });
+            if (await _userManager.IsUserInRoleAsync(username, "DepoBirimi"))
+                return RedirectToAction("Index", "Stock", new { area = "Warehouse" });
 
-            if (await _userManager.IsUserInRoleAsync(appUser.UserName, "OdemeBirimi"))
+            if (await _userManager.IsUserInRoleAsync(username, "OdemeBirimi"))
                 return RedirectToAction("Index", "Payments", new { area = "Finance" });
 
+            // Varsayılan
             return RedirectToAction("Index", "Home");
         }
+
+
+
 
         [Authorize]
         public async Task<IActionResult> Logout()
