@@ -13,12 +13,17 @@ namespace CORE.IdentityEntities
         private DateTime _createdDate = DateTime.Now;
         private Status _status = Status.Active;
 
-        public required string FirstName { get; set; }
-        public required string LastName { get; set; }
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+
         public DateOnly Birthdate { get; set; }
         public DateTime CreatedDate { get => _createdDate; set => _createdDate = value; }
         public DateTime? UpdatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
         public Status Status { get => _status; set => _status = value; }
+
+        
+        public bool HasFirstPasswordChanged { get; set; } = false;
     }
+
 }

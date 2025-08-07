@@ -9,11 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace DATAACCESS.Migrations
+namespace DATAACCESS.Migrations.AppDb
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250802144436_Init")]
-    partial class Init
+    [Migration("20250807143527_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -202,8 +202,8 @@ namespace DATAACCESS.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            AppUserId = new Guid("7ddc2e8c-e258-4bba-8cc6-3b7e1cffc42c"),
-                            CreatedDate = new DateTime(2025, 8, 2, 17, 44, 36, 105, DateTimeKind.Local).AddTicks(9121),
+                            AppUserId = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
+                            CreatedDate = new DateTime(2025, 8, 7, 17, 35, 26, 958, DateTimeKind.Local).AddTicks(2052),
                             DepartmentId = new Guid("11111111-1111-1111-1111-111111111111"),
                             Email = "ahmet.yilmaz@example.com",
                             FirstName = "Ahmet",
@@ -214,8 +214,8 @@ namespace DATAACCESS.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            AppUserId = new Guid("b09651ff-1e53-44ab-bede-e64e35256995"),
-                            CreatedDate = new DateTime(2025, 8, 2, 17, 44, 36, 105, DateTimeKind.Local).AddTicks(9149),
+                            AppUserId = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
+                            CreatedDate = new DateTime(2025, 8, 7, 17, 35, 26, 958, DateTimeKind.Local).AddTicks(2086),
                             DepartmentId = new Guid("22222222-2222-2222-2222-222222222222"),
                             Email = "elif.kara@example.com",
                             FirstName = "Elif",
@@ -226,8 +226,8 @@ namespace DATAACCESS.Migrations
                         new
                         {
                             Id = new Guid("33333333-3333-3333-3333-333333333333"),
-                            AppUserId = new Guid("44a182e1-39a4-418b-b1cd-9d465597b629"),
-                            CreatedDate = new DateTime(2025, 8, 2, 17, 44, 36, 105, DateTimeKind.Local).AddTicks(9153),
+                            AppUserId = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"),
+                            CreatedDate = new DateTime(2025, 8, 7, 17, 35, 26, 958, DateTimeKind.Local).AddTicks(2090),
                             DepartmentId = new Guid("33333333-3333-3333-3333-333333333333"),
                             Email = "mehmet.demir@example.com",
                             FirstName = "Mehmet",
@@ -238,8 +238,8 @@ namespace DATAACCESS.Migrations
                         new
                         {
                             Id = new Guid("44444444-4444-4444-4444-444444444444"),
-                            AppUserId = new Guid("af1d86fb-4dba-4b97-9939-15562e6fa3c7"),
-                            CreatedDate = new DateTime(2025, 8, 2, 17, 44, 36, 105, DateTimeKind.Local).AddTicks(9156),
+                            AppUserId = new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"),
+                            CreatedDate = new DateTime(2025, 8, 7, 17, 35, 26, 958, DateTimeKind.Local).AddTicks(2093),
                             DepartmentId = new Guid("44444444-4444-4444-4444-444444444444"),
                             Email = "zeynep.sahin@example.com",
                             FirstName = "Zeynep",
@@ -430,6 +430,9 @@ namespace DATAACCESS.Migrations
                     b.Property<double>("Amount")
                         .HasColumnType("double precision");
 
+                    b.Property<Guid>("AppUserId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("CommissionNote")
                         .HasColumnType("text");
 
@@ -439,7 +442,13 @@ namespace DATAACCESS.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<Guid>("DepartmentId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("EmployeeId1")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("IsApproved")
@@ -454,6 +463,9 @@ namespace DATAACCESS.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("ProductId1")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime?>("RequestDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -466,6 +478,9 @@ namespace DATAACCESS.Migrations
                     b.Property<Guid>("TitleId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("TitleId1")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -473,9 +488,15 @@ namespace DATAACCESS.Migrations
 
                     b.HasIndex("EmployeeId");
 
+                    b.HasIndex("EmployeeId1");
+
                     b.HasIndex("ProductId");
 
+                    b.HasIndex("ProductId1");
+
                     b.HasIndex("TitleId");
+
+                    b.HasIndex("TitleId1");
 
                     b.ToTable("Requests");
 
@@ -484,8 +505,10 @@ namespace DATAACCESS.Migrations
                         {
                             Id = new Guid("10000000-0000-0000-0000-0000000000ab"),
                             Amount = 1.0,
+                            AppUserId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
                             CommissionNote = "Toplantı odası için",
                             CreatedDate = new DateTime(2025, 6, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DepartmentId = new Guid("11111111-1111-1111-1111-111111111111"),
                             EmployeeId = new Guid("11111111-1111-1111-1111-111111111111"),
                             IsApproved = false,
                             ProductFeatures = "Full HD, HDMI destekli",
@@ -499,12 +522,16 @@ namespace DATAACCESS.Migrations
                         {
                             Id = new Guid("10000000-0000-0000-0000-0000000000ac"),
                             Amount = 2.0,
+                            AppUserId = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
                             CommissionNote = "Bilgi İşlem birimi için",
                             CreatedDate = new DateTime(2025, 6, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DepartmentId = new Guid("22222222-2222-2222-2222-222222222222"),
                             EmployeeId = new Guid("22222222-2222-2222-2222-222222222222"),
                             IsApproved = true,
+                            ProductFeatures = "Full HD, HDMI destekli",
                             ProductId = new Guid("22222222-aaaa-bbbb-cccc-222222222222"),
                             RequestDate = new DateTime(2025, 6, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecialProductName = "Projeksiyon Cihazı",
                             Status = 1,
                             TitleId = new Guid("f0000012-aaaa-bbbb-cccc-0000000000ac")
                         },
@@ -512,12 +539,16 @@ namespace DATAACCESS.Migrations
                         {
                             Id = new Guid("10000000-0000-0000-0000-0000000000ad"),
                             Amount = 1.0,
+                            AppUserId = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
                             CommissionNote = "Yönetici kullanımı",
                             CreatedDate = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DepartmentId = new Guid("33333333-3333-3333-3333-333333333333"),
                             EmployeeId = new Guid("33333333-3333-3333-3333-333333333333"),
                             IsApproved = true,
+                            ProductFeatures = "Full HD, HDMI destekli",
                             ProductId = new Guid("33333333-aaaa-bbbb-cccc-333333333333"),
                             RequestDate = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecialProductName = "Full HD, HDMI destekli",
                             Status = 1,
                             TitleId = new Guid("f0000013-aaaa-bbbb-cccc-0000000000ad")
                         },
@@ -525,12 +556,16 @@ namespace DATAACCESS.Migrations
                         {
                             Id = new Guid("10000000-0000-0000-0000-0000000000ae"),
                             Amount = 4.0,
+                            AppUserId = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"),
                             CommissionNote = "Etkinlik alanı için ses sistemi",
                             CreatedDate = new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DepartmentId = new Guid("44444444-4444-4444-4444-444444444444"),
                             EmployeeId = new Guid("44444444-4444-4444-4444-444444444444"),
                             IsApproved = false,
+                            ProductFeatures = "Full HD, HDMI destekli",
                             ProductId = new Guid("44444444-aaaa-bbbb-cccc-444444444444"),
                             RequestDate = new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecialProductName = "Full HD, HDMI destekli",
                             Status = 1,
                             TitleId = new Guid("f0000014-aaaa-bbbb-cccc-0000000000ae")
                         });
@@ -862,22 +897,34 @@ namespace DATAACCESS.Migrations
             modelBuilder.Entity("CORE.Entities.Concrete.Request", b =>
                 {
                     b.HasOne("CORE.Entities.Concrete.Employee", "Employee")
-                        .WithMany("Requests")
+                        .WithMany()
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("CORE.Entities.Concrete.Employee", null)
+                        .WithMany("Requests")
+                        .HasForeignKey("EmployeeId1");
 
                     b.HasOne("CORE.Entities.Concrete.Product", "Product")
-                        .WithMany("Requests")
+                        .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("CORE.Entities.Concrete.Title", "Title")
+                    b.HasOne("CORE.Entities.Concrete.Product", null)
                         .WithMany("Requests")
+                        .HasForeignKey("ProductId1");
+
+                    b.HasOne("CORE.Entities.Concrete.Title", "Title")
+                        .WithMany()
                         .HasForeignKey("TitleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("CORE.Entities.Concrete.Title", null)
+                        .WithMany("Requests")
+                        .HasForeignKey("TitleId1");
 
                     b.Navigation("Employee");
 

@@ -5,7 +5,9 @@ using BUSINESS.Manager.Interface;
 using CORE.Entities.Concrete;
 using CORE.Enums;
 using CORE.Extensions;
+using DTO.Concrete.EmployeeDTO;
 using DTO.Concrete.RequestDTO;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,13 +16,14 @@ using WEB.Areas.Request.Models.RequestVM;
 namespace WEB.Areas.Request.Controllers
 {
     [Area("Request")]
-    public class RequestsController(IRequestManager requestManager, ICategoryManager categoryManager, IMapper mapper, ILogger<RequestsController> logger, IEmployeeManager employeeManager) : Controller
+    public class RequestsController(IRequestManager requestManager, ICategoryManager categoryManager, IMapper mapper, ILogger<RequestsController> logger, IEmployeeManager employeeManager,IUserManager userManager) : Controller
     {
         private readonly IRequestManager _requestManager = requestManager;
         private readonly ICategoryManager _categoryManager = categoryManager;
         private readonly IMapper _mapper = mapper;
         private readonly ILogger<RequestsController> _logger = logger;
         private readonly IEmployeeManager _employeeManager = employeeManager;
+        private readonly IUserManager _userManager = userManager;
 
         public async Task<IActionResult> Index()
         {
@@ -92,10 +95,6 @@ namespace WEB.Areas.Request.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateRequest(CreateRequestVM model)
         {
-            model.FirstName = HttpContext.Session.GetString("FirstName");
-            model.LastName = HttpContext.Session.GetString("LastName");
-            model.DepartmentName = HttpContext.Session.GetString("Department");
-
             if (!ModelState.IsValid)
             {
                 _logger.LogWarning("ModelState geçersiz. Hatalar:");
@@ -112,28 +111,28 @@ namespace WEB.Areas.Request.Controllers
                 return View(model);
             }
 
-            // Employee eşlemesi (TitleId ve EmployeeId için)
-            var employee = await _employeeManager.GetByDefaultAsync<CORE.Entities.Concrete.Employee>(
-                x => x.FirstName == model.FirstName && x.LastName == model.LastName && x.Department.DepartmentName == model.DepartmentName,
-                join: x => x.Include(e => e.Department).Include(e => e.Title)
-            );
+            // 👤 Giriş yapan kullanıcının Id'si
+            var userId = await _userManager.GetUserIdByClaimsAsync(User);
 
+            // 👔 Kullanıcıya karşılık gelen Employee kaydı
+            var employee = await _employeeManager.GetByDefaultAsync<GetEmployeeDTO>(x => x.AppUserId == userId);
             if (employee == null)
             {
-                _logger.LogWarning("Employee bulunamadı: {FirstName} {LastName}, Departman: {Department}", model.FirstName, model.LastName, model.DepartmentName);
-                TempData["Error"] = "Çalışan sistemde bulunamadı.";
+                _logger.LogWarning("Talep oluşturan kullanıcıya ait çalışan bilgisi bulunamadı.");
+                TempData["Error"] = "Kullanıcı bilgisi eksik. Lütfen sistem yöneticisine başvurun.";
                 await SetDropdownsAsync();
                 return View(model);
             }
 
+            // DTO to Entity mapping
             var dto = _mapper.Map<CreateRequestDTO>(model);
-
-            // DTO'dan Entity'ye map + Employee bilgileri
             var entity = _mapper.Map<CORE.Entities.Concrete.Request>(dto);
-            entity.EmployeeId = employee.Id;
-            entity.TitleId = employee.TitleId;
 
-            // Dosya yükleme
+            // 🎯 Employee bilgileri ekleniyor
+            entity.EmployeeId = employee.Id;
+            entity.DepartmentId = employee.DepartmentId;
+
+            // 📎 Dosya yükleme işlemi
             if (dto.ProductFeaturesFile != null)
             {
                 var fileName = Guid.NewGuid() + Path.GetExtension(dto.ProductFeaturesFile.FileName);
@@ -146,10 +145,10 @@ namespace WEB.Areas.Request.Controllers
                 entity.ProductFeaturesFilePath = fileName;
             }
 
-            // 🔍 Log ile kontrol et
-            Console.WriteLine($"RequestEntity Id: {entity.Id}, Status: {entity.Status}");
+            // 🪵 Loglama
             _logger.LogInformation("Kayıt öncesi kontrol -> Id: {Id}, Status: {Status}", entity.Id, entity.Status);
 
+            // Kaydet
             var result = await _requestManager.AddEntityAsync(entity);
 
             if (!result)
@@ -163,9 +162,6 @@ namespace WEB.Areas.Request.Controllers
             TempData["Success"] = "Talep başarılı şekilde oluşturuldu.";
             return RedirectToAction("Index");
         }
-
-
-
 
 
         private async Task SetDropdownsAsync()

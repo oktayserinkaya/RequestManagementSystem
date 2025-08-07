@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\PaymentTransaction\Controllers\" />
     <Folder Include="Areas\PaymentTransaction\Data\" />
     <Folder Include="Areas\PaymentTransaction\Models\" />
@@ -40,7 +39,6 @@
     <Folder Include="Areas\WarehouseDepartment\Controllers\" />
     <Folder Include="Areas\WarehouseDepartment\Data\" />
     <Folder Include="Areas\WarehouseDepartment\Models\" />
-    <Folder Include="Models\ViewModels\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 

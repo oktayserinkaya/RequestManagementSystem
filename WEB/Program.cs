@@ -7,29 +7,29 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging; // ✅ Gerekli namespace
+using WEB.ActionFilters;
 using WEB.Autofac;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 🔹 Logging (DEBUG için)
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
-builder.Logging.AddDebug();
+// Autofac kullanımı
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()).ConfigureContainer<ContainerBuilder>(builder =>
+{
+    builder.RegisterModule(new AutofacModule());
+});
 
-// 🔹 Autofac Container
-builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
-       .ConfigureContainer<ContainerBuilder>(containerBuilder =>
-       {
-           containerBuilder.RegisterModule(new AutofacModule());
-       });
-
-// 🔹 FluentValidation
+// FluentValidation
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 
-// 🔹 Session
+// MVC + ModelState kontrolü
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<ValidateModelWithTempDataAttribute>();
+});
+
+// 🔥 SESSION EKLE
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -37,25 +37,21 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// 🔹 HttpContextAccessor (Layout.cshtml için gerekli!)
-builder.Services.AddHttpContextAccessor();
-
-// 🔹 MVC
-builder.Services.AddControllersWithViews();
-
-// 🔹 DbContext
-var connectionString = builder.Configuration.GetConnectionString("EntityPostgreSQLConnection");
-var identityConnectionString = builder.Configuration.GetConnectionString("IdentityPostgreSQLConnection");
+// Veritabanı bağlantıları
+var entitySQLConnection = builder.Configuration.GetConnectionString("EntityPostgreSQLConnection");
+var identitySQLConnection = builder.Configuration.GetConnectionString("IdentityPostgreSQLConnection");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseNpgsql(connectionString);
-});
-builder.Services.AddDbContext<AppIdentityDbContext>(options =>
-{
-    options.UseNpgsql(identityConnectionString);
+    options.UseNpgsql(entitySQLConnection);
 });
 
+builder.Services.AddDbContext<AppIdentityDbContext>(options =>
+{
+    options.UseNpgsql(identitySQLConnection);
+});
+
+// Identity ayarları
 builder.Services.AddIdentity<AppUser, AppRole>(x =>
 {
     x.SignIn.RequireConfirmedPhoneNumber = false;
@@ -67,15 +63,29 @@ builder.Services.AddIdentity<AppUser, AppRole>(x =>
     x.Password.RequireNonAlphanumeric = false;
     x.Password.RequireUppercase = false;
     x.Password.RequireLowercase = false;
-    x.Lockout.MaxFailedAccessAttempts = 5; // Şifreyi 5 kere yanlış girerse
-    x.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5); // 5 dakika boyunca hesabı dondur. 
-}).AddEntityFrameworkStores<AppIdentityDbContext>()
+    x.Lockout.MaxFailedAccessAttempts = 5;
+    x.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+})
+.AddEntityFrameworkStores<AppIdentityDbContext>()
 .AddDefaultTokenProviders();
 
+// Token ömrü
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+{
+    options.TokenLifespan = TimeSpan.FromMinutes(5);
+});
 
+// Cookie ayarları
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+});
+
+// Build app
 var app = builder.Build();
 
-// 🔹 Middleware Pipeline
+// Middleware zinciri
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -87,19 +97,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// 🔹 Custom Logging Middleware (opsiyonel)
-app.Use(async (context, next) =>
-{
-    var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
-    logger.LogInformation("➡️ HTTP Request: {Method} {Path}", context.Request.Method, context.Request.Path);
-    await next();
-    logger.LogInformation("⬅️ HTTP Response: {StatusCode}", context.Response.StatusCode);
-});
-
+// ✅ SESSION MIDDLEWARE EKLE
 app.UseSession();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
-// 🔹 Route Ayarları
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");

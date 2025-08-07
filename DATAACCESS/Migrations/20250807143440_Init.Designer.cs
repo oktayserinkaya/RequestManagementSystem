@@ -9,10 +9,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace DATAACCESS.IdentityMigrations
+namespace DATAACCESS.Migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20250806144027_Init")]
+    [Migration("20250807143440_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -67,7 +67,7 @@ namespace DATAACCESS.IdentityMigrations
                         new
                         {
                             Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                            CreatedDate = new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(5243),
+                            CreatedDate = new DateTime(2025, 8, 7, 17, 34, 39, 867, DateTimeKind.Local).AddTicks(3903),
                             Name = "Admin",
                             NormalizedName = "ADMIN",
                             Status = 1
@@ -75,7 +75,7 @@ namespace DATAACCESS.IdentityMigrations
                         new
                         {
                             Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-                            CreatedDate = new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(5247),
+                            CreatedDate = new DateTime(2025, 8, 7, 17, 34, 39, 867, DateTimeKind.Local).AddTicks(3925),
                             Name = "TalepOluşturanBirim",
                             NormalizedName = "TALEPOLUSTURANBIRIM",
                             Status = 1
@@ -83,7 +83,7 @@ namespace DATAACCESS.IdentityMigrations
                         new
                         {
                             Id = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
-                            CreatedDate = new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(5249),
+                            CreatedDate = new DateTime(2025, 8, 7, 17, 34, 39, 867, DateTimeKind.Local).AddTicks(3926),
                             Name = "IhtiyacTespitKomisyonu",
                             NormalizedName = "IHTIYACTESPITKOMISYONU",
                             Status = 1
@@ -91,7 +91,7 @@ namespace DATAACCESS.IdentityMigrations
                         new
                         {
                             Id = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"),
-                            CreatedDate = new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(5251),
+                            CreatedDate = new DateTime(2025, 8, 7, 17, 34, 39, 867, DateTimeKind.Local).AddTicks(3928),
                             Name = "SatinAlmaBirimi",
                             NormalizedName = "SATINALMABIRIMI",
                             Status = 1
@@ -99,7 +99,7 @@ namespace DATAACCESS.IdentityMigrations
                         new
                         {
                             Id = new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"),
-                            CreatedDate = new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(5252),
+                            CreatedDate = new DateTime(2025, 8, 7, 17, 34, 39, 867, DateTimeKind.Local).AddTicks(3929),
                             Name = "DepoBirimi",
                             NormalizedName = "DEPOBIRIMI",
                             Status = 1
@@ -107,7 +107,7 @@ namespace DATAACCESS.IdentityMigrations
                         new
                         {
                             Id = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"),
-                            CreatedDate = new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(5254),
+                            CreatedDate = new DateTime(2025, 8, 7, 17, 34, 39, 867, DateTimeKind.Local).AddTicks(3931),
                             Name = "OdemeBirimi",
                             NormalizedName = "ODEMEBIRIMI",
                             Status = 1
@@ -146,6 +146,9 @@ namespace DATAACCESS.IdentityMigrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("HasFirstPasswordChanged")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -207,17 +210,19 @@ namespace DATAACCESS.IdentityMigrations
                             Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
                             AccessFailedCount = 0,
                             Birthdate = new DateOnly(1, 1, 1),
-                            ConcurrencyStamp = "83f19368-702f-4216-abe8-5e1b4b8c18b6",
-                            CreatedDate = new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(4880),
+                            ConcurrencyStamp = "536a075d-3f8c-4a70-9772-7616dafe28ce",
+                            CreatedDate = new DateTime(2025, 8, 7, 17, 34, 39, 867, DateTimeKind.Local).AddTicks(4118),
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             FirstName = "Sistem",
+                            HasFirstPasswordChanged = true,
                             LastName = "Yöneticisi",
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAELlTHlKmgU5Fdgd+PdeOQyMTDeBb8Kw/7pbx+7XZ3kQVjq8rtEXkV07IRxZkgke/RA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "786072a4-4a13-46e1-8f5b-690a41749dd2",
+                            SecurityStamp = "6432984d-82bc-42f5-8e94-f60573c7c617",
                             Status = 1,
                             TwoFactorEnabled = false,
                             UserName = "admin"
@@ -227,17 +232,19 @@ namespace DATAACCESS.IdentityMigrations
                             Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
                             AccessFailedCount = 0,
                             Birthdate = new DateOnly(1, 1, 1),
-                            ConcurrencyStamp = "6dbf83a7-6ddb-4c6e-8390-e31c925d76cc",
-                            CreatedDate = new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(4981),
+                            ConcurrencyStamp = "117659c4-5f63-45e5-ba46-e01a8ea11c7e",
+                            CreatedDate = new DateTime(2025, 8, 7, 17, 34, 39, 907, DateTimeKind.Local).AddTicks(9796),
                             Email = "ahmet.yilmaz@example.com",
                             EmailConfirmed = true,
                             FirstName = "Ahmet",
+                            HasFirstPasswordChanged = true,
                             LastName = "Yılmaz",
                             LockoutEnabled = false,
                             NormalizedEmail = "AHMET.YILMAZ@EXAMPLE.COM",
                             NormalizedUserName = "AHMETYILMAZ",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKAUvHFwW+zUhUcdNQtn9D4a4GN+i36NU3mRpRse5Mo2OmBB2tHqpH32F5prP+laJQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6ec3d741-cfb0-4b46-833f-9e871a3d7a73",
+                            SecurityStamp = "0ad1b931-e35c-4bb4-82bc-af57c67b8fd6",
                             Status = 1,
                             TwoFactorEnabled = false,
                             UserName = "ahmetyilmaz"
@@ -247,17 +254,19 @@ namespace DATAACCESS.IdentityMigrations
                             Id = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
                             AccessFailedCount = 0,
                             Birthdate = new DateOnly(1, 1, 1),
-                            ConcurrencyStamp = "e64c5ad9-d101-4b09-8a9c-36950640ce08",
-                            CreatedDate = new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(4993),
+                            ConcurrencyStamp = "9a65ae69-ebdd-4f22-b77b-81ad915c8a19",
+                            CreatedDate = new DateTime(2025, 8, 7, 17, 34, 39, 947, DateTimeKind.Local).AddTicks(9715),
                             Email = "elif.kara@example.com",
                             EmailConfirmed = true,
                             FirstName = "Elif",
+                            HasFirstPasswordChanged = true,
                             LastName = "Kara",
                             LockoutEnabled = false,
                             NormalizedEmail = "ELIF.KARA@EXAMPLE.COM",
                             NormalizedUserName = "ELIFKARA",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPdiywBzNNWTdOZFgrFRR9qBldkz/cjsAmDv8OPf7pK7BfVwDBAXOAKmLCv0A+JeUg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "14f9d615-6912-41a4-890e-ab24bfcfd2f0",
+                            SecurityStamp = "ea61150f-f80b-4470-ba5f-92df4fa9b8b4",
                             Status = 1,
                             TwoFactorEnabled = false,
                             UserName = "elifkara"
@@ -267,17 +276,19 @@ namespace DATAACCESS.IdentityMigrations
                             Id = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"),
                             AccessFailedCount = 0,
                             Birthdate = new DateOnly(1, 1, 1),
-                            ConcurrencyStamp = "e1304bab-b46a-41c9-a571-645b5e490043",
-                            CreatedDate = new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(5003),
+                            ConcurrencyStamp = "f3d2dbf3-f368-4527-9ded-1d7acbc3b4fc",
+                            CreatedDate = new DateTime(2025, 8, 7, 17, 34, 39, 990, DateTimeKind.Local).AddTicks(342),
                             Email = "mehmet.demir@example.com",
                             EmailConfirmed = true,
                             FirstName = "Mehmet",
+                            HasFirstPasswordChanged = true,
                             LastName = "Demir",
                             LockoutEnabled = false,
                             NormalizedEmail = "MEHMET.DEMIR@EXAMPLE.COM",
                             NormalizedUserName = "MEHMETDEMIR",
+                            PasswordHash = "AQAAAAIAAYagAAAAEP8MlYP3610MDyoRejGkRVL482awHZUIuj3R8e1ev4eQsioNcO/IAYPCTXvZhQQaMg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5096185c-8e42-4384-b32d-52f6d78b906f",
+                            SecurityStamp = "7fcc23cb-733d-4b62-b973-874fd8db2b6f",
                             Status = 1,
                             TwoFactorEnabled = false,
                             UserName = "mehmetdemir"
@@ -287,17 +298,19 @@ namespace DATAACCESS.IdentityMigrations
                             Id = new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"),
                             AccessFailedCount = 0,
                             Birthdate = new DateOnly(1, 1, 1),
-                            ConcurrencyStamp = "15d914d3-c05a-4447-b61d-5bea5c175e89",
-                            CreatedDate = new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(5033),
+                            ConcurrencyStamp = "c26f6ff7-4f41-4345-9c14-7f86737faee5",
+                            CreatedDate = new DateTime(2025, 8, 7, 17, 34, 40, 32, DateTimeKind.Local).AddTicks(5769),
                             Email = "zeynep.sahin@example.com",
                             EmailConfirmed = true,
                             FirstName = "Zeynep",
+                            HasFirstPasswordChanged = true,
                             LastName = "Şahin",
                             LockoutEnabled = false,
                             NormalizedEmail = "ZEYNEP.SAHIN@EXAMPLE.COM",
                             NormalizedUserName = "ZEYNEPSAHIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAED7WBJsd4FPByjbBXfJDf4GYR2QzgWeZAkZD0qTgXi8XiUa/YcWMQeDIvbXJK+bB2w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6097f93d-52a3-4001-8923-c21e564eb6af",
+                            SecurityStamp = "cac24ba9-6077-4a99-9f0d-2147caf5dadf",
                             Status = 1,
                             TwoFactorEnabled = false,
                             UserName = "zeynepsahin"

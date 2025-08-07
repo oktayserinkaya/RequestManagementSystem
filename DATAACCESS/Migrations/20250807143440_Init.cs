@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace DATAACCESS.IdentityMigrations
+namespace DATAACCESS.Migrations
 {
     /// <inheritdoc />
     public partial class Init : Migration
@@ -44,6 +44,7 @@ namespace DATAACCESS.IdentityMigrations
                     UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
+                    HasFirstPasswordChanged = table.Column<bool>(type: "boolean", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -175,24 +176,24 @@ namespace DATAACCESS.IdentityMigrations
                 columns: new[] { "Id", "ConcurrencyStamp", "CreatedDate", "DeletedDate", "Name", "NormalizedName", "Status", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), null, new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(5243), null, "Admin", "ADMIN", 1, null },
-                    { new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), null, new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(5247), null, "TalepOluşturanBirim", "TALEPOLUSTURANBIRIM", 1, null },
-                    { new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"), null, new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(5249), null, "IhtiyacTespitKomisyonu", "IHTIYACTESPITKOMISYONU", 1, null },
-                    { new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), null, new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(5251), null, "SatinAlmaBirimi", "SATINALMABIRIMI", 1, null },
-                    { new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"), null, new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(5252), null, "DepoBirimi", "DEPOBIRIMI", 1, null },
-                    { new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"), null, new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(5254), null, "OdemeBirimi", "ODEMEBIRIMI", 1, null }
+                    { new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), null, new DateTime(2025, 8, 7, 17, 34, 39, 867, DateTimeKind.Local).AddTicks(3903), null, "Admin", "ADMIN", 1, null },
+                    { new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), null, new DateTime(2025, 8, 7, 17, 34, 39, 867, DateTimeKind.Local).AddTicks(3925), null, "TalepOluşturanBirim", "TALEPOLUSTURANBIRIM", 1, null },
+                    { new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"), null, new DateTime(2025, 8, 7, 17, 34, 39, 867, DateTimeKind.Local).AddTicks(3926), null, "IhtiyacTespitKomisyonu", "IHTIYACTESPITKOMISYONU", 1, null },
+                    { new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), null, new DateTime(2025, 8, 7, 17, 34, 39, 867, DateTimeKind.Local).AddTicks(3928), null, "SatinAlmaBirimi", "SATINALMABIRIMI", 1, null },
+                    { new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"), null, new DateTime(2025, 8, 7, 17, 34, 39, 867, DateTimeKind.Local).AddTicks(3929), null, "DepoBirimi", "DEPOBIRIMI", 1, null },
+                    { new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"), null, new DateTime(2025, 8, 7, 17, 34, 39, 867, DateTimeKind.Local).AddTicks(3931), null, "OdemeBirimi", "ODEMEBIRIMI", 1, null }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "Birthdate", "ConcurrencyStamp", "CreatedDate", "DeletedDate", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Status", "TwoFactorEnabled", "UpdatedDate", "UserName" },
+                columns: new[] { "Id", "AccessFailedCount", "Birthdate", "ConcurrencyStamp", "CreatedDate", "DeletedDate", "Email", "EmailConfirmed", "FirstName", "HasFirstPasswordChanged", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Status", "TwoFactorEnabled", "UpdatedDate", "UserName" },
                 values: new object[,]
                 {
-                    { new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), 0, new DateOnly(1, 1, 1), "83f19368-702f-4216-abe8-5e1b4b8c18b6", new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(4880), null, "admin@example.com", true, "Sistem", "Yöneticisi", false, null, "ADMIN@EXAMPLE.COM", "ADMIN", null, null, false, "786072a4-4a13-46e1-8f5b-690a41749dd2", 1, false, null, "admin" },
-                    { new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), 0, new DateOnly(1, 1, 1), "6dbf83a7-6ddb-4c6e-8390-e31c925d76cc", new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(4981), null, "ahmet.yilmaz@example.com", true, "Ahmet", "Yılmaz", false, null, "AHMET.YILMAZ@EXAMPLE.COM", "AHMETYILMAZ", null, null, false, "6ec3d741-cfb0-4b46-833f-9e871a3d7a73", 1, false, null, "ahmetyilmaz" },
-                    { new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"), 0, new DateOnly(1, 1, 1), "e64c5ad9-d101-4b09-8a9c-36950640ce08", new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(4993), null, "elif.kara@example.com", true, "Elif", "Kara", false, null, "ELIF.KARA@EXAMPLE.COM", "ELIFKARA", null, null, false, "14f9d615-6912-41a4-890e-ab24bfcfd2f0", 1, false, null, "elifkara" },
-                    { new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), 0, new DateOnly(1, 1, 1), "e1304bab-b46a-41c9-a571-645b5e490043", new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(5003), null, "mehmet.demir@example.com", true, "Mehmet", "Demir", false, null, "MEHMET.DEMIR@EXAMPLE.COM", "MEHMETDEMIR", null, null, false, "5096185c-8e42-4384-b32d-52f6d78b906f", 1, false, null, "mehmetdemir" },
-                    { new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"), 0, new DateOnly(1, 1, 1), "15d914d3-c05a-4447-b61d-5bea5c175e89", new DateTime(2025, 8, 6, 17, 40, 25, 903, DateTimeKind.Local).AddTicks(5033), null, "zeynep.sahin@example.com", true, "Zeynep", "Şahin", false, null, "ZEYNEP.SAHIN@EXAMPLE.COM", "ZEYNEPSAHIN", null, null, false, "6097f93d-52a3-4001-8923-c21e564eb6af", 1, false, null, "zeynepsahin" }
+                    { new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), 0, new DateOnly(1, 1, 1), "536a075d-3f8c-4a70-9772-7616dafe28ce", new DateTime(2025, 8, 7, 17, 34, 39, 867, DateTimeKind.Local).AddTicks(4118), null, "admin@example.com", true, "Sistem", true, "Yöneticisi", false, null, "ADMIN@EXAMPLE.COM", "ADMIN", "AQAAAAIAAYagAAAAELlTHlKmgU5Fdgd+PdeOQyMTDeBb8Kw/7pbx+7XZ3kQVjq8rtEXkV07IRxZkgke/RA==", null, false, "6432984d-82bc-42f5-8e94-f60573c7c617", 1, false, null, "admin" },
+                    { new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), 0, new DateOnly(1, 1, 1), "117659c4-5f63-45e5-ba46-e01a8ea11c7e", new DateTime(2025, 8, 7, 17, 34, 39, 907, DateTimeKind.Local).AddTicks(9796), null, "ahmet.yilmaz@example.com", true, "Ahmet", true, "Yılmaz", false, null, "AHMET.YILMAZ@EXAMPLE.COM", "AHMETYILMAZ", "AQAAAAIAAYagAAAAEKAUvHFwW+zUhUcdNQtn9D4a4GN+i36NU3mRpRse5Mo2OmBB2tHqpH32F5prP+laJQ==", null, false, "0ad1b931-e35c-4bb4-82bc-af57c67b8fd6", 1, false, null, "ahmetyilmaz" },
+                    { new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"), 0, new DateOnly(1, 1, 1), "9a65ae69-ebdd-4f22-b77b-81ad915c8a19", new DateTime(2025, 8, 7, 17, 34, 39, 947, DateTimeKind.Local).AddTicks(9715), null, "elif.kara@example.com", true, "Elif", true, "Kara", false, null, "ELIF.KARA@EXAMPLE.COM", "ELIFKARA", "AQAAAAIAAYagAAAAEPdiywBzNNWTdOZFgrFRR9qBldkz/cjsAmDv8OPf7pK7BfVwDBAXOAKmLCv0A+JeUg==", null, false, "ea61150f-f80b-4470-ba5f-92df4fa9b8b4", 1, false, null, "elifkara" },
+                    { new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), 0, new DateOnly(1, 1, 1), "f3d2dbf3-f368-4527-9ded-1d7acbc3b4fc", new DateTime(2025, 8, 7, 17, 34, 39, 990, DateTimeKind.Local).AddTicks(342), null, "mehmet.demir@example.com", true, "Mehmet", true, "Demir", false, null, "MEHMET.DEMIR@EXAMPLE.COM", "MEHMETDEMIR", "AQAAAAIAAYagAAAAEP8MlYP3610MDyoRejGkRVL482awHZUIuj3R8e1ev4eQsioNcO/IAYPCTXvZhQQaMg==", null, false, "7fcc23cb-733d-4b62-b973-874fd8db2b6f", 1, false, null, "mehmetdemir" },
+                    { new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"), 0, new DateOnly(1, 1, 1), "c26f6ff7-4f41-4345-9c14-7f86737faee5", new DateTime(2025, 8, 7, 17, 34, 40, 32, DateTimeKind.Local).AddTicks(5769), null, "zeynep.sahin@example.com", true, "Zeynep", true, "Şahin", false, null, "ZEYNEP.SAHIN@EXAMPLE.COM", "ZEYNEPSAHIN", "AQAAAAIAAYagAAAAED7WBJsd4FPByjbBXfJDf4GYR2QzgWeZAkZD0qTgXi8XiUa/YcWMQeDIvbXJK+bB2w==", null, false, "cac24ba9-6077-4a99-9f0d-2147caf5dadf", 1, false, null, "zeynepsahin" }
                 });
 
             migrationBuilder.InsertData(

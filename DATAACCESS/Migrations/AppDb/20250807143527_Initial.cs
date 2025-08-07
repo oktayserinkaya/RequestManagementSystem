@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace DATAACCESS.Migrations
+namespace DATAACCESS.Migrations.AppDb
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -162,9 +162,14 @@ namespace DATAACCESS.Migrations
                     ProductFeatures = table.Column<string>(type: "text", nullable: true),
                     CommissionNote = table.Column<string>(type: "text", nullable: true),
                     IsApproved = table.Column<bool>(type: "boolean", nullable: false),
+                    AppUserId = table.Column<Guid>(type: "uuid", nullable: false),
                     EmployeeId = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
                     TitleId = table.Column<Guid>(type: "uuid", nullable: false),
+                    DepartmentId = table.Column<Guid>(type: "uuid", nullable: false),
+                    EmployeeId1 = table.Column<Guid>(type: "uuid", nullable: true),
+                    ProductId1 = table.Column<Guid>(type: "uuid", nullable: true),
+                    TitleId1 = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
@@ -178,19 +183,34 @@ namespace DATAACCESS.Migrations
                         column: x => x.EmployeeId,
                         principalTable: "Employees",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Requests_Employees_EmployeeId1",
+                        column: x => x.EmployeeId1,
+                        principalTable: "Employees",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Requests_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Requests_Products_ProductId1",
+                        column: x => x.ProductId1,
+                        principalTable: "Products",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Requests_Titles_TitleId",
                         column: x => x.TitleId,
                         principalTable: "Titles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Requests_Titles_TitleId1",
+                        column: x => x.TitleId1,
+                        principalTable: "Titles",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -337,10 +357,10 @@ namespace DATAACCESS.Migrations
                 columns: new[] { "Id", "AppUserId", "CreatedDate", "DeletedDate", "DepartmentId", "Email", "FirstName", "ImagePath", "LastName", "Status", "TitleId", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { new Guid("11111111-1111-1111-1111-111111111111"), new Guid("7ddc2e8c-e258-4bba-8cc6-3b7e1cffc42c"), new DateTime(2025, 8, 2, 17, 44, 36, 105, DateTimeKind.Local).AddTicks(9121), null, new Guid("11111111-1111-1111-1111-111111111111"), "ahmet.yilmaz@example.com", "Ahmet", null, "Yılmaz", 1, new Guid("f0000011-aaaa-bbbb-cccc-0000000000ab"), null },
-                    { new Guid("22222222-2222-2222-2222-222222222222"), new Guid("b09651ff-1e53-44ab-bede-e64e35256995"), new DateTime(2025, 8, 2, 17, 44, 36, 105, DateTimeKind.Local).AddTicks(9149), null, new Guid("22222222-2222-2222-2222-222222222222"), "elif.kara@example.com", "Elif", null, "Kara", 1, new Guid("f0000012-aaaa-bbbb-cccc-0000000000ac"), null },
-                    { new Guid("33333333-3333-3333-3333-333333333333"), new Guid("44a182e1-39a4-418b-b1cd-9d465597b629"), new DateTime(2025, 8, 2, 17, 44, 36, 105, DateTimeKind.Local).AddTicks(9153), null, new Guid("33333333-3333-3333-3333-333333333333"), "mehmet.demir@example.com", "Mehmet", null, "Demir", 1, new Guid("f0000013-aaaa-bbbb-cccc-0000000000ad"), null },
-                    { new Guid("44444444-4444-4444-4444-444444444444"), new Guid("af1d86fb-4dba-4b97-9939-15562e6fa3c7"), new DateTime(2025, 8, 2, 17, 44, 36, 105, DateTimeKind.Local).AddTicks(9156), null, new Guid("44444444-4444-4444-4444-444444444444"), "zeynep.sahin@example.com", "Zeynep", null, "Şahin", 1, new Guid("f0000014-aaaa-bbbb-cccc-0000000000ae"), null }
+                    { new Guid("11111111-1111-1111-1111-111111111111"), new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), new DateTime(2025, 8, 7, 17, 35, 26, 958, DateTimeKind.Local).AddTicks(2052), null, new Guid("11111111-1111-1111-1111-111111111111"), "ahmet.yilmaz@example.com", "Ahmet", null, "Yılmaz", 1, new Guid("f0000011-aaaa-bbbb-cccc-0000000000ab"), null },
+                    { new Guid("22222222-2222-2222-2222-222222222222"), new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"), new DateTime(2025, 8, 7, 17, 35, 26, 958, DateTimeKind.Local).AddTicks(2086), null, new Guid("22222222-2222-2222-2222-222222222222"), "elif.kara@example.com", "Elif", null, "Kara", 1, new Guid("f0000012-aaaa-bbbb-cccc-0000000000ac"), null },
+                    { new Guid("33333333-3333-3333-3333-333333333333"), new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), new DateTime(2025, 8, 7, 17, 35, 26, 958, DateTimeKind.Local).AddTicks(2090), null, new Guid("33333333-3333-3333-3333-333333333333"), "mehmet.demir@example.com", "Mehmet", null, "Demir", 1, new Guid("f0000013-aaaa-bbbb-cccc-0000000000ad"), null },
+                    { new Guid("44444444-4444-4444-4444-444444444444"), new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"), new DateTime(2025, 8, 7, 17, 35, 26, 958, DateTimeKind.Local).AddTicks(2093), null, new Guid("44444444-4444-4444-4444-444444444444"), "zeynep.sahin@example.com", "Zeynep", null, "Şahin", 1, new Guid("f0000014-aaaa-bbbb-cccc-0000000000ae"), null }
                 });
 
             migrationBuilder.InsertData(
@@ -356,13 +376,13 @@ namespace DATAACCESS.Migrations
 
             migrationBuilder.InsertData(
                 table: "Requests",
-                columns: new[] { "Id", "Amount", "CommissionNote", "CreatedDate", "DeletedDate", "EmployeeId", "IsApproved", "ProductFeatures", "ProductFeaturesFilePath", "ProductId", "RequestDate", "SpecialProductName", "Status", "TitleId", "UpdatedDate" },
+                columns: new[] { "Id", "Amount", "AppUserId", "CommissionNote", "CreatedDate", "DeletedDate", "DepartmentId", "EmployeeId", "EmployeeId1", "IsApproved", "ProductFeatures", "ProductFeaturesFilePath", "ProductId", "ProductId1", "RequestDate", "SpecialProductName", "Status", "TitleId", "TitleId1", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { new Guid("10000000-0000-0000-0000-0000000000ab"), 1.0, "Toplantı odası için", new DateTime(2025, 6, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new Guid("11111111-1111-1111-1111-111111111111"), false, "Full HD, HDMI destekli", null, new Guid("11111111-aaaa-bbbb-cccc-111111111111"), new DateTime(2025, 6, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "Projeksiyon Cihazı", 1, new Guid("f0000011-aaaa-bbbb-cccc-0000000000ab"), null },
-                    { new Guid("10000000-0000-0000-0000-0000000000ac"), 2.0, "Bilgi İşlem birimi için", new DateTime(2025, 6, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new Guid("22222222-2222-2222-2222-222222222222"), true, null, null, new Guid("22222222-aaaa-bbbb-cccc-222222222222"), new DateTime(2025, 6, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 1, new Guid("f0000012-aaaa-bbbb-cccc-0000000000ac"), null },
-                    { new Guid("10000000-0000-0000-0000-0000000000ad"), 1.0, "Yönetici kullanımı", new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new Guid("33333333-3333-3333-3333-333333333333"), true, null, null, new Guid("33333333-aaaa-bbbb-cccc-333333333333"), new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 1, new Guid("f0000013-aaaa-bbbb-cccc-0000000000ad"), null },
-                    { new Guid("10000000-0000-0000-0000-0000000000ae"), 4.0, "Etkinlik alanı için ses sistemi", new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new Guid("44444444-4444-4444-4444-444444444444"), false, null, null, new Guid("44444444-aaaa-bbbb-cccc-444444444444"), new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 1, new Guid("f0000014-aaaa-bbbb-cccc-0000000000ae"), null }
+                    { new Guid("10000000-0000-0000-0000-0000000000ab"), 1.0, new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), "Toplantı odası için", new DateTime(2025, 6, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new Guid("11111111-1111-1111-1111-111111111111"), new Guid("11111111-1111-1111-1111-111111111111"), null, false, "Full HD, HDMI destekli", null, new Guid("11111111-aaaa-bbbb-cccc-111111111111"), null, new DateTime(2025, 6, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "Projeksiyon Cihazı", 1, new Guid("f0000011-aaaa-bbbb-cccc-0000000000ab"), null, null },
+                    { new Guid("10000000-0000-0000-0000-0000000000ac"), 2.0, new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), "Bilgi İşlem birimi için", new DateTime(2025, 6, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new Guid("22222222-2222-2222-2222-222222222222"), new Guid("22222222-2222-2222-2222-222222222222"), null, true, "Full HD, HDMI destekli", null, new Guid("22222222-aaaa-bbbb-cccc-222222222222"), null, new DateTime(2025, 6, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), "Projeksiyon Cihazı", 1, new Guid("f0000012-aaaa-bbbb-cccc-0000000000ac"), null, null },
+                    { new Guid("10000000-0000-0000-0000-0000000000ad"), 1.0, new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"), "Yönetici kullanımı", new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new Guid("33333333-3333-3333-3333-333333333333"), new Guid("33333333-3333-3333-3333-333333333333"), null, true, "Full HD, HDMI destekli", null, new Guid("33333333-aaaa-bbbb-cccc-333333333333"), null, new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "Full HD, HDMI destekli", 1, new Guid("f0000013-aaaa-bbbb-cccc-0000000000ad"), null, null },
+                    { new Guid("10000000-0000-0000-0000-0000000000ae"), 4.0, new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), "Etkinlik alanı için ses sistemi", new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new Guid("44444444-4444-4444-4444-444444444444"), new Guid("44444444-4444-4444-4444-444444444444"), null, false, "Full HD, HDMI destekli", null, new Guid("44444444-aaaa-bbbb-cccc-444444444444"), null, new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Full HD, HDMI destekli", 1, new Guid("f0000014-aaaa-bbbb-cccc-0000000000ae"), null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -423,14 +443,29 @@ namespace DATAACCESS.Migrations
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Requests_EmployeeId1",
+                table: "Requests",
+                column: "EmployeeId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Requests_ProductId",
                 table: "Requests",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Requests_ProductId1",
+                table: "Requests",
+                column: "ProductId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Requests_TitleId",
                 table: "Requests",
                 column: "TitleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Requests_TitleId1",
+                table: "Requests",
+                column: "TitleId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SubCategories_CategoryId",

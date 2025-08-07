@@ -4,10 +4,10 @@ namespace WEB.Models.ViewModels.AccountVM
 {
     public class LoginVM
     {
-        [Required]
-        public string Email { get; set; }
+        [Display(Name ="Kullanıcı Adı")]
+        public string? UserName { get; set; }
 
-        [Required]
-        public string Password { get; set; }
+        [Display(Name = "Şifre")]
+        public string? Password { get; set; }
     }
 }

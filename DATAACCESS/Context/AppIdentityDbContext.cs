@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CORE.IdentityEntities;
+﻿using CORE.IdentityEntities;
 using DATAACCESS.SeedData.IdentitySeedData;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DATAACCESS.Context
 {
-    public class AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options) : IdentityDbContext<AppUser, AppRole, Guid>(options)
+    public class AppIdentityDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     {
-        static AppIdentityDbContext()
+        public AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options)
+            : base(options)
         {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
@@ -21,12 +17,10 @@ namespace DATAACCESS.Context
         {
             base.OnModelCreating(builder);
 
-            builder.ApplyConfiguration(new AppUserSeedData());
+            // Identity tabloları için seed data
             builder.ApplyConfiguration(new AppRoleSeedData());
+            builder.ApplyConfiguration(new AppUserSeedData());
             builder.ApplyConfiguration(new UserRoleSeedData());
-
-            //builder.Entity<AppRole>().Property(x => x.ConcurrencyStamp).IsConcurrencyToken(false);
-
         }
     }
 }

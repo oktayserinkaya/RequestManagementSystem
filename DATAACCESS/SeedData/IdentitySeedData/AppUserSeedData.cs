@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
 
 public class AppUserSeedData : IEntityTypeConfiguration<AppUser>
 {
@@ -10,7 +9,7 @@ public class AppUserSeedData : IEntityTypeConfiguration<AppUser>
     {
         var hasher = new PasswordHasher<AppUser>();
 
-        var users = new[]
+        var users = new List<AppUser>
         {
             new AppUser
             {
@@ -22,7 +21,9 @@ public class AppUserSeedData : IEntityTypeConfiguration<AppUser>
                 EmailConfirmed = true,
                 FirstName = "Sistem",
                 LastName = "Yöneticisi",
+                HasFirstPasswordChanged = true,
                 SecurityStamp = Guid.NewGuid().ToString("D"),
+                PasswordHash = hasher.HashPassword(null!, "123")
             },
             new AppUser
             {
@@ -34,7 +35,9 @@ public class AppUserSeedData : IEntityTypeConfiguration<AppUser>
                 EmailConfirmed = true,
                 FirstName = "Ahmet",
                 LastName = "Yılmaz",
+                HasFirstPasswordChanged = true,
                 SecurityStamp = Guid.NewGuid().ToString("D"),
+                PasswordHash = hasher.HashPassword(null!, "123")
             },
             new AppUser
             {
@@ -46,7 +49,9 @@ public class AppUserSeedData : IEntityTypeConfiguration<AppUser>
                 EmailConfirmed = true,
                 FirstName = "Elif",
                 LastName = "Kara",
+                HasFirstPasswordChanged = true,
                 SecurityStamp = Guid.NewGuid().ToString("D"),
+                PasswordHash = hasher.HashPassword(null!, "123")
             },
             new AppUser
             {
@@ -58,7 +63,9 @@ public class AppUserSeedData : IEntityTypeConfiguration<AppUser>
                 EmailConfirmed = true,
                 FirstName = "Mehmet",
                 LastName = "Demir",
+                HasFirstPasswordChanged = true,
                 SecurityStamp = Guid.NewGuid().ToString("D"),
+                PasswordHash = hasher.HashPassword(null!, "123")
             },
             new AppUser
             {
@@ -70,7 +77,9 @@ public class AppUserSeedData : IEntityTypeConfiguration<AppUser>
                 EmailConfirmed = true,
                 FirstName = "Zeynep",
                 LastName = "Şahin",
+                HasFirstPasswordChanged = true,
                 SecurityStamp = Guid.NewGuid().ToString("D"),
+                PasswordHash = hasher.HashPassword(null!, "123")
             }
         };
 

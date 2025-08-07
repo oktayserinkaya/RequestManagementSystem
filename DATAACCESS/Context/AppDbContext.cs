@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CORE.Entities.Concrete;
+﻿using CORE.Entities.Concrete;
+using CORE.IdentityEntities;
 using DATAACCESS.SeedData.EntitySeedData;
 using Microsoft.EntityFrameworkCore;
 
 namespace DATAACCESS.Context
 {
-    public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+    public class AppDbContext : DbContext
     {
-        static AppDbContext()
+        public AppDbContext(DbContextOptions<AppDbContext> options)
+            : base(options)
         {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
@@ -26,26 +23,43 @@ namespace DATAACCESS.Context
         public DbSet<Title> Titles { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfiguration(new CategorySeedData());
+            // Request entity konfigürasyonu
+            modelBuilder.Entity<Request>(entity =>
+            {
+                // AppUserId için shadow property (diğer veritabanındaki AppUser'a referans)
+                entity.Property<Guid>("AppUserId");
+
+                // Diğer ilişkiler
+                entity.HasOne(r => r.Employee)
+                    .WithMany()
+                    .HasForeignKey(r => r.EmployeeId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(r => r.Product)
+                    .WithMany()
+                    .HasForeignKey(r => r.ProductId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(r => r.Title)
+                    .WithMany()
+                    .HasForeignKey(r => r.TitleId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // Seed data konfigürasyonları
+            modelBuilder.ApplyConfiguration(new EmployeeSeedData());
+            modelBuilder.ApplyConfiguration(new ProductSeedData());
             modelBuilder.ApplyConfiguration(new TitleSeedData());
             modelBuilder.ApplyConfiguration(new DepartmentSeedData());
-
-            modelBuilder.ApplyConfiguration(new SubCategorySeedData());
-
-            modelBuilder.ApplyConfiguration(new EmployeeSeedData());
-
-            modelBuilder.ApplyConfiguration(new ProductSeedData());
             modelBuilder.ApplyConfiguration(new RequestSeedData());
+            modelBuilder.ApplyConfiguration(new CategorySeedData());
+            modelBuilder.ApplyConfiguration(new SubCategorySeedData());
             modelBuilder.ApplyConfiguration(new PaymentSeedData());
-
             modelBuilder.ApplyConfiguration(new WarehouseSeedData());
-
-
         }
     }
 }
