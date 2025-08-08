@@ -1,8 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
-using BUSINESS.Manager.Concrete;
 using BUSINESS.Manager.Interface;
-using CORE.Entities.Concrete;
 using CORE.Enums;
 using CORE.Extensions;
 using DTO.Concrete.CategoryDTO;
@@ -11,7 +9,6 @@ using DTO.Concrete.ProductDTO;
 using DTO.Concrete.RequestDTO;
 using DTO.Concrete.SubCategoryDTO;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,17 +17,39 @@ using WEB.Areas.Request.Models.RequestVM;
 namespace WEB.Areas.Request.Controllers
 {
     [Area("Request")]
-    public class RequestsController(IRequestManager requestManager, ICategoryManager categoryManager, IMapper mapper, ILogger<RequestsController> logger, IEmployeeManager employeeManager,IUserManager userManager, ISubCategoryManager subCategoryManager, IProductManager productManager) : Controller
+    [Authorize] // tüm aksiyonlar için yetki
+    public class RequestsController : Controller
     {
-        private readonly IRequestManager _requestManager = requestManager;
-        private readonly ICategoryManager _categoryManager = categoryManager;
-        private readonly IMapper _mapper = mapper;
-        private readonly ILogger<RequestsController> _logger = logger;
-        private readonly IEmployeeManager _employeeManager = employeeManager;
-        private readonly IUserManager _userManager = userManager;
-        private readonly ISubCategoryManager _subCategoryManager = subCategoryManager;
-        private readonly IProductManager _productManager = productManager;
+        private readonly IRequestManager _requestManager;
+        private readonly ICategoryManager _categoryManager;
+        private readonly ISubCategoryManager _subCategoryManager;
+        private readonly IProductManager _productManager;
+        private readonly IEmployeeManager _employeeManager;
+        private readonly IUserManager _userManager;
+        private readonly IMapper _mapper;
+        private readonly ILogger<RequestsController> _logger;
 
+        public RequestsController(
+            IRequestManager requestManager,
+            ICategoryManager categoryManager,
+            IMapper mapper,
+            ILogger<RequestsController> logger,
+            IEmployeeManager employeeManager,
+            IUserManager userManager,
+            ISubCategoryManager subCategoryManager,
+            IProductManager productManager)
+        {
+            _requestManager = requestManager;
+            _categoryManager = categoryManager;
+            _mapper = mapper;
+            _logger = logger;
+            _employeeManager = employeeManager;
+            _userManager = userManager;
+            _subCategoryManager = subCategoryManager;
+            _productManager = productManager;
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var model = await _requestManager.GetFilteredListAsync(
@@ -39,23 +58,19 @@ namespace WEB.Areas.Request.Controllers
                     Id = x.Id,
                     RequestDate = x.RequestDate,
 
-                    // FullName için kaynaklar:
+                    // FullName kaynakları
                     FirstName = x.Employee != null ? x.Employee.FirstName : null,
                     LastName = x.Employee != null ? x.Employee.LastName : null,
                     Email = x.Employee != null ? x.Employee.Email : null,
 
-                    // İlişkiler:
                     DepartmentName = (x.Employee != null && x.Employee.Department != null)
-                                        ? x.Employee.Department.DepartmentName
-                                        : string.Empty,
+                                       ? x.Employee.Department.DepartmentName
+                                       : string.Empty,
 
-                    // Title Request’teyse:
                     TitleName = (x.Title != null) ? x.Title.TitleName : string.Empty,
 
                     CreatedDate = x.CreatedDate,
                     UpdatedDate = x.UpdatedDate,
-
-                    // STRING yerine ENUM'u taşı
                     StatusEnum = x.Status
                 },
                 where: x => x.Status != Status.Passive,
@@ -65,63 +80,67 @@ namespace WEB.Areas.Request.Controllers
                     .Include(z => z.Title!)
             );
 
-            // EF sorgusu bitti → bellek tarafında DisplayName'e çevir
+            // Enum -> DisplayName
             foreach (var item in model)
                 item.Status = item.StatusEnum.GetDisplayName();
 
             return View(model);
         }
 
-
-        [Authorize]
+        // GET: /Request/Requests/CreateRequest
+        [HttpGet]
         public async Task<IActionResult> CreateRequest()
         {
-            // Kullanıcının Id'sini al
             var userId = await _userManager.GetUserIdByClaimsAsync(User);
-
-            // Session’da yoksa veritabanından bilgileri al
             var employee = await _employeeManager.GetByDefaultAsync<GetEmployeeDTO>(x => x.AppUserId == userId);
+
+            if (employee == null)
+            {
+                TempData["Error"] = "Personel bilgisi bulunamadı.";
+                return RedirectToAction(nameof(Index));
+            }
 
             var model = new CreateRequestVM
             {
-                FirstName = employee?.FirstName ?? "Personel",
-                LastName = employee?.LastName ?? "Birim",
-                DepartmentId = employee?.DepartmentId,
-                DepartmentName = employee?.DepartmentName ?? ""
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                DepartmentId = employee.DepartmentId,
+                DepartmentName = employee.DepartmentName,
+                RequestDate = DateTime.Today
             };
 
-            // ViewBag dropdownlarını yükle
-            await SetDropdownsAsync();
-
-            return View(model);
+            await FillDropdownsAsync(model);
+            return View(model); // Areas/Request/Views/Requests/CreateRequest.cshtml
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
+        // POST: /Request/Requests/CreateRequest
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateRequest(CreateRequestVM model)
         {
             if (!ModelState.IsValid)
             {
-                await SetDropdownsAsync();
+                await FillDropdownsAsync(model);
                 return View(model);
             }
 
             var userId = await _userManager.GetUserIdByClaimsAsync(User);
-
             var employee = await _employeeManager.GetByDefaultAsync<GetEmployeeDTO>(x => x.AppUserId == userId);
             if (employee == null)
             {
                 TempData["Error"] = "Personel bilgisi alınamadı.";
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
 
+            // VM -> DTO -> Entity
             var dto = _mapper.Map<CreateRequestDTO>(model);
             var entity = _mapper.Map<CORE.Entities.Concrete.Request>(dto);
 
-            // 👇 Ek bilgiler:
+            // Ek zorunlu alanlar
             entity.AppUserId = userId;
             entity.DepartmentId = employee.DepartmentId;
 
-            // PDF Dosya yükleme
+            // Dosya yükleme
             if (dto.ProductFeaturesFile != null)
             {
                 var fileName = Guid.NewGuid() + Path.GetExtension(dto.ProductFeaturesFile.FileName);
@@ -139,28 +158,31 @@ namespace WEB.Areas.Request.Controllers
             if (!result)
             {
                 TempData["Error"] = "Talep oluşturulamadı.";
-                await SetDropdownsAsync();
+                await FillDropdownsAsync(model);
                 return View(model);
             }
 
             TempData["Success"] = "Talep başarıyla oluşturuldu.";
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
-
-        private async Task SetDropdownsAsync()
+        /// <summary>
+        /// Dropdown’ları ViewModel üzerinden doldurur (ViewBag yok).
+        /// Boş koleksiyonlar gönderilir; null bırakılmaz.
+        /// </summary>
+        private async Task FillDropdownsAsync(CreateRequestVM model)
         {
-            var categories = await _categoryManager.GetByDefaultsAsync<CategorySelectListDTO>(x => x.Status != Status.Passive);
-            var subCategories = await _subCategoryManager.GetByDefaultsAsync<SubCategorySelectListDTO>(x => x.Status != Status.Passive);
-            var products = await _productManager.GetByDefaultsAsync<ProductSelectListDTO>(x => x.Status != Status.Passive);
+            var categories = await _categoryManager.GetByDefaultsAsync<CategorySelectListDTO>(x => x.Status != Status.Passive)
+                                ?? new List<CategorySelectListDTO>();
+            var subCategories = await _subCategoryManager.GetByDefaultsAsync<SubCategorySelectListDTO>(x => x.Status != Status.Passive)
+                                ?? new List<SubCategorySelectListDTO>();
+            var products = await _productManager.GetByDefaultsAsync<ProductSelectListDTO>(x => x.Status != Status.Passive)
+                                ?? new List<ProductSelectListDTO>();
 
-            ViewBag.Categories = new SelectList(categories, "Id", "Name");
-            ViewBag.SubCategories = new SelectList(subCategories, "Id", "Name");
-            ViewBag.Products = new SelectList(products, "Id", "ProductName");
+            // DİKKAT: DTO’larda "Name" property’si dolu olmalı (mappingte ProductName->Name vb.)
+            model.CategoryList = new SelectList(categories, "Id", "Name");
+            model.SubCategoryList = new SelectList(subCategories, "Id", "Name");
+            model.ProductList = new SelectList(products, "Id", "Name");
         }
-
-
-
-
     }
 }

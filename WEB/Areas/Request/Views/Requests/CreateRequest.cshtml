@@ -1,7 +1,7 @@
-﻿@{
+﻿@model CreateRequestVM
+@{
     ViewData["Title"] = "Create Request";
 }
-@model CreateRequestVM
 
 <!-- Fonts and icons -->
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900" />
@@ -17,19 +17,20 @@
             <h6 class="text-white text-capitalize ps-3">Satın Alma Talebi Oluştur</h6>
         </div>
         <div class="card-body">
-            <form asp-action="CreateRequest" enctype="multipart/form-data" method="post">
+            <form asp-action="CreateRequest" asp-controller="Requests" asp-area="Request" enctype="multipart/form-data" method="post">
                 <div class="row g-4">
                     <!-- Talep Bilgileri -->
                     <div class="col-md-4">
-                        <label asp-for="RequestDate" class="form-label fw-bold">Talep Tarihi</label>
-                        <input asp-for="RequestDate" class="form-control border border-dark shadow-sm" />
+                        <label asp-for="RequestDate" class="form-label fw-bold"></label>
+                        <input asp-for="RequestDate" class="form-control border border-dark shadow-sm" type="date" />
+                        <span asp-validation-for="RequestDate" class="text-danger"></span>
                     </div>
                     <div class="col-md-4">
                         <label class="form-label fw-bold">Talep Eden Personel</label>
-                        <input class="form-control border border-dark shadow-sm" value="@Model.FullName" disabled />
+                        <input class="form-control border border-dark shadow-sm" value="@Model.FullName" readonly />
                     </div>
                     <div class="col-md-4">
-                        <label asp-for="DepartmentName" class="form-label fw-bold">Departman/Birim</label>
+                        <label asp-for="DepartmentName" class="form-label fw-bold"></label>
                         <input asp-for="DepartmentName" class="form-control border border-dark shadow-sm" readonly />
                     </div>
                 </div>
@@ -39,27 +40,40 @@
                 <div class="row g-4">
                     <!-- Kategori -->
                     <div class="col-md-4">
-                        <label asp-for="CategoryId" class="form-label">Kategori</label>
-                        <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-select border border-dark shadow-sm" id="categorySelect" onchange="loadSubCategoriesByCategoryId(this.value)">
-                            <option selected disabled value="0">Bir kategori seçiniz!</option>
+                        <label asp-for="CategoryId" class="form-label"></label>
+                        <select asp-for="CategoryId"
+                                asp-items="Model.CategoryList ?? new SelectList(Enumerable.Empty<SelectListItem>())"
+                                class="form-select border border-dark shadow-sm"
+                                id="categorySelect"
+                                onchange="loadSubCategoriesByCategoryId(this.value)">
+                            <option value="">Bir kategori seçiniz!</option>
                         </select>
                         <span asp-validation-for="CategoryId" class="text-danger"></span>
                     </div>
 
                     <!-- Alt Kategori -->
                     <div class="col-md-4">
-                        <label asp-for="SubCategoryId" class="form-label">Alt Kategori</label>
-                        <select asp-for="SubCategoryId" asp-items="ViewBag.SubCategories" class="form-select border border-dark shadow-sm" id="subCategorySelect" disabled onchange="loadProductsBySubCategoryId(this.value)">
-                            <option selected disabled value="0">Bir alt kategori seçiniz!</option>
+                        <label asp-for="SubCategoryId" class="form-label"></label>
+                        <select asp-for="SubCategoryId"
+                                asp-items="Model.SubCategoryList ?? new SelectList(Enumerable.Empty<SelectListItem>())"
+                                class="form-select border border-dark shadow-sm"
+                                id="subCategorySelect"
+                                disabled
+                                onchange="loadProductsBySubCategoryId(this.value)">
+                            <option value="">Bir alt kategori seçiniz!</option>
                         </select>
                         <span asp-validation-for="SubCategoryId" class="text-danger"></span>
                     </div>
 
                     <!-- Ürün -->
                     <div class="col-md-4">
-                        <label asp-for="ProductId" class="form-label">Ürün Detay</label>
-                        <select asp-for="ProductId" asp-items="ViewBag.Products" class="form-select border border-dark shadow-sm" id="productSelect" disabled>
-                            <option selected disabled value="0">Bir ürün seçiniz!</option>
+                        <label asp-for="ProductId" class="form-label"></label>
+                        <select asp-for="ProductId"
+                                asp-items="Model.ProductList ?? new SelectList(Enumerable.Empty<SelectListItem>())"
+                                class="form-select border border-dark shadow-sm"
+                                id="productSelect"
+                                disabled>
+                            <option value="">Bir ürün seçiniz!</option>
                         </select>
                         <span asp-validation-for="ProductId" class="text-danger"></span>
                     </div>
@@ -70,29 +84,27 @@
                 <div class="row g-4">
                     <!-- Özel Ürün -->
                     <div class="col-md-12">
-                        <label asp-for="SpecialProductName" class="form-label fw-bold">Özel Ürün Adı</label>
+                        <label asp-for="SpecialProductName" class="form-label fw-bold"></label>
                         <input asp-for="SpecialProductName" class="form-control border border-dark shadow-sm" placeholder="Listede yoksa buraya yazın" />
                     </div>
 
                     <!-- Miktar -->
                     <div class="col-md-12">
-                        <label asp-for="Amount" class="form-label fw-bold">Miktar</label>
+                        <label asp-for="Amount" class="form-label fw-bold"></label>
                         <input asp-for="Amount" type="number" class="form-control border border-dark shadow-sm" min="1" />
                         <span asp-validation-for="Amount" class="text-danger"></span>
                     </div>
 
                     <!-- Açıklama -->
                     <div class="col-md-12">
-                        <label asp-for="Description" class="form-label fw-bold">Açıklama / Ürün Gereksinimleri</label>
+                        <label asp-for="Description" class="form-label fw-bold"></label>
                         <textarea asp-for="Description" class="form-control border border-dark shadow-sm" rows="4"></textarea>
                     </div>
 
                     <!-- Şartname -->
                     <div class="col-md-12">
-                        <label asp-for="ProductFeaturesFile" class="form-label fw-bold">Şartname Yükle (PDF)</label>
-                        <div class="input-group">
-                            <input asp-for="ProductFeaturesFile" type="file" class="form-control border border-dark shadow-sm" accept="application/pdf" />
-                        </div>
+                        <label asp-for="ProductFeaturesFile" class="form-label fw-bold"></label>
+                        <input asp-for="ProductFeaturesFile" type="file" class="form-control border border-dark shadow-sm" accept="application/pdf" />
                     </div>
                 </div>
 
@@ -105,14 +117,12 @@
     </div>
 </div>
 
-
 <!-- Temel Scriptler -->
 <script src="~/TemplateResources/js/core/popper.min.js"></script>
 <script src="~/TemplateResources/js/core/bootstrap.min.js"></script>
 <script src="~/TemplateResources/js/plugins/perfect-scrollbar.min.js"></script>
 <script src="~/TemplateResources/js/plugins/smooth-scrollbar.min.js"></script>
 
-<!-- Sadece Dashboard'da kullanılacak JS varsa koşullu çalıştır -->
 @{
     var actionName = ViewContext.RouteData.Values["action"]?.ToString();
 }
@@ -121,5 +131,4 @@
     <script src="~/TemplateResources/js/material-dashboard.min.js?v=3.2.0"></script>
 }
 
-<!-- Github buttons -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>

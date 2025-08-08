@@ -9,6 +9,7 @@ namespace DTO.Concrete.ProductDTO
     public class ProductSelectListDTO
     {
         public Guid Id { get; set; }
-        public string ProductName { get; set; } = null!;
+        public string Name { get; set; } = default!;
+        public Guid SubCategoryId { get; set; }
     }
 }
