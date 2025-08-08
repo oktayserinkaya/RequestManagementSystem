@@ -9,6 +9,7 @@ namespace DTO.Concrete.SubCategoryDTO
     public class SubCategorySelectListDTO
     {
         public Guid Id { get; set; }
-        public string Name { get; set; } = null!;
+        public string Name { get; set; } = default!;
+        public Guid CategoryId { get; set; }
     }
 }

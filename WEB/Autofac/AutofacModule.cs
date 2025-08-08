@@ -1,12 +1,15 @@
 ﻿using Autofac;
 using AutoMapper;
+
+// Mapping profillerin olduğu namespace'ler
 using BUSINESS.AutoMapper;
-using BUSINESS.Manager.Concrete;
-using BUSINESS.Manager.Interface;
-using CORE.Interface;
-using DATAACCESS.Services;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using WEB.AutoMapper;
+
+// Service/Manager arayüz ve sınıfların
+using CORE.Interface;
+using BUSINESS.Manager.Interface;
+using BUSINESS.Manager.Concrete;
+using DATAACCESS.Services;
 
 namespace WEB.Autofac
 {
@@ -14,38 +17,55 @@ namespace WEB.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterAssemblyTypes(typeof(BaseService<>).Assembly).AsClosedTypesOf(typeof(IBaseRepository<>)).InstancePerLifetimeScope();
+            // ---------- Generic repo/service kayıtları ----------
+            builder.RegisterAssemblyTypes(typeof(BaseService<>).Assembly)
+                   .AsClosedTypesOf(typeof(IBaseRepository<>))
+                   .InstancePerLifetimeScope();
 
-            builder.RegisterAssemblyTypes(typeof(BaseManager<,>).Assembly).AsClosedTypesOf(typeof(IBaseManager<,>)).InstancePerLifetimeScope();
+            builder.RegisterAssemblyTypes(typeof(BaseManager<,>).Assembly)
+                   .AsClosedTypesOf(typeof(IBaseManager<,>))
+                   .InstancePerLifetimeScope();
 
+            // ---------- Concrete servis/manager kayıtları ----------
             builder.RegisterType<RoleService>().As<IRoleRepository>().InstancePerLifetimeScope();
             builder.RegisterType<RoleManager>().As<IRoleManager>().InstancePerLifetimeScope();
 
             builder.RegisterType<UserService>().As<IUserRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<UserManager>().As<IUserManager>().InstancePerLifetimeScope();
+            builder.RegisterType<UserManager>().As<IUserManager>().InstancePerLifetimeScope(); // (tek kayıt - duplikeyi kaldırdık)
 
-            builder.RegisterType<UserManager>().As<IUserManager>().InstancePerLifetimeScope();
             builder.RegisterType<RequestManager>().As<IRequestManager>().InstancePerLifetimeScope();
             builder.RegisterType<DepartmentManager>().As<IDepartmentManager>().InstancePerLifetimeScope();
             builder.RegisterType<WarehouseManager>().As<IWarehouseManager>().InstancePerLifetimeScope();
             builder.RegisterType<PaymentManager>().As<IPaymentManager>().InstancePerLifetimeScope();
             builder.RegisterType<EmployeeManager>().As<IEmployeeManager>().InstancePerLifetimeScope();
 
-            var mappingConfig = new MapperConfiguration(mc =>
+            // ---------- AutoMapper ----------
+            // Burada mapping profillerini içeren ASSEMBLY’leri AÇIKÇA belirtiyoruz.
+            // (BUSINESS içindeki *BusinessMapping* profilleri + WEB içindeki UI profilleri)
+            var mappingAssemblies = new[]
             {
-                mc.AddProfile(new RequestMapping());
-                mc.AddProfile(new RoleMapping());
-                mc.AddProfile(new UserMapping());
+                // BUSINESS mapping assembly (ör: RequestBusinessMapping, RoleBusinessMapping, UserBusinessMapping, SubCategoryBusinessMapping, CategoryBusinessMapping vs.)
+                typeof(SubCategoryBusinessMapping).Assembly,
 
+                // WEB mapping assembly (ör: RequestMapping, RoleMapping, UserMapping, CategoryMapping vs.)
+                typeof(RequestMapping).Assembly
+            };
 
-                mc.AddProfile(new RequestBusinessMapping());
-                mc.AddProfile(new RoleBusinessMapping());
-                mc.AddProfile(new UserBusinessMapping());
-            });
+            builder.Register(ctx => new MapperConfiguration(cfg =>
+            {
+                // Belirttiğimiz assembly’lerdeki TÜM Profile’ları tara ve ekle
+                cfg.AddMaps(mappingAssemblies);
 
+                // İstersen burada global ayarlar yapılabilir:
+                // cfg.ShouldMapProperty = p => p.GetMethod != null && p.GetMethod.IsPublic;
+            }))
+            .AsSelf()
+            .SingleInstance();
 
-            IMapper mapper = mappingConfig.CreateMapper();
-            builder.RegisterInstance(mapper);
+            builder.Register(ctx =>
+                ctx.Resolve<MapperConfiguration>().CreateMapper(ctx.Resolve)) // value resolver vb. için ctor DI
+            .As<IMapper>()
+            .InstancePerLifetimeScope();
         }
     }
 }

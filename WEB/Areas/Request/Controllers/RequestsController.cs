@@ -5,8 +5,12 @@ using BUSINESS.Manager.Interface;
 using CORE.Entities.Concrete;
 using CORE.Enums;
 using CORE.Extensions;
+using DTO.Concrete.CategoryDTO;
 using DTO.Concrete.EmployeeDTO;
+using DTO.Concrete.ProductDTO;
 using DTO.Concrete.RequestDTO;
+using DTO.Concrete.SubCategoryDTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,7 +20,7 @@ using WEB.Areas.Request.Models.RequestVM;
 namespace WEB.Areas.Request.Controllers
 {
     [Area("Request")]
-    public class RequestsController(IRequestManager requestManager, ICategoryManager categoryManager, IMapper mapper, ILogger<RequestsController> logger, IEmployeeManager employeeManager,IUserManager userManager) : Controller
+    public class RequestsController(IRequestManager requestManager, ICategoryManager categoryManager, IMapper mapper, ILogger<RequestsController> logger, IEmployeeManager employeeManager,IUserManager userManager, ISubCategoryManager subCategoryManager, IProductManager productManager) : Controller
     {
         private readonly IRequestManager _requestManager = requestManager;
         private readonly ICategoryManager _categoryManager = categoryManager;
@@ -24,6 +28,8 @@ namespace WEB.Areas.Request.Controllers
         private readonly ILogger<RequestsController> _logger = logger;
         private readonly IEmployeeManager _employeeManager = employeeManager;
         private readonly IUserManager _userManager = userManager;
+        private readonly ISubCategoryManager _subCategoryManager = subCategoryManager;
+        private readonly IProductManager _productManager = productManager;
 
         public async Task<IActionResult> Index()
         {
@@ -67,29 +73,27 @@ namespace WEB.Areas.Request.Controllers
         }
 
 
-        [HttpGet]
+        [Authorize]
         public async Task<IActionResult> CreateRequest()
         {
-            // Session’dan kullanıcı bilgilerini al
-            var firstName = HttpContext.Session.GetString("FirstName");
-            var lastName = HttpContext.Session.GetString("LastName");
-            var department = HttpContext.Session.GetString("Department");
-                     
+            // Kullanıcının Id'sini al
+            var userId = await _userManager.GetUserIdByClaimsAsync(User);
 
-            await SetDropdownsAsync(); // Dropdown'ları hazırla
+            // Session’da yoksa veritabanından bilgileri al
+            var employee = await _employeeManager.GetByDefaultAsync<GetEmployeeDTO>(x => x.AppUserId == userId);
 
-            var vm = new CreateRequestVM
+            var model = new CreateRequestVM
             {
-                RequestDate = DateTime.Now,
-                FirstName = firstName,
-                LastName = lastName,
-                DepartmentName = department,
-                CategoryName = string.Empty,
-                SubCategoryName = string.Empty,
-                ProductName = string.Empty
+                FirstName = employee?.FirstName ?? "Personel",
+                LastName = employee?.LastName ?? "Birim",
+                DepartmentId = employee?.DepartmentId,
+                DepartmentName = employee?.DepartmentName ?? ""
             };
 
-            return View(vm);
+            // ViewBag dropdownlarını yükle
+            await SetDropdownsAsync();
+
+            return View(model);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
@@ -97,42 +101,27 @@ namespace WEB.Areas.Request.Controllers
         {
             if (!ModelState.IsValid)
             {
-                _logger.LogWarning("ModelState geçersiz. Hatalar:");
-
-                foreach (var entry in ModelState)
-                {
-                    foreach (var error in entry.Value.Errors)
-                    {
-                        _logger.LogWarning("[ModelState] Alan: {Key} - Hata: {Error}", entry.Key, error.ErrorMessage);
-                    }
-                }
-
                 await SetDropdownsAsync();
                 return View(model);
             }
 
-            // 👤 Giriş yapan kullanıcının Id'si
             var userId = await _userManager.GetUserIdByClaimsAsync(User);
 
-            // 👔 Kullanıcıya karşılık gelen Employee kaydı
             var employee = await _employeeManager.GetByDefaultAsync<GetEmployeeDTO>(x => x.AppUserId == userId);
             if (employee == null)
             {
-                _logger.LogWarning("Talep oluşturan kullanıcıya ait çalışan bilgisi bulunamadı.");
-                TempData["Error"] = "Kullanıcı bilgisi eksik. Lütfen sistem yöneticisine başvurun.";
-                await SetDropdownsAsync();
-                return View(model);
+                TempData["Error"] = "Personel bilgisi alınamadı.";
+                return RedirectToAction("Index");
             }
 
-            // DTO to Entity mapping
             var dto = _mapper.Map<CreateRequestDTO>(model);
             var entity = _mapper.Map<CORE.Entities.Concrete.Request>(dto);
 
-            // 🎯 Employee bilgileri ekleniyor
-            entity.EmployeeId = employee.Id;
+            // 👇 Ek bilgiler:
+            entity.AppUserId = userId;
             entity.DepartmentId = employee.DepartmentId;
 
-            // 📎 Dosya yükleme işlemi
+            // PDF Dosya yükleme
             if (dto.ProductFeaturesFile != null)
             {
                 var fileName = Guid.NewGuid() + Path.GetExtension(dto.ProductFeaturesFile.FileName);
@@ -145,34 +134,29 @@ namespace WEB.Areas.Request.Controllers
                 entity.ProductFeaturesFilePath = fileName;
             }
 
-            // 🪵 Loglama
-            _logger.LogInformation("Kayıt öncesi kontrol -> Id: {Id}, Status: {Status}", entity.Id, entity.Status);
-
-            // Kaydet
             var result = await _requestManager.AddEntityAsync(entity);
 
             if (!result)
             {
-                _logger.LogWarning("Request kaydı başarısız.");
                 TempData["Error"] = "Talep oluşturulamadı.";
                 await SetDropdownsAsync();
                 return View(model);
             }
 
-            TempData["Success"] = "Talep başarılı şekilde oluşturuldu.";
+            TempData["Success"] = "Talep başarıyla oluşturuldu.";
             return RedirectToAction("Index");
         }
 
 
         private async Task SetDropdownsAsync()
         {
-            var categories = await _categoryManager.GetByDefaultsAsync<GetCategoryForSelectListDTO>(
-                x => x.Status != Status.Passive
-            );
+            var categories = await _categoryManager.GetByDefaultsAsync<CategorySelectListDTO>(x => x.Status != Status.Passive);
+            var subCategories = await _subCategoryManager.GetByDefaultsAsync<SubCategorySelectListDTO>(x => x.Status != Status.Passive);
+            var products = await _productManager.GetByDefaultsAsync<ProductSelectListDTO>(x => x.Status != Status.Passive);
 
-            ViewBag.Categories = new SelectList(categories, "Id", "CategoryName");
-            ViewBag.SubCategories = new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text");
-            ViewBag.Products = new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text");
+            ViewBag.Categories = new SelectList(categories, "Id", "Name");
+            ViewBag.SubCategories = new SelectList(subCategories, "Id", "Name");
+            ViewBag.Products = new SelectList(products, "Id", "ProductName");
         }
 
 

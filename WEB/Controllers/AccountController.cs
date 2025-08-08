@@ -107,7 +107,7 @@ namespace WEB.Controllers
         public async Task<IActionResult> Logout()
         {
             await _userManager.LogoutAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         [Authorize]
@@ -211,91 +211,7 @@ namespace WEB.Controllers
             return RedirectToAction(nameof(Login));
         }
 
-        [Authorize]
-        public async Task<IActionResult> CreateRequest()
-        {
-            // Kullanıcının Id'sini al
-            var userId = await _userManager.GetUserIdByClaimsAsync(User);
-
-            // Session’da yoksa veritabanından bilgileri al
-            var employee = await _employeeManager.GetByDefaultAsync<GetEmployeeDTO>(x => x.AppUserId == userId);
-
-            var model = new CreateRequestVM
-            {
-                FirstName = employee?.FirstName ?? "Personel",
-                LastName = employee?.LastName ?? "Birim",
-                DepartmentId = employee?.DepartmentId,
-                DepartmentName = employee?.DepartmentName ?? ""
-            };
-
-            // ViewBag dropdownlarını yükle
-            await SetDropdownsAsync();
-
-            return View(model);
-        }
-
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateRequest(CreateRequestVM model)
-        {
-            if (!ModelState.IsValid)
-            {
-                await SetDropdownsAsync();
-                return View(model);
-            }
-
-            var userId = await _userManager.GetUserIdByClaimsAsync(User);
-
-            var employee = await _employeeManager.GetByDefaultAsync<GetEmployeeDTO>(x => x.AppUserId == userId);
-            if (employee == null)
-            {
-                TempData["Error"] = "Personel bilgisi alınamadı.";
-                return RedirectToAction("Index");
-            }
-
-            var dto = _mapper.Map<CreateRequestDTO>(model);
-            var entity = _mapper.Map<CORE.Entities.Concrete.Request>(dto);
-
-            // 👇 Ek bilgiler:
-            entity.AppUserId = userId;
-            entity.DepartmentId = employee.DepartmentId;
-
-            // PDF Dosya yükleme
-            if (dto.ProductFeaturesFile != null)
-            {
-                var fileName = Guid.NewGuid() + Path.GetExtension(dto.ProductFeaturesFile.FileName);
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName);
-
-                Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
-                using var stream = new FileStream(filePath, FileMode.Create);
-                await dto.ProductFeaturesFile.CopyToAsync(stream);
-
-                entity.ProductFeaturesFilePath = fileName;
-            }
-
-            var result = await _requestManager.AddEntityAsync(entity);
-
-            if (!result)
-            {
-                TempData["Error"] = "Talep oluşturulamadı.";
-                await SetDropdownsAsync();
-                return View(model);
-            }
-
-            TempData["Success"] = "Talep başarıyla oluşturuldu.";
-            return RedirectToAction("Index");
-        }
-
-        private async Task SetDropdownsAsync()
-        {
-            var categories = await _categoryManager.GetByDefaultsAsync<CategorySelectListDTO>(x => x.Status != Status.Passive);
-            var subCategories = await _subCategoryManager.GetByDefaultsAsync<SubCategorySelectListDTO>(x => x.Status != Status.Passive);
-            var products = await _productManager.GetByDefaultsAsync<ProductSelectListDTO>(x => x.Status != Status.Passive);
-
-            ViewBag.Categories = new SelectList(categories, "Id", "Name");
-            ViewBag.SubCategories = new SelectList(subCategories, "Id", "Name");
-            ViewBag.Products = new SelectList(products, "Id", "ProductName");
-        }
-
+       
 
         public IActionResult AccessDenied() => View();
     }

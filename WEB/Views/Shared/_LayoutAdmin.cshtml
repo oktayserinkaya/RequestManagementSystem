@@ -1,12 +1,9 @@
-﻿@{
-    Layout = "_Layout";
-}
-
+﻿@* !!! DİKKAT: Layout = "_Layout" SATIRI KALDIRILDI *@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@ViewData["Title"] - Talep Sistemi</title>
 
     <!-- Core CSS -->
@@ -23,12 +20,11 @@
 </head>
 
 <body class="g-sidenav-show bg-gray-100">
-    @* ======= SOL MENÜ: Sadece giriş yapıldıysa göster ======= *@
     @if (User.Identity?.IsAuthenticated == true)
     {
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 fixed-start bg-gradient-dark" id="sidenav-main">
             <div class="sidenav-header">
-                <a class="navbar-brand m-0 text-white" asp-controller="Home" asp-action="Index">
+                <a class="navbar-brand m-0 text-white" asp-area="Admin" asp-controller="Home" asp-action="Index">
                     <i class="fas fa-cogs me-2"></i>
                     <span class="ms-1 font-weight-bold">Talep Sistemi</span>
                 </a>
@@ -37,7 +33,7 @@
             <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
                 <ul class="navbar-nav">
 
-                    @* --- Admin Paneli --- *@
+                    @* Admin Paneli *@
                     @if (User.IsInRole("Admin"))
                     {
                         <li class="nav-item">
@@ -48,47 +44,34 @@
                         </li>
                     }
 
-                    @* --- Talepler Menüsü --- *@
+                    @* Talepler *@
                     @{
-                        var talepRoles = new List<string> {
-                                "TalepOluşturanBirim",
-                                "IhtiyacTespitKomisyonu",
-                                "SatinAlmaBirimi",
-                                "DepoBirimi",
-                                "OdemeBirimi",
-                                "Admin"
+                        var talepRoles = new[] {
+                                "TalepOluşturanBirim","IhtiyacTespitKomisyonu",
+                                "SatinAlmaBirimi","DepoBirimi","OdemeBirimi","Admin"
                                 };
-
-                        var hasTalepAccess = talepRoles.Any(role => User.IsInRole(role));
+                        var hasTalepAccess = talepRoles.Any(User.IsInRole);
                     }
-
                     @if (hasTalepAccess)
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-white collapsed" data-bs-toggle="collapse" href="#taleplerMenu"
-                               role="button" aria-expanded="false" aria-controls="taleplerMenu">
+                            <a class="nav-link text-white collapsed" data-bs-toggle="collapse" href="#taleplerMenu">
                                 <i class="material-symbols-rounded me-2">table_view</i>
                                 <span class="nav-link-text">Talepler</span>
                             </a>
-
                             <div class="collapse" id="taleplerMenu">
                                 <ul class="nav flex-column ms-3">
-                                    @* Talep Oluşturma (Sadece TalepOluşturanBirim ve Admin) *@
                                     @if (User.IsInRole("TalepOluşturanBirim") || User.IsInRole("Admin"))
                                     {
                                         <li class="nav-item">
                                             <a class="nav-link text-white" asp-area="Request" asp-controller="Requests" asp-action="CreateRequest">
-                                                <i class="material-symbols-rounded me-2">add_circle</i>
-                                                Talep Oluştur
+                                                <i class="material-symbols-rounded me-2">add_circle</i> Talep Oluştur
                                             </a>
                                         </li>
                                     }
-
-                                    @* Tüm Talepler *@
                                     <li class="nav-item">
                                         <a class="nav-link text-white" asp-area="Request" asp-controller="Requests" asp-action="Index">
-                                            <i class="material-symbols-rounded me-2">list_alt</i>
-                                            Tüm Talepler
+                                            <i class="material-symbols-rounded me-2">list_alt</i> Tüm Talepler
                                         </a>
                                     </li>
                                 </ul>
@@ -104,36 +87,24 @@
         <!-- Navbar -->
         <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur">
             <div class="container-fluid py-1 px-3">
-                
+                <nav aria-label="breadcrumb">
+                    <h6 class="font-weight-bolder mb-0">@ViewData["Title"]</h6>
+                </nav>
+
                 <ul class="navbar-nav ms-auto">
                     @if (User.Identity?.IsAuthenticated == true)
                     {
                         <li class="nav-item d-flex align-items-center me-3">
                             <span class="nav-link text-body font-weight-bold px-0">
-                                <i class="fa fa-user me-1"></i> @User.Identity.Name
+                                <i class="fa fa-user me-1"></i> @User.Identity!.Name
                             </span>
                         </li>
-                        <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-                            <a href="#" class="nav-link text-body p-0" id="iconNavbarSidenav">
-                                <div class="sidenav-toggler-inner">
-                                    <i class="sidenav-toggler-line"></i>
-                                    <i class="sidenav-toggler-line"></i>
-                                    <i class="sidenav-toggler-line"></i>
-                                </div>
-                            </a>
-                        </li>
                         <li class="nav-item d-flex align-items-center">
-                            <a asp-controller="Account" asp-action="Logout" class="nav-link text-body p-0">
-                                <i class="fa fa-sign-out-alt me-1"></i> Çıkış Yap
-                            </a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item d-flex align-items-center">
-                            <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary btn-sm">
-                                <i class="fa fa-right-to-bracket me-1"></i> Giriş Yap
-                            </a>
+                            <form method="post" asp-controller="Account" asp-action="Logout">
+                                <button type="submit" class="nav-link text-body p-0 border-0 bg-transparent">
+                                    <i class="fa fa-sign-out-alt me-1"></i> Çıkış Yap
+                                </button>
+                            </form>
                         </li>
                     }
                 </ul>
@@ -143,7 +114,13 @@
 
         <div class="container-fluid py-4">
             @RenderBody()
-            
+            <footer class="footer pt-3">
+                <div class="container-fluid">
+                    <div class="text-center text-sm text-muted">
+                        &copy; 2025 Talep Sistemi - <a asp-area="Admin" asp-controller="Home" asp-action="Privacy">Gizlilik</a>
+                    </div>
+                </div>
+            </footer>
         </div>
     </main>
 
