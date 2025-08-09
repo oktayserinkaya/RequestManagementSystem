@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
 <link id="pagestyle" href="~/TemplateResources/css/material-dashboard.css?v=3.2.0" rel="stylesheet" />
 
+
 <div class="container mt-5">
     <div class="card shadow-lg">
         <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
@@ -122,6 +123,95 @@
 <script src="~/TemplateResources/js/core/bootstrap.min.js"></script>
 <script src="~/TemplateResources/js/plugins/perfect-scrollbar.min.js"></script>
 <script src="~/TemplateResources/js/plugins/smooth-scrollbar.min.js"></script>
+
+<script>
+    const subSelect = document.getElementById('subCategorySelect');
+    const prodSelect = document.getElementById('productSelect');
+
+    function resetSelect(selectEl, placeholder) {
+        // tüm seçenekleri temizle
+        while (selectEl.options.length > 0) selectEl.remove(0);
+        // placeholder ekle
+        const opt = document.createElement('option');
+        opt.value = "";
+        opt.textContent = placeholder;
+        selectEl.appendChild(opt);
+        // seçim sıfırla
+        selectEl.value = "";
+    }
+
+    async function loadSubCategoriesByCategoryId(categoryId) {
+        // kategori boşsa alt/ürün selectlerini temizle ve kilitle
+        if (!categoryId) {
+            resetSelect(subSelect, "Bir alt kategori seçiniz!");
+            subSelect.disabled = true;
+
+            resetSelect(prodSelect, "Bir ürün seçiniz!");
+            prodSelect.disabled = true;
+            return;
+        }
+
+        try {
+            resetSelect(subSelect, "Yükleniyor...");
+            subSelect.disabled = true;
+
+            resetSelect(prodSelect, "Bir ürün seçiniz!");
+            prodSelect.disabled = true;
+
+            const resp = await fetch(`/Request/Requests/GetSubCategories?categoryId=${encodeURIComponent(categoryId)}`);
+            if (!resp.ok) throw new Error('Alt kategoriler yüklenemedi');
+
+            const data = await resp.json(); // [{id,name},...]
+
+            resetSelect(subSelect, "Bir alt kategori seçiniz!");
+            data.forEach(sc => {
+                const o = document.createElement('option');
+                o.value = sc.id;
+                o.textContent = sc.name;
+                subSelect.appendChild(o);
+            });
+
+            subSelect.disabled = data.length === 0; // yoksa kilitli kalsın
+        } catch (e) {
+            console.error(e);
+            resetSelect(subSelect, "Alt kategori yüklenemedi");
+            subSelect.disabled = true;
+        }
+    }
+
+    async function loadProductsBySubCategoryId(subCategoryId) {
+        if (!subCategoryId) {
+            resetSelect(prodSelect, "Bir ürün seçiniz!");
+            prodSelect.disabled = true;
+            return;
+        }
+
+        try {
+            resetSelect(prodSelect, "Yükleniyor...");
+            prodSelect.disabled = true;
+
+            const resp = await fetch(`/Request/Requests/GetProducts?subCategoryId=${encodeURIComponent(subCategoryId)}`);
+            if (!resp.ok) throw new Error('Ürünler yüklenemedi');
+
+            const data = await resp.json();
+
+            resetSelect(prodSelect, "Bir ürün seçiniz!");
+            data.forEach(p => {
+                const o = document.createElement('option');
+                o.value = p.id;
+                o.textContent = p.name;
+                prodSelect.appendChild(o);
+            });
+
+            prodSelect.disabled = data.length === 0;
+        } catch (e) {
+            console.error(e);
+            resetSelect(prodSelect, "Ürün yüklenemedi");
+            prodSelect.disabled = true;
+        }
+    }
+</script>
+
 
 @{
     var actionName = ViewContext.RouteData.Values["action"]?.ToString();

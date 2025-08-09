@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DATAACCESS.Migrations.AppDb
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250807143527_Initial")]
-    partial class Initial
+    [Migration("20250809105700_Initiliate")]
+    partial class Initiliate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -203,7 +203,7 @@ namespace DATAACCESS.Migrations.AppDb
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
                             AppUserId = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-                            CreatedDate = new DateTime(2025, 8, 7, 17, 35, 26, 958, DateTimeKind.Local).AddTicks(2052),
+                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = new Guid("11111111-1111-1111-1111-111111111111"),
                             Email = "ahmet.yilmaz@example.com",
                             FirstName = "Ahmet",
@@ -215,7 +215,7 @@ namespace DATAACCESS.Migrations.AppDb
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
                             AppUserId = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
-                            CreatedDate = new DateTime(2025, 8, 7, 17, 35, 26, 958, DateTimeKind.Local).AddTicks(2086),
+                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = new Guid("22222222-2222-2222-2222-222222222222"),
                             Email = "elif.kara@example.com",
                             FirstName = "Elif",
@@ -227,7 +227,7 @@ namespace DATAACCESS.Migrations.AppDb
                         {
                             Id = new Guid("33333333-3333-3333-3333-333333333333"),
                             AppUserId = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"),
-                            CreatedDate = new DateTime(2025, 8, 7, 17, 35, 26, 958, DateTimeKind.Local).AddTicks(2090),
+                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = new Guid("33333333-3333-3333-3333-333333333333"),
                             Email = "mehmet.demir@example.com",
                             FirstName = "Mehmet",
@@ -239,7 +239,7 @@ namespace DATAACCESS.Migrations.AppDb
                         {
                             Id = new Guid("44444444-4444-4444-4444-444444444444"),
                             AppUserId = new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"),
-                            CreatedDate = new DateTime(2025, 8, 7, 17, 35, 26, 958, DateTimeKind.Local).AddTicks(2093),
+                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = new Guid("44444444-4444-4444-4444-444444444444"),
                             Email = "zeynep.sahin@example.com",
                             FirstName = "Zeynep",

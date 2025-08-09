@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DATAACCESS.Migrations.AppDb
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Initiliate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -357,10 +357,10 @@ namespace DATAACCESS.Migrations.AppDb
                 columns: new[] { "Id", "AppUserId", "CreatedDate", "DeletedDate", "DepartmentId", "Email", "FirstName", "ImagePath", "LastName", "Status", "TitleId", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { new Guid("11111111-1111-1111-1111-111111111111"), new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), new DateTime(2025, 8, 7, 17, 35, 26, 958, DateTimeKind.Local).AddTicks(2052), null, new Guid("11111111-1111-1111-1111-111111111111"), "ahmet.yilmaz@example.com", "Ahmet", null, "Yılmaz", 1, new Guid("f0000011-aaaa-bbbb-cccc-0000000000ab"), null },
-                    { new Guid("22222222-2222-2222-2222-222222222222"), new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"), new DateTime(2025, 8, 7, 17, 35, 26, 958, DateTimeKind.Local).AddTicks(2086), null, new Guid("22222222-2222-2222-2222-222222222222"), "elif.kara@example.com", "Elif", null, "Kara", 1, new Guid("f0000012-aaaa-bbbb-cccc-0000000000ac"), null },
-                    { new Guid("33333333-3333-3333-3333-333333333333"), new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), new DateTime(2025, 8, 7, 17, 35, 26, 958, DateTimeKind.Local).AddTicks(2090), null, new Guid("33333333-3333-3333-3333-333333333333"), "mehmet.demir@example.com", "Mehmet", null, "Demir", 1, new Guid("f0000013-aaaa-bbbb-cccc-0000000000ad"), null },
-                    { new Guid("44444444-4444-4444-4444-444444444444"), new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"), new DateTime(2025, 8, 7, 17, 35, 26, 958, DateTimeKind.Local).AddTicks(2093), null, new Guid("44444444-4444-4444-4444-444444444444"), "zeynep.sahin@example.com", "Zeynep", null, "Şahin", 1, new Guid("f0000014-aaaa-bbbb-cccc-0000000000ae"), null }
+                    { new Guid("11111111-1111-1111-1111-111111111111"), new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new Guid("11111111-1111-1111-1111-111111111111"), "ahmet.yilmaz@example.com", "Ahmet", null, "Yılmaz", 1, new Guid("f0000011-aaaa-bbbb-cccc-0000000000ab"), null },
+                    { new Guid("22222222-2222-2222-2222-222222222222"), new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new Guid("22222222-2222-2222-2222-222222222222"), "elif.kara@example.com", "Elif", null, "Kara", 1, new Guid("f0000012-aaaa-bbbb-cccc-0000000000ac"), null },
+                    { new Guid("33333333-3333-3333-3333-333333333333"), new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new Guid("33333333-3333-3333-3333-333333333333"), "mehmet.demir@example.com", "Mehmet", null, "Demir", 1, new Guid("f0000013-aaaa-bbbb-cccc-0000000000ad"), null },
+                    { new Guid("44444444-4444-4444-4444-444444444444"), new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new Guid("44444444-4444-4444-4444-444444444444"), "zeynep.sahin@example.com", "Zeynep", null, "Şahin", 1, new Guid("f0000014-aaaa-bbbb-cccc-0000000000ae"), null }
                 });
 
             migrationBuilder.InsertData(

@@ -1,16 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+using BUSINESS.Manager.Concrete;
 using BUSINESS.Manager.Interface;
 using CORE.Entities.Concrete;
 using CORE.Interface;
+using DTO.Concrete.EmployeeDTO;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
-namespace BUSINESS.Manager.Concrete
+public class EmployeeManager : BaseManager<IEmployeeRepository, Employee>, IEmployeeManager
 {
-    public class EmployeeManager(IEmployeeRepository service, IMapper mapper) : BaseManager<IEmployeeRepository, Employee>(service, mapper), IEmployeeManager
+    private readonly IEmployeeRepository _repo;
+    private readonly IMapper _mapper;
+
+    public EmployeeManager(IEmployeeRepository service, IMapper mapper) : base(service, mapper)
     {
+        _repo = service;
+        _mapper = mapper;
+    }
+
+    // AppUserId ile Employee + Department + Title çek
+    public async Task<GetEmployeeDTO?> GetWithDepartmentByAppUserIdAsync(Guid appUserId)
+    {
+        var entity = await _repo.GetByDefaultAsync(
+            e => e.AppUserId == appUserId,
+            join: q => q.Include(e => e.Department!)
+                        .Include(e => e.Title!)
+        );
+
+        return _mapper.Map<GetEmployeeDTO?>(entity);
     }
 }

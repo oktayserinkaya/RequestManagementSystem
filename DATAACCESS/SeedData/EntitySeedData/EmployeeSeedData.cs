@@ -1,4 +1,5 @@
 ﻿using CORE.Entities.Concrete;
+using CORE.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -16,7 +17,9 @@ public class EmployeeSeedData : IEntityTypeConfiguration<Employee>
                 Email = "ahmet.yilmaz@example.com",
                 TitleId = Guid.Parse("f0000011-aaaa-bbbb-cccc-0000000000ab"),
                 DepartmentId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-                ImagePath = null
+                ImagePath = null,
+                CreatedDate = DateTime.Parse("2025-01-01"),
+                Status = Status.Active
             },
             new Employee
             {
@@ -27,7 +30,9 @@ public class EmployeeSeedData : IEntityTypeConfiguration<Employee>
                 Email = "elif.kara@example.com",
                 TitleId = Guid.Parse("f0000012-aaaa-bbbb-cccc-0000000000ac"),
                 DepartmentId = Guid.Parse("22222222-2222-2222-2222-222222222222"),
-                ImagePath = null
+                ImagePath = null,
+                CreatedDate = DateTime.Parse("2025-01-01"),
+                Status = Status.Active
             },
             new Employee
             {
@@ -38,7 +43,9 @@ public class EmployeeSeedData : IEntityTypeConfiguration<Employee>
                 Email = "mehmet.demir@example.com",
                 TitleId = Guid.Parse("f0000013-aaaa-bbbb-cccc-0000000000ad"),
                 DepartmentId = Guid.Parse("33333333-3333-3333-3333-333333333333"),
-                ImagePath = null
+                ImagePath = null,
+                CreatedDate = DateTime.Parse("2025-01-01"),
+                Status = Status.Active
             },
             new Employee
             {
@@ -49,7 +56,9 @@ public class EmployeeSeedData : IEntityTypeConfiguration<Employee>
                 Email = "zeynep.sahin@example.com",
                 TitleId = Guid.Parse("f0000014-aaaa-bbbb-cccc-0000000000ae"),
                 DepartmentId = Guid.Parse("44444444-4444-4444-4444-444444444444"),
-                ImagePath = null
+                ImagePath = null,
+                CreatedDate = DateTime.Parse("2025-01-01"),
+                Status = Status.Active
             }
         );
     }

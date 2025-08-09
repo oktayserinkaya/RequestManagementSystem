@@ -13,7 +13,8 @@ namespace BUSINESS.AutoMapper
     {
         public CategoryBusinessMapping()
         {
-            CreateMap<Category, CategorySelectListDTO>();
+            CreateMap<Category, CategorySelectListDTO>()
+          .ForMember(d => d.Name, o => o.MapFrom(s => s.CategoryName));
         }
     }
 }

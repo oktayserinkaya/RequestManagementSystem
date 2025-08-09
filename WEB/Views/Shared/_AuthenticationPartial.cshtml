@@ -1,94 +1,74 @@
-﻿@if (User.Identity!.IsAuthenticated)
+﻿@* _AuthenticationPartial.cshtml (DARK) *@
+@if (User.Identity?.IsAuthenticated == true)
 {
-    <!-- User Profile Section -->
-    <li class="nav-item user-profile">
-        <div class="d-flex align-items-center px-3 py-2">
-            <img src="~/items/user.png" width="40" height="40" class="rounded-circle me-2" alt="User Profile" />
-            <div>
-                <div class="fw-bold">@User.Identity.Name</div>
-                <small class="text-muted">@(User.FindFirst("Department")?.Value ?? "Kullanıcı")</small>
-            </div>
-        </div>
-    </li>
+    var talepRoles = new[] { "TalepOluşturanBirim", "IhtiyacTespitKomisyonu", "SatinAlmaBirimi", "DepoBirimi", "OdemeBirimi", "Admin" };
+    var hasTalepAccess = talepRoles.Any(User.IsInRole);
 
-    <li><hr class="dropdown-divider mx-3"></li>
-
-    <!-- Role-Based Navigation -->
+    @* Admin Paneli *@
     @if (User.IsInRole("Admin"))
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
-                <i class="fas fa-cogs me-2"></i> Yönetim Paneli
+            <a class="nav-link text-white" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                <i class="material-symbols-rounded me-2">dashboard</i>
+                <span class="nav-link-text">Admin Paneli</span>
             </a>
         </li>
     }
 
-    @if (User.IsInRole("TalepOluşturanBirim"))
+    @* Talepler *@
+    @if (hasTalepAccess)
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Request" asp-controller="Requests" asp-action="MyRequests">
-                <i class="fas fa-list-check me-2"></i> Taleplerim
+            <a class="nav-link text-white collapsed" data-bs-toggle="collapse" href="#taleplerMenu">
+                <i class="material-symbols-rounded me-2">table_view</i>
+                <span class="nav-link-text">Talepler</span>
             </a>
+            <div class="collapse" id="taleplerMenu">
+                <ul class="nav flex-column ms-3">
+                    @if (User.IsInRole("TalepOluşturanBirim") || User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="Request" asp-controller="Requests" asp-action="CreateRequest">
+                                <i class="material-symbols-rounded me-2">add_circle</i> Talep Oluştur
+                            </a>
+                        </li>
+                    }
+                    @if (User.IsInRole("TalepOluşturanBirim"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="Request" asp-controller="Requests" asp-action="MyRequests">
+                                <i class="fas fa-list-check me-2"></i> Taleplerim
+                            </a>
+                        </li>
+                    }
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-area="Request" asp-controller="Requests" asp-action="Index">
+                            <i class="material-symbols-rounded me-2">list_alt</i> Tüm Talepler
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </li>
     }
 
-    @if (User.IsInRole("IhtiyacTespitKomisyonu"))
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Commission" asp-controller="Review" asp-action="Index">
-                <i class="fas fa-clipboard-check me-2"></i> İhtiyaç İnceleme
-            </a>
-        </li>
-    }
+    <li><hr class="horizontal light my-2" /></li>
 
-    @if (User.IsInRole("SatinAlmaBirimi"))
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Procurement" asp-controller="Orders" asp-action="Index">
-                <i class="fas fa-shopping-cart me-2"></i> Satın Alma
-            </a>
-        </li>
-    }
-
-    @if (User.IsInRole("DepoBirimi"))
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Warehouse" asp-controller="Stock" asp-action="Index">
-                <i class="fas fa-warehouse me-2"></i> Depo Yönetimi
-            </a>
-        </li>
-    }
-
-    @if (User.IsInRole("OdemeBirimi"))
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Finance" asp-controller="Payments" asp-action="Index">
-                <i class="fas fa-money-bill-wave me-2"></i> Ödeme İşlemleri
-            </a>
-        </li>
-    }
-
-    <li><hr class="dropdown-divider mx-3"></li>
-
-    <!-- Common User Actions -->
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="Account" asp-action="EditUser">
+        <a class="nav-link text-white" asp-controller="Account" asp-action="EditUser">
             <i class="fas fa-user-edit me-2"></i> Profil Düzenle
         </a>
     </li>
-
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="Account" asp-action="ChangePassword">
+        <a class="nav-link text-white" asp-controller="Account" asp-action="ChangePassword">
             <i class="fas fa-key me-2"></i> Şifre Değiştir
         </a>
     </li>
 
-    <li><hr class="dropdown-divider mx-3"></li>
+    <li><hr class="horizontal light my-2" /></li>
 
-    <!-- Logout -->
     <li class="nav-item">
         <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
-            <button type="submit" class="nav-link text-dark border-0 bg-transparent w-100 text-start">
+            <button type="submit" class="nav-link text-white border-0 bg-transparent w-100 text-start">
                 <i class="fas fa-sign-out-alt me-2"></i> Çıkış Yap
             </button>
         </form>
@@ -97,19 +77,17 @@
 else
 {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">
+        <a class="nav-link text-white" asp-controller="Account" asp-action="Login">
             <i class="fas fa-sign-in-alt me-2"></i> Giriş Yap
         </a>
     </li>
-
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">
+        <a class="nav-link text-white" asp-controller="Account" asp-action="Register">
             <i class="fas fa-user-plus me-2"></i> Kayıt Ol
         </a>
     </li>
-
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="Account" asp-action="ForgotPassword">
+        <a class="nav-link text-white" asp-controller="Account" asp-action="ForgotPassword">
             <i class="fas fa-question-circle me-2"></i> Şifremi Unuttum
         </a>
     </li>

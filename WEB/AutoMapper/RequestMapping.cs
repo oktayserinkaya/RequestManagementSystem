@@ -8,21 +8,18 @@ public class RequestMapping : Profile
 {
     public RequestMapping()
     {
-        CreateMap<GetRequestsVM, Request>()
-            .ReverseMap()
-            .ForMember(dest => dest.Status, src => src.MapFrom(z => z.Status.GetDisplayName()))
-            .ForMember(dest => dest.UpdatedDate, src => src.MapFrom(z => z.UpdatedDate.HasValue ? z.UpdatedDate.Value.ToString() : " - "));
+        CreateMap<CreateRequestVM, CreateRequestDTO>()
+                .ForMember(d => d.ProductId, o => o.MapFrom(s => s.ProductId))
+                .ForMember(d => d.SpecialProductName, o => o.MapFrom(s => s.SpecialProductName))
+                .ForMember(d => d.RequestDate, o => o.MapFrom(s => s.RequestDate))
+                .ForMember(d => d.Amount, o => o.MapFrom(s => s.Amount))
+                .ForMember(d => d.Description, o => o.MapFrom(s => s.Description))
+                .ForMember(d => d.ProductFeaturesFile, o => o.MapFrom(s => s.ProductFeaturesFile));
 
-        CreateMap<CreateRequestVM, CreateRequestDTO>().ReverseMap();
+        CreateMap<UpdateRequestDTO, Request>()
+    .ForMember(dest => dest.Id, opt => opt.Ignore()) // Id'yi metot parametresinden set ediyorsan Ignore
+    .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
+    .ForMember(dest => dest.Status, opt => opt.Ignore());
 
-
-        CreateMap<CreateRequestDTO, Request>()
-    .ForMember(dest => dest.EmployeeId, opt => opt.Ignore()) // çünkü bu backend'de set edilmeli
-    .ForMember(dest => dest.TitleId, opt => opt.Ignore());   // aynısı
-
-
-        CreateMap<Category, GetCategoryForSelectListDTO>().ReverseMap();
-        CreateMap<SubCategory, GetSubCategoryForSelectListDTO>().ReverseMap();
-        CreateMap<Product, GetProductForSelectListDTO>().ReverseMap();
     }
 }

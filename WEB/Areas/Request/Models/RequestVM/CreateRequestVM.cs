@@ -6,6 +6,7 @@ namespace WEB.Areas.Request.Models.RequestVM
 {
     public class CreateRequestVM : BasePersonVM
     {
+        public Guid? Id { get; set; }
         public DateTime? RequestDate { get; set; }
 
         public string? ProductFeaturesFilePath { get; set; }

@@ -15,7 +15,8 @@ namespace BUSINESS.AutoMapper
         public SubCategoryBusinessMapping()
         {
             CreateMap<SubCategory, SubCategorySelectListDTO>()
-    .ForMember(d => d.Name, o => o.MapFrom(s => s.SubCategoryName));
+    .ForMember(d => d.Name, o => o.MapFrom(s => s.SubCategoryName))
+    .ForMember(d => d.CategoryId, o => o.MapFrom(s => s.CategoryId));
 
         }
     }

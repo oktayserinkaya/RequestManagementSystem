@@ -15,6 +15,9 @@ namespace CORE.Enums
         [Display(Name = "Güncellenmiş")]
         Modified,
 
-        Passive
+        Passive,
+
+        Pending,
+        Completed
     }
 }

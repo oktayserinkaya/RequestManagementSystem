@@ -1,16 +1,14 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@ViewData["Title"] - Talep Sistemi</title>
 
-    <!-- Core CSS -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WEB.styles.css" asp-append-version="true" />
 
-    <!-- Template CSS -->
     <link href="~/TemplateResources/css/nucleo-icons.css" rel="stylesheet" />
     <link href="~/TemplateResources/css/nucleo-svg.css" rel="stylesheet" />
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
@@ -18,7 +16,7 @@
     <link id="pagestyle" href="~/TemplateResources/css/material-dashboard.css?v=3.2.0" rel="stylesheet" />
 </head>
 
-<body class="@(User.Identity?.IsAuthenticated == true ? "g-sidenav-show bg-gray-100" : "")">
+<body class="g-sidenav-show bg-gray-100">
     @if (User.Identity?.IsAuthenticated == true)
     {
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 fixed-start bg-gradient-dark" id="sidenav-main">
@@ -35,18 +33,21 @@
                 </ul>
             </div>
         </aside>
+    }
 
-        <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
-            <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur">
-                <div class="container-fluid py-1 px-3">
-                    <nav aria-label="breadcrumb">
-                        <h6 class="font-weight-bolder mb-0">@ViewData["Title"]</h6>
-                    </nav>
+    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+        <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur">
+            <div class="container-fluid py-1 px-3">
+                <nav aria-label="breadcrumb">
+                    <h6 class="font-weight-bolder mb-0">@ViewData["Title"]</h6>
+                </nav>
 
-                    <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto">
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
                         <li class="nav-item d-flex align-items-center me-3">
                             <span class="nav-link text-body font-weight-bold px-0">
-                                <i class="fa fa-user me-1"></i> @User.Identity.Name
+                                <i class="fa fa-user me-1"></i> @User.Identity!.Name
                             </span>
                         </li>
                         <li class="nav-item d-flex align-items-center">
@@ -56,37 +57,23 @@
                                 </button>
                             </form>
                         </li>
-                    </ul>
-                </div>
-            </nav>
-
-            <div class="container-fluid py-4">
-                @RenderBody()
-                <footer class="footer pt-3">
-                    <div class="container-fluid">
-                        <div class="text-center text-sm text-muted">
-                            &copy; 2025 Talep Sistemi - <a asp-controller="Home" asp-action="Privacy">Gizlilik</a>
-                        </div>
-                    </div>
-                </footer>
+                    }
+                </ul>
             </div>
-        </main>
-    }
-    else
-    {
-        <div class="login-page-container">
+        </nav>
+
+        <div class="container-fluid py-4">
             @RenderBody()
-            <footer class="footer pt-3 fixed-bottom bg-white">
+            <footer class="footer pt-3">
                 <div class="container-fluid">
                     <div class="text-center text-sm text-muted">
-                        &copy; 2025 Talep Sistemi - GEMİK
+                        &copy; 2025 Talep Sistemi - <a asp-controller="Home" asp-action="Privacy">Gizlilik</a>
                     </div>
                 </div>
             </footer>
         </div>
-    }
+    </main>
 
-    <!-- Core JS -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/TemplateResources/js/plugins/perfect-scrollbar.min.js"></script>

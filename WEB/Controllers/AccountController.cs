@@ -46,9 +46,29 @@ namespace WEB.Controllers
         private readonly IProductManager _productManager = productManager;
         private readonly IMapper _mapper = mapper;
 
-        public IActionResult Login() => View();
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> Login()
+        {
+            if (User?.Identity?.IsAuthenticated == true)
+            {
+                // Zaten girişli kullanıcıyı rolüne göre yönlendir
+                var userName = User.Identity!.Name!;
+                if (await _userManager.IsUserInRoleAsync(userName, "Admin"))
+                    return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
 
+                if (await _userManager.IsUserInRoleAsync(userName, "TalepOluşturanBirim"))
+                    return RedirectToAction("MyRequests", "Requests", new { area = "Request" });
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View();
+        }
+
+        [AllowAnonymous]
         [HttpPost, ValidateAntiForgeryToken]
+      
         public async Task<IActionResult> Login(LoginVM model)
         {
             if (!ModelState.IsValid)
@@ -101,9 +121,9 @@ namespace WEB.Controllers
         }
 
 
-
-
         [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await _userManager.LogoutAsync();

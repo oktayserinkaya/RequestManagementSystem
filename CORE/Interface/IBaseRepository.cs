@@ -16,6 +16,7 @@ namespace CORE.Interface
         Task<bool> UpdateAsync(T entity);
         Task<bool> DeleteAsync(T entity);
 
+        Task<int> CountAsync(Expression<Func<T, bool>>? predicate = null);
         Task<T?> GetByIdAsync(Guid id);
         Task<List<T>> GetByDefaultsAsync(Expression<Func<T, bool>> expression, Func<IQueryable<T>, IIncludableQueryable<T, object>>? join = null);
         Task<T?> GetByDefaultAsync(Expression<Func<T, bool>> expression, Func<IQueryable<T>, IIncludableQueryable<T, object>>? join = null);
@@ -33,5 +34,6 @@ namespace CORE.Interface
 
         Task<IDbContextTransaction> BeginTransactionAsync();
 
+        
     }
 }

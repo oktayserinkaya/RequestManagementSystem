@@ -14,7 +14,8 @@ namespace BUSINESS.AutoMapper
         public ProductBusinessMapping()
         {
             CreateMap<Product, ProductSelectListDTO>()
-                .ForMember(d => d.Name, o => o.MapFrom(s => s.ProductName));
+    .ForMember(d => d.Name, o => o.MapFrom(s => s.ProductName))
+    .ForMember(d => d.SubCategoryId, o => o.MapFrom(s => s.SubCategoryId));
         }
     }
 }

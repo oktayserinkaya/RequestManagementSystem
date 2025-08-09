@@ -20,7 +20,7 @@ namespace CORE.Entities.Concrete
 
         public DateTime? RequestDate { get; set; }
         public string? SpecialProductName { get; set; }
-        public double Amount { get; set; }
+        public decimal? Amount { get; set; }
 
         public string? ProductFeaturesFilePath { get; set; }
         public string? ProductFeatures { get; set; }

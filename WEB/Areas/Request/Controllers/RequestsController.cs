@@ -17,7 +17,8 @@ using WEB.Areas.Request.Models.RequestVM;
 namespace WEB.Areas.Request.Controllers
 {
     [Area("Request")]
-    [Authorize] // tüm aksiyonlar için yetki
+    [Authorize]
+    [Route("[area]/[controller]")]
     public class RequestsController : Controller
     {
         private readonly IRequestManager _requestManager;
@@ -49,7 +50,7 @@ namespace WEB.Areas.Request.Controllers
             _productManager = productManager;
         }
 
-        [HttpGet]
+        [HttpGet("")]
         public async Task<IActionResult> Index()
         {
             var model = await _requestManager.GetFilteredListAsync(
@@ -57,18 +58,13 @@ namespace WEB.Areas.Request.Controllers
                 {
                     Id = x.Id,
                     RequestDate = x.RequestDate,
-
-                    // FullName kaynakları
                     FirstName = x.Employee != null ? x.Employee.FirstName : null,
                     LastName = x.Employee != null ? x.Employee.LastName : null,
                     Email = x.Employee != null ? x.Employee.Email : null,
-
                     DepartmentName = (x.Employee != null && x.Employee.Department != null)
                                        ? x.Employee.Department.DepartmentName
                                        : string.Empty,
-
                     TitleName = (x.Title != null) ? x.Title.TitleName : string.Empty,
-
                     CreatedDate = x.CreatedDate,
                     UpdatedDate = x.UpdatedDate,
                     StatusEnum = x.Status
@@ -80,7 +76,6 @@ namespace WEB.Areas.Request.Controllers
                     .Include(z => z.Title!)
             );
 
-            // Enum -> DisplayName
             foreach (var item in model)
                 item.Status = item.StatusEnum.GetDisplayName();
 
@@ -88,36 +83,45 @@ namespace WEB.Areas.Request.Controllers
         }
 
         // GET: /Request/Requests/CreateRequest
-        [HttpGet]
+        [HttpGet("CreateRequest")]
         public async Task<IActionResult> CreateRequest()
         {
-            var userId = await _userManager.GetUserIdByClaimsAsync(User);
-            var employee = await _employeeManager.GetByDefaultAsync<GetEmployeeDTO>(x => x.AppUserId == userId);
-
-            if (employee == null)
+            var vm = new CreateRequestVM
             {
-                TempData["Error"] = "Personel bilgisi bulunamadı.";
-                return RedirectToAction(nameof(Index));
-            }
-
-            var model = new CreateRequestVM
-            {
-                FirstName = employee.FirstName,
-                LastName = employee.LastName,
-                DepartmentId = employee.DepartmentId,
-                DepartmentName = employee.DepartmentName,
                 RequestDate = DateTime.Today
             };
 
-            await FillDropdownsAsync(model);
-            return View(model); // Areas/Request/Views/Requests/CreateRequest.cshtml
+            // Talep eden kişi/departman alanlarını doldur
+            await PopulateRequesterFieldsAsync(vm);
+
+            await FillDropdownsAsync(vm);
+            return View(vm);
         }
 
-        // POST: /Request/Requests/CreateRequest
-        [HttpPost]
+        [HttpPost("CreateRequest")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateRequest(CreateRequestVM model)
         {
+            await PopulateRequesterFieldsAsync(model);
+
+            if (!model.RequestDate.HasValue)
+                model.RequestDate = DateTime.Today;
+
+            if (!model.ProductId.HasValue && string.IsNullOrWhiteSpace(model.SpecialProductName))
+                ModelState.AddModelError(nameof(model.ProductId), "Ürün seçin veya Özel Ürün Adı girin.");
+
+            if (model.ProductFeaturesFile != null)
+            {
+                var file = model.ProductFeaturesFile;
+                var isPdf = file.ContentType?.Equals("application/pdf", StringComparison.OrdinalIgnoreCase) == true
+                            || Path.GetExtension(file.FileName).Equals(".pdf", StringComparison.OrdinalIgnoreCase);
+                if (!isPdf)
+                    ModelState.AddModelError(nameof(model.ProductFeaturesFile), "Sadece PDF yükleyebilirsiniz.");
+                const long maxBytes = 10 * 1024 * 1024;
+                if (file.Length > maxBytes)
+                    ModelState.AddModelError(nameof(model.ProductFeaturesFile), "Dosya boyutu 10MB'ı geçemez.");
+            }
+
             if (!ModelState.IsValid)
             {
                 await FillDropdownsAsync(model);
@@ -125,36 +129,63 @@ namespace WEB.Areas.Request.Controllers
             }
 
             var userId = await _userManager.GetUserIdByClaimsAsync(User);
-            var employee = await _employeeManager.GetByDefaultAsync<GetEmployeeDTO>(x => x.AppUserId == userId);
+            var employee = await _employeeManager.GetWithDepartmentByAppUserIdAsync(userId); // Include'lu versiyon
+
             if (employee == null)
             {
                 TempData["Error"] = "Personel bilgisi alınamadı.";
-                return RedirectToAction(nameof(Index));
+                await FillDropdownsAsync(model);
+                return View(model);
+            }
+
+            if (!employee.DepartmentId.HasValue)
+            {
+                ModelState.AddModelError("", "Personelin departmanı tanımlı değil.");
+                await FillDropdownsAsync(model);
+                return View(model);
+            }
+
+            // Eğer Request.TitleId zorunlu bir alan ise:
+            if (!employee.TitleId.HasValue)
+            {
+                ModelState.AddModelError("", "Personelin unvanı (Title) tanımlı değil.");
+                await FillDropdownsAsync(model);
+                return View(model);
             }
 
             // VM -> DTO -> Entity
             var dto = _mapper.Map<CreateRequestDTO>(model);
             var entity = _mapper.Map<CORE.Entities.Concrete.Request>(dto);
 
-            // Ek zorunlu alanlar
+            // 🔴 ZORUNLU FK’LERİ AYARLA
             entity.AppUserId = userId;
-            entity.DepartmentId = employee.DepartmentId;
+            entity.EmployeeId = employee.Id;                 // <- ÖNEMLİ
+            entity.DepartmentId = employee.DepartmentId.Value; // <- ÖNEMLİ
+            entity.TitleId = employee.TitleId.Value;      // <- Title zorunluysa
+
+            if (model.ProductId.HasValue)
+            {
+                entity.ProductId = model.ProductId.Value;
+            }
+            else
+            {
+                ModelState.AddModelError(nameof(model.ProductId), "Lütfen bir ürün seçiniz.");
+                await FillDropdownsAsync(model);
+                return View(model);
+            }
 
             // Dosya yükleme
             if (dto.ProductFeaturesFile != null)
             {
                 var fileName = Guid.NewGuid() + Path.GetExtension(dto.ProductFeaturesFile.FileName);
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName);
-
                 Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
                 using var stream = new FileStream(filePath, FileMode.Create);
                 await dto.ProductFeaturesFile.CopyToAsync(stream);
-
                 entity.ProductFeaturesFilePath = fileName;
             }
 
             var result = await _requestManager.AddEntityAsync(entity);
-
             if (!result)
             {
                 TempData["Error"] = "Talep oluşturulamadı.";
@@ -166,10 +197,150 @@ namespace WEB.Areas.Request.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+        // GET: /Request/Requests/UpdateRequest/{id}
+        [HttpGet("UpdateRequest/{id:guid}")]
+        public async Task<IActionResult> UpdateRequest(Guid id)
+        {
+            var entity = await _requestManager.GetByDefaultAsync<RequestEntity>(
+                x => x.Id == id && x.Status != CORE.Enums.Status.Passive,
+                join: q => q
+                    .Include(z => z.Employee)!.ThenInclude(z => z!.Department!)
+                    .Include(z => z.Title!)
+                    .Include(z => z.Product)!.ThenInclude(p => p!.SubCategory)!.ThenInclude(sc => sc!.Category)!
+            );
+
+            if (entity == null)
+            {
+                TempData["Error"] = "Talep bulunamadı.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var vm = new CreateRequestVM
+            {
+                Id = entity.Id,
+                RequestDate = entity.RequestDate ?? DateTime.Today,
+                FirstName = entity.Employee?.FirstName,
+                LastName = entity.Employee?.LastName,
+                DepartmentId = entity.DepartmentId,
+                DepartmentName = entity.Employee?.Department?.DepartmentName,
+                ProductId = entity.ProductId,
+                SubCategoryId = entity.Product?.SubCategoryId,
+                CategoryId = entity.Product?.SubCategory?.CategoryId,
+                SpecialProductName = entity.SpecialProductName,
+                Amount = entity.Amount,
+                Description = entity.Description
+            };
+
+            await FillDropdownsAsync(vm);
+            return View("CreateRequest", vm);
+        }
+
+        // POST: /Request/Requests/UpdateRequest/{id}
+        [HttpPost("UpdateRequest/{id:guid}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateRequest(Guid id, CreateRequestVM model)
+        {
+            // Form yeniden çizilirse üst bilgileri doldur
+            await PopulateRequesterFieldsAsync(model);
+
+            if (!model.RequestDate.HasValue)
+                model.RequestDate = DateTime.Today;
+
+            if (!model.ProductId.HasValue && string.IsNullOrWhiteSpace(model.SpecialProductName))
+                ModelState.AddModelError(nameof(model.ProductId), "Ürün seçin veya Özel Ürün Adı girin.");
+
+            if (model.ProductFeaturesFile != null)
+            {
+                var file = model.ProductFeaturesFile;
+                var isPdf = file.ContentType?.Equals("application/pdf", StringComparison.OrdinalIgnoreCase) == true
+                            || Path.GetExtension(file.FileName).Equals(".pdf", StringComparison.OrdinalIgnoreCase);
+
+                if (!isPdf)
+                    ModelState.AddModelError(nameof(model.ProductFeaturesFile), "Sadece PDF yükleyebilirsiniz.");
+
+                const long maxBytes = 10 * 1024 * 1024;
+                if (file.Length > maxBytes)
+                    ModelState.AddModelError(nameof(model.ProductFeaturesFile), "Dosya boyutu 10MB'ı geçemez.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                await FillDropdownsAsync(model);
+                return View("CreateRequest", model);
+            }
+
+            // Dosya yüklendiyse diske kaydet ve path'i DTO'ya vereceğiz
+            string? fileName = null;
+            if (model.ProductFeaturesFile != null)
+            {
+                fileName = Guid.NewGuid() + Path.GetExtension(model.ProductFeaturesFile.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName);
+
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
+                using var stream = new FileStream(filePath, FileMode.Create);
+                await model.ProductFeaturesFile.CopyToAsync(stream);
+            }
+
+            // DTO oluştur: sadece değiştirilebilir alanları set et
+            var dto = new DTO.Concrete.RequestDTO.UpdateRequestDTO
+            {
+                Id = id,
+                RequestDate = model.RequestDate,
+                SpecialProductName = model.SpecialProductName,
+                Amount = model.Amount,
+                Description = model.Description,
+                ProductId = model.ProductId,                          // zorunluysa dolu gelmiş olacak
+                ProductFeaturesFilePath = fileName ?? null            // dosya gelmediyse null -> map'te dokunulmayacak
+                                                                      // FK'lere (AppUserId, EmployeeId, DepartmentId, TitleId) dokunmuyoruz
+            };
+
+            // KAYDET
+            var ok = await _requestManager.UpdateAsync(dto, id);
+
+            if (!ok)
+            {
+                TempData["Error"] = "Talep güncellenemedi veya bulunamadı.";
+                await FillDropdownsAsync(model);
+                return View("CreateRequest", model);
+            }
+
+            TempData["Success"] = "Talep başarıyla güncellendi.";
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
+        // --- Helpers ---
+
         /// <summary>
-        /// Dropdown’ları ViewModel üzerinden doldurur (ViewBag yok).
-        /// Boş koleksiyonlar gönderilir; null bırakılmaz.
+        /// Giriş yapan kullanıcının ad/soyad ve departman bilgilerini Employee üzerinden doldurur.
+        /// Employee bulunamazsa claims fallback’i dener.
         /// </summary>
+        private async Task PopulateRequesterFieldsAsync(CreateRequestVM vm)
+        {
+            var userId = await _userManager.GetUserIdByClaimsAsync(User);
+
+            // 🔸 BURASI GÜNCEL: Include ile gelen DTO
+            var employee = await _employeeManager.GetWithDepartmentByAppUserIdAsync(userId);
+
+            if (employee != null)
+            {
+                vm.FirstName = employee.FirstName;
+                vm.LastName = employee.LastName;
+                vm.DepartmentId = employee.DepartmentId;
+                vm.DepartmentName = employee.DepartmentName;
+                return;
+            }
+
+            // Fallback: Claims
+            vm.FirstName = vm.FirstName ?? User.FindFirst("given_name")?.Value
+                                        ?? User.FindFirst("FirstName")?.Value;
+            vm.LastName = vm.LastName ?? User.FindFirst("family_name")?.Value
+                                        ?? User.FindFirst("LastName")?.Value;
+            vm.DepartmentName = vm.DepartmentName ?? User.FindFirst("Department")?.Value;
+        }
+
         private async Task FillDropdownsAsync(CreateRequestVM model)
         {
             var categories = await _categoryManager.GetByDefaultsAsync<CategorySelectListDTO>(x => x.Status != Status.Passive)
@@ -179,10 +350,39 @@ namespace WEB.Areas.Request.Controllers
             var products = await _productManager.GetByDefaultsAsync<ProductSelectListDTO>(x => x.Status != Status.Passive)
                                 ?? new List<ProductSelectListDTO>();
 
-            // DİKKAT: DTO’larda "Name" property’si dolu olmalı (mappingte ProductName->Name vb.)
             model.CategoryList = new SelectList(categories, "Id", "Name");
             model.SubCategoryList = new SelectList(subCategories, "Id", "Name");
             model.ProductList = new SelectList(products, "Id", "Name");
         }
+
+        [HttpGet("GetSubCategories")]
+        public async Task<IActionResult> GetSubCategories([FromQuery] Guid categoryId)
+        {
+            if (categoryId == Guid.Empty)
+                return Json(Array.Empty<SubCategorySelectListDTO>());
+
+            var subCategories = await _subCategoryManager
+                .GetByDefaultsAsync<SubCategorySelectListDTO>(x => x.Status != Status.Passive && x.CategoryId == categoryId)
+                ?? new List<SubCategorySelectListDTO>();
+
+            var result = subCategories.Select(s => new { s.Id, s.Name }).ToList();
+            return Json(result);
+        }
+
+        [HttpGet("GetProducts")]
+        public async Task<IActionResult> GetProducts([FromQuery] Guid subCategoryId)
+        {
+            if (subCategoryId == Guid.Empty)
+                return Json(Array.Empty<ProductSelectListDTO>());
+
+            var products = await _productManager
+                .GetByDefaultsAsync<ProductSelectListDTO>(x => x.Status != Status.Passive && x.SubCategoryId == subCategoryId)
+                ?? new List<ProductSelectListDTO>();
+
+            var result = products.Select(p => new { p.Id, p.Name }).ToList();
+            return Json(result);
+        }
+
+
     }
 }
