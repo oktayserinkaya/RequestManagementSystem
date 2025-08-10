@@ -41,6 +41,9 @@ namespace BUSINESS.Manager.Concrete
             return await _service.UpdateAsync(entity);
         }
 
+        public async Task<bool> UpdateEntityAsync(C entity)
+        => await _service.UpdateAsync(entity);
+
         public async Task<bool> DeleteAsync(Guid id)
         {
             var entity = await _service.GetByIdAsync(id);

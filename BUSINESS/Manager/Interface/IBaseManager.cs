@@ -20,6 +20,8 @@ namespace BUSINESS.Manager.Interface
         Task<bool> AddAsync(BaseDTO dto);
         Task<bool> AddEntityAsync(C entity);
         Task<bool> UpdateAsync(BaseDTO dto, Guid id);
+
+        Task<bool> UpdateEntityAsync(C entity);
         Task<bool> DeleteAsync(Guid id);
 
         Task<T?> GetByIdAsync<T>(Guid id);

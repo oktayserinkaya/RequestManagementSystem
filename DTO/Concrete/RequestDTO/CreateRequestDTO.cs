@@ -9,7 +9,7 @@ namespace DTO.Concrete.RequestDTO
         public DateTime? RequestDate { get; set; }
         public string? ProductFeaturesFilePath { get; set; }
         public IFormFile? ProductFeaturesFile { get; set; }
-        public double Amount { get; set; }
+        public decimal? Amount { get; set; }
         public string? SpecialProductName { get; set; }
 
         public Guid? DepartmentId { get; set; }

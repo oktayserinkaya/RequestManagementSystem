@@ -14,7 +14,7 @@ namespace WEB.Areas.Request.Models.RequestVM
 
         [Required(ErrorMessage = "Miktar alanı zorunludur.")]
         [Range(1, double.MaxValue, ErrorMessage = "Miktar en az 1 olmalıdır.")]
-        public double Amount { get; set; }
+        public decimal? Amount { get; set; }
 
         public string? SpecialProductName { get; set; }
 
