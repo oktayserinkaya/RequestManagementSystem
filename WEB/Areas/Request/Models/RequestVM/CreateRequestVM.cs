@@ -11,6 +11,7 @@ namespace WEB.Areas.Request.Models.RequestVM
 
         public string? ProductFeaturesFilePath { get; set; }
         public IFormFile? ProductFeaturesFile { get; set; }
+        public string? ExistingProductFeaturesFilePath { get; set; }
 
         [Required(ErrorMessage = "Miktar alanı zorunludur.")]
         [Range(1, double.MaxValue, ErrorMessage = "Miktar en az 1 olmalıdır.")]
