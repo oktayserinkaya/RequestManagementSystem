@@ -84,5 +84,7 @@ namespace BUSINESS.Manager.Concrete
         public async Task<IDbContextTransaction> BeginTransactionAsync()
             => await _service.BeginTransactionAsync();
 
+        public Task<int> GetCountAsync(Expression<Func<C, bool>>? predicate = null) => _service.CountAsync(predicate);
+        
     }
 }

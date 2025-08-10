@@ -1,6 +1,128 @@
-﻿@{
-	ViewData["Title"] = "Index";
+﻿@model WEB.Areas.Admin.Models.DashboardVM.DashboardIndexVM
+@{
+    ViewData["Title"] = "Dashboard";
 }
 
+<div class="row gy-4 gx-3">
+    <div class="col-xl-4 col-sm-6">
+        <div class="card">
+            <div class="card-header p-2 ps-3">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="text-sm mb-0 text-capitalize">Toplam Talepler</p>
+                        <h4 class="mb-0">@Model.TotalRequests</h4>
+                    </div>
+                    <div class="icon icon-md icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-lg">
+                        <i class="material-symbols-rounded opacity-10">weekend</i>
+                    </div>
+                </div>
+            </div>
+            <hr class="dark horizontal my-0" />
+        </div>
+    </div>
 
-<h1>Admin Paneline Hoşgeldiniz!</h1>
+    <div class="col-xl-4 col-sm-6">
+        <div class="card">
+            <div class="card-header p-2 ps-3">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="text-sm mb-0 text-capitalize">Onay Bekleyenler</p>
+                        <h4 class="mb-0">@Model.PendingRequests</h4>
+                    </div>
+                    <div class="icon icon-md icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-lg">
+                        <i class="material-symbols-rounded opacity-10">person</i>
+                    </div>
+                </div>
+            </div>
+            <hr class="dark horizontal my-0" />
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-sm-6">
+        <div class="card">
+            <div class="card-header p-2 ps-3">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="text-sm mb-0 text-capitalize">Tamamlananlar</p>
+                        <h4 class="mb-0">@Model.CompletedRequests</h4>
+                    </div>
+                    <div class="icon icon-md icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-lg">
+                        <i class="material-symbols-rounded opacity-10">leaderboard</i>
+                    </div>
+                </div>
+            </div>
+            <hr class="dark horizontal my-0" />
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid py-2">
+    <div class="row">
+        <div class="col-12">
+            <div class="card my-4">
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                    <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
+                        <h6 class="text-white text-capitalize ps-3">Tüm Talepler</h6>
+                    </div>
+                </div>
+
+                <div class="card-body px-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Talep Oluşturan</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Birimi/Görevi</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Durum</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Eklenme Tarihi</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Güncellenme Tarihi</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Talep Tarihi</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Güncelle</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Sil</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var request in Model.Requests)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">@request.FullName</h6>
+                                                    <p class="text-xs text-secondary mb-0">@request.Email</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p class="text-xs font-weight-bold mb-0">@request.DepartmentName</p>
+                                            <p class="text-xs text-secondary mb-0">@request.TitleName</p>
+                                        </td>
+                                        <td class="align-middle text-center text-sm">
+                                            <span class="badge badge-sm bg-gradient-success">@request.Status</span>
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            <span class="text-secondary text-xs font-weight-bold">@request.CreatedDate.ToShortDateString()</span>
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            <span class="text-secondary text-xs font-weight-bold">@request.UpdatedDate?.ToShortDateString()</span>
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            <span class="text-secondary text-xs font-weight-bold">@request.RequestDate?.ToShortDateString()</span>
+                                        </td>
+                                        <td class="align-middle">
+                                            <a class="text-secondary font-weight-bold text-xs" asp-area="Request" asp-controller="Requests" asp-action="UpdateRequest" asp-route-id="@request.Id">Güncelle</a>
+                                        </td>
+                                        <td class="align-middle">
+                                            <a class="text-secondary font-weight-bold text-xs" asp-area="Request" asp-controller="Requests" asp-action="DeleteRequest" asp-route-id="@request.Id">Sil</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

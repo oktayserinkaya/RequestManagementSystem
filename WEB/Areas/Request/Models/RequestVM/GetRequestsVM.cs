@@ -8,14 +8,14 @@ namespace WEB.Areas.Request.Models.RequestVM
     public class GetRequestsVM : BasePersonVM
     {
         public Guid Id { get; set; }
-        public DateTime? RequestDate { get; set; }
-        public required string TitleName { get; set; }
-        public required string DepartmentName { get; set; }
+        public string DepartmentName { get; set; } = "";
+        public string TitleName { get; set; } = "";
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
-
+        public DateTime? RequestDate { get; set; }
+        public string Status { get; set; } = "";
         public Status StatusEnum { get; set; }
-        public string Status { get; set; } = string.Empty;
+
 
     }
 

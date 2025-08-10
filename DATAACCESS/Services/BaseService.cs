@@ -49,26 +49,31 @@ namespace DATAACCESS.Services
 
         public Task<bool> AnyAsync(Expression<Func<T, bool>> expression) => _table.AnyAsync(expression);
 
-        public async Task<List<T>> GetByDefaultsAsync(Expression<Func<T, bool>> expression, Func<IQueryable<T>, IIncludableQueryable<T, object>>? join = null)
+        public async Task<List<T>> GetByDefaultsAsync(
+        Expression<Func<T, bool>> expression,
+        Func<IQueryable<T>, IIncludableQueryable<T, object>>? join = null)
         {
             IQueryable<T> query = _table;
-
             if (join != null)
                 query = join(query);
-            return await _table.Where(expression).ToListAsync();
+
+            // ❗ ÖNCE: return await _table.Where(expression).ToListAsync();
+            return await query.Where(expression).ToListAsync();
         }
 
-        public async Task<T?> GetByDefaultAsync(Expression<Func<T, bool>> expression, Func<IQueryable<T>, IIncludableQueryable<T, object>>? join = null)
+        public async Task<T?> GetByDefaultAsync(
+     Expression<Func<T, bool>> expression,
+     Func<IQueryable<T>, IIncludableQueryable<T, object>>? join = null)
         {
             IQueryable<T> query = _table;
-
             if (join != null)
                 query = join(query);
 
             return await query.FirstOrDefaultAsync(expression);
         }
 
-        public async Task<T?> GetByIdAsync(Guid id) => await _table.FirstOrDefaultAsync(x=>x.Status != Status.Passive && x.Id == id);
+
+        public async Task<T?> GetByIdAsync(Guid id) => await _table.FirstOrDefaultAsync(x => x.Status != Status.Passive && x.Id == id);
 
         public async Task<List<TResult>> GetFilteredList<TResult>(Expression<Func<T, TResult>> select, Expression<Func<T, bool>>? where = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, Func<IQueryable<T>, IIncludableQueryable<T, object>>? join = null)
         {
@@ -84,6 +89,12 @@ namespace DATAACCESS.Services
             return await query.Select(select).ToListAsync();
         }
 
+        public async Task<int> CountAsync(Expression<Func<T, bool>>? predicate = null)
+        {
+            if (predicate is null)
+                return await _table.CountAsync();
+            return await _table.CountAsync(predicate);
+        }
         public async Task<IDbContextTransaction> BeginTransactionAsync() => await _context.Database.BeginTransactionAsync();
 
         private async Task<bool> SaveAsync() => await _context.SaveChangesAsync() > 0;

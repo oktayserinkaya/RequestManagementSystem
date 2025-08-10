@@ -6,10 +6,10 @@ namespace WEB.Areas.Request.Models.RequestVM
 {
     public class CreateRequestVM : BasePersonVM
     {
+        public Guid? Id { get; set; }
         public DateTime? RequestDate { get; set; }
 
         public string? ProductFeaturesFilePath { get; set; }
-
         public IFormFile? ProductFeaturesFile { get; set; }
 
         [Required(ErrorMessage = "Miktar alanı zorunludur.")]
@@ -18,7 +18,8 @@ namespace WEB.Areas.Request.Models.RequestVM
 
         public string? SpecialProductName { get; set; }
 
-        public string? DepartmentName { get; set; } // Sadece görüntü için (readonly input)
+        public string? DepartmentName { get; set; }
+        public Guid? DepartmentId { get; set; }
 
         [Required(ErrorMessage = "Kategori seçimi zorunludur.")]
         public Guid? CategoryId { get; set; }
@@ -31,10 +32,13 @@ namespace WEB.Areas.Request.Models.RequestVM
 
         public string? Description { get; set; }
 
-        // Bu alanlar View'da yoksa validation'a sokulmamalı
         public string? CategoryName { get; set; }
         public string? SubCategoryName { get; set; }
         public string? ProductName { get; set; }
-        public Guid? DepartmentId { get; set; }
+
+        // Dropdown’lar ViewModel içinde
+        public SelectList? CategoryList { get; set; }
+        public SelectList? SubCategoryList { get; set; }
+        public SelectList? ProductList { get; set; }
     }
 }

@@ -27,6 +27,7 @@ namespace BUSINESS.Manager.Interface
 
         Task<T?> GetByDefaultAsync<T>(Expression<Func<C, bool>> expression, Func<IQueryable<C>, IIncludableQueryable<C, object>>? join = null);
 
+
         Task<bool> AnyAsync(Expression<Func<C, bool>> expression);
 
         // TResult genel tip parametresi ile çalışan asenkron bir metot tanımlıyor
@@ -49,7 +50,7 @@ namespace BUSINESS.Manager.Interface
             // IQueryable<C> alıp include edilmiş IIncludableQueryable dönen bir fonksiyon, null olabilir
             Func<IQueryable<C>, IIncludableQueryable<C, object>>? join = null
             );
-
+        Task<int> GetCountAsync(Expression<Func<C, bool>>? predicate = null);
         Task<IDbContextTransaction> BeginTransactionAsync();
 
     }
