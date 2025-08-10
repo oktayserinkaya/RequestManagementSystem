@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DATAACCESS.Migrations.AppDb
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250809105700_Initiliate")]
-    partial class Initiliate
+    [Migration("20250810191726_Initiliaz")]
+    partial class Initiliaz
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -427,8 +427,8 @@ namespace DATAACCESS.Migrations.AppDb
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<double>("Amount")
-                        .HasColumnType("double precision");
+                    b.Property<decimal?>("Amount")
+                        .HasColumnType("numeric");
 
                     b.Property<Guid>("AppUserId")
                         .HasColumnType("uuid");
@@ -504,7 +504,7 @@ namespace DATAACCESS.Migrations.AppDb
                         new
                         {
                             Id = new Guid("10000000-0000-0000-0000-0000000000ab"),
-                            Amount = 1.0,
+                            Amount = 1.0m,
                             AppUserId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
                             CommissionNote = "Toplantı odası için",
                             CreatedDate = new DateTime(2025, 6, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -521,7 +521,7 @@ namespace DATAACCESS.Migrations.AppDb
                         new
                         {
                             Id = new Guid("10000000-0000-0000-0000-0000000000ac"),
-                            Amount = 2.0,
+                            Amount = 2.0m,
                             AppUserId = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
                             CommissionNote = "Bilgi İşlem birimi için",
                             CreatedDate = new DateTime(2025, 6, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -538,7 +538,7 @@ namespace DATAACCESS.Migrations.AppDb
                         new
                         {
                             Id = new Guid("10000000-0000-0000-0000-0000000000ad"),
-                            Amount = 1.0,
+                            Amount = 1.0m,
                             AppUserId = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
                             CommissionNote = "Yönetici kullanımı",
                             CreatedDate = new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -555,7 +555,7 @@ namespace DATAACCESS.Migrations.AppDb
                         new
                         {
                             Id = new Guid("10000000-0000-0000-0000-0000000000ae"),
-                            Amount = 4.0,
+                            Amount = 4.0m,
                             AppUserId = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"),
                             CommissionNote = "Etkinlik alanı için ses sistemi",
                             CreatedDate = new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),

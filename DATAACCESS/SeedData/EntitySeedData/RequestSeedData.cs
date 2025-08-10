@@ -13,7 +13,7 @@ public class RequestSeedData : IEntityTypeConfiguration<Request>
                 Id = Guid.Parse("10000000-0000-0000-0000-0000000000ab"),
                 RequestDate = DateTime.Parse("2025-06-26"),
                 SpecialProductName = "Projeksiyon Cihazı",
-                Amount = 1.0,
+                Amount = 1.0m,
                 ProductFeatures = "Full HD, HDMI destekli",
                 CommissionNote = "Toplantı odası için",
                 IsApproved = false,
@@ -30,7 +30,7 @@ public class RequestSeedData : IEntityTypeConfiguration<Request>
                 Id = Guid.Parse("10000000-0000-0000-0000-0000000000ac"),
                 RequestDate = DateTime.Parse("2025-06-27"),
                 SpecialProductName = "Projeksiyon Cihazı", // Açıkça string olarak null atama
-                Amount = 2.0,
+                Amount = 2.0m,
                 ProductFeatures = "Full HD, HDMI destekli", // Açıkça string olarak null atama
                 CommissionNote = "Bilgi İşlem birimi için",
                 IsApproved = true,
@@ -47,7 +47,7 @@ public class RequestSeedData : IEntityTypeConfiguration<Request>
                 Id = Guid.Parse("10000000-0000-0000-0000-0000000000ad"),
                 RequestDate = DateTime.Parse("2025-06-28"),
                 SpecialProductName = "Full HD, HDMI destekli", // Açıkça string olarak null atama
-                Amount = 1.0,
+                Amount = 1.0m,
                 ProductFeatures = "Full HD, HDMI destekli", // Açıkça string olarak null atama
                 CommissionNote = "Yönetici kullanımı",
                 IsApproved = true,
@@ -64,7 +64,7 @@ public class RequestSeedData : IEntityTypeConfiguration<Request>
                 Id = Guid.Parse("10000000-0000-0000-0000-0000000000ae"),
                 RequestDate = DateTime.Parse("2025-06-30"),
                 SpecialProductName = "Full HD, HDMI destekli", // Açıkça string olarak null atama
-                Amount = 4.0,
+                Amount = 4.0m,
                 ProductFeatures = "Full HD, HDMI destekli", // Açıkça string olarak null atama
                 CommissionNote = "Etkinlik alanı için ses sistemi",
                 IsApproved = false,

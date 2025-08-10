@@ -17,9 +17,9 @@ public class RequestMapping : Profile
                 .ForMember(d => d.ProductFeaturesFile, o => o.MapFrom(s => s.ProductFeaturesFile));
 
         CreateMap<UpdateRequestDTO, Request>()
-    .ForMember(dest => dest.Id, opt => opt.Ignore()) // Id'yi metot parametresinden set ediyorsan Ignore
-    .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
-    .ForMember(dest => dest.Status, opt => opt.Ignore());
+     .ForMember(d => d.CommissionNote, o => o.MapFrom(s => s.Description))
+     // dosya yolu null ise mevcut değeri koru
+     .ForAllMembers(o => o.Condition((src, dest, srcMember) => srcMember != null));
 
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DATAACCESS.Migrations.AppDb
 {
     /// <inheritdoc />
-    public partial class Initiliate : Migration
+    public partial class Initiliaz : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -157,7 +157,7 @@ namespace DATAACCESS.Migrations.AppDb
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     RequestDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     SpecialProductName = table.Column<string>(type: "text", nullable: true),
-                    Amount = table.Column<double>(type: "double precision", nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric", nullable: true),
                     ProductFeaturesFilePath = table.Column<string>(type: "text", nullable: true),
                     ProductFeatures = table.Column<string>(type: "text", nullable: true),
                     CommissionNote = table.Column<string>(type: "text", nullable: true),
@@ -379,10 +379,10 @@ namespace DATAACCESS.Migrations.AppDb
                 columns: new[] { "Id", "Amount", "AppUserId", "CommissionNote", "CreatedDate", "DeletedDate", "DepartmentId", "EmployeeId", "EmployeeId1", "IsApproved", "ProductFeatures", "ProductFeaturesFilePath", "ProductId", "ProductId1", "RequestDate", "SpecialProductName", "Status", "TitleId", "TitleId1", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { new Guid("10000000-0000-0000-0000-0000000000ab"), 1.0, new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), "Toplantı odası için", new DateTime(2025, 6, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new Guid("11111111-1111-1111-1111-111111111111"), new Guid("11111111-1111-1111-1111-111111111111"), null, false, "Full HD, HDMI destekli", null, new Guid("11111111-aaaa-bbbb-cccc-111111111111"), null, new DateTime(2025, 6, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "Projeksiyon Cihazı", 1, new Guid("f0000011-aaaa-bbbb-cccc-0000000000ab"), null, null },
-                    { new Guid("10000000-0000-0000-0000-0000000000ac"), 2.0, new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), "Bilgi İşlem birimi için", new DateTime(2025, 6, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new Guid("22222222-2222-2222-2222-222222222222"), new Guid("22222222-2222-2222-2222-222222222222"), null, true, "Full HD, HDMI destekli", null, new Guid("22222222-aaaa-bbbb-cccc-222222222222"), null, new DateTime(2025, 6, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), "Projeksiyon Cihazı", 1, new Guid("f0000012-aaaa-bbbb-cccc-0000000000ac"), null, null },
-                    { new Guid("10000000-0000-0000-0000-0000000000ad"), 1.0, new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"), "Yönetici kullanımı", new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new Guid("33333333-3333-3333-3333-333333333333"), new Guid("33333333-3333-3333-3333-333333333333"), null, true, "Full HD, HDMI destekli", null, new Guid("33333333-aaaa-bbbb-cccc-333333333333"), null, new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "Full HD, HDMI destekli", 1, new Guid("f0000013-aaaa-bbbb-cccc-0000000000ad"), null, null },
-                    { new Guid("10000000-0000-0000-0000-0000000000ae"), 4.0, new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), "Etkinlik alanı için ses sistemi", new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new Guid("44444444-4444-4444-4444-444444444444"), new Guid("44444444-4444-4444-4444-444444444444"), null, false, "Full HD, HDMI destekli", null, new Guid("44444444-aaaa-bbbb-cccc-444444444444"), null, new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Full HD, HDMI destekli", 1, new Guid("f0000014-aaaa-bbbb-cccc-0000000000ae"), null, null }
+                    { new Guid("10000000-0000-0000-0000-0000000000ab"), 1.0m, new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), "Toplantı odası için", new DateTime(2025, 6, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new Guid("11111111-1111-1111-1111-111111111111"), new Guid("11111111-1111-1111-1111-111111111111"), null, false, "Full HD, HDMI destekli", null, new Guid("11111111-aaaa-bbbb-cccc-111111111111"), null, new DateTime(2025, 6, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "Projeksiyon Cihazı", 1, new Guid("f0000011-aaaa-bbbb-cccc-0000000000ab"), null, null },
+                    { new Guid("10000000-0000-0000-0000-0000000000ac"), 2.0m, new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), "Bilgi İşlem birimi için", new DateTime(2025, 6, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new Guid("22222222-2222-2222-2222-222222222222"), new Guid("22222222-2222-2222-2222-222222222222"), null, true, "Full HD, HDMI destekli", null, new Guid("22222222-aaaa-bbbb-cccc-222222222222"), null, new DateTime(2025, 6, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), "Projeksiyon Cihazı", 1, new Guid("f0000012-aaaa-bbbb-cccc-0000000000ac"), null, null },
+                    { new Guid("10000000-0000-0000-0000-0000000000ad"), 1.0m, new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"), "Yönetici kullanımı", new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new Guid("33333333-3333-3333-3333-333333333333"), new Guid("33333333-3333-3333-3333-333333333333"), null, true, "Full HD, HDMI destekli", null, new Guid("33333333-aaaa-bbbb-cccc-333333333333"), null, new DateTime(2025, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), "Full HD, HDMI destekli", 1, new Guid("f0000013-aaaa-bbbb-cccc-0000000000ad"), null, null },
+                    { new Guid("10000000-0000-0000-0000-0000000000ae"), 4.0m, new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), "Etkinlik alanı için ses sistemi", new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), null, new Guid("44444444-4444-4444-4444-444444444444"), new Guid("44444444-4444-4444-4444-444444444444"), null, false, "Full HD, HDMI destekli", null, new Guid("44444444-aaaa-bbbb-cccc-444444444444"), null, new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Full HD, HDMI destekli", 1, new Guid("f0000014-aaaa-bbbb-cccc-0000000000ae"), null, null }
                 });
 
             migrationBuilder.InsertData(

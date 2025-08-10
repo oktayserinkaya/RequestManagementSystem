@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WEB.Areas.Request.Models.RequestVM;
+using RequestEntity = CORE.Entities.Concrete.Request;
 
 namespace WEB.Areas.Request.Controllers
 {
@@ -203,7 +204,7 @@ namespace WEB.Areas.Request.Controllers
         public async Task<IActionResult> UpdateRequest(Guid id)
         {
             var entity = await _requestManager.GetByDefaultAsync<RequestEntity>(
-                x => x.Id == id && x.Status != CORE.Enums.Status.Passive,
+                x => x.Id == id && x.Status != Status.Passive,
                 join: q => q
                     .Include(z => z.Employee)!.ThenInclude(z => z!.Department!)
                     .Include(z => z.Title!)
@@ -218,7 +219,9 @@ namespace WEB.Areas.Request.Controllers
 
             var vm = new CreateRequestVM
             {
-                Id = entity.Id,
+                // Eğer CreateRequestVM'de Id alanı varsa açabilirsiniz:
+                // Id = entity.Id,
+
                 RequestDate = entity.RequestDate ?? DateTime.Today,
                 FirstName = entity.Employee?.FirstName,
                 LastName = entity.Employee?.LastName,
@@ -228,8 +231,9 @@ namespace WEB.Areas.Request.Controllers
                 SubCategoryId = entity.Product?.SubCategoryId,
                 CategoryId = entity.Product?.SubCategory?.CategoryId,
                 SpecialProductName = entity.SpecialProductName,
-                Amount = entity.Amount,
-                Description = entity.Description
+                Amount = entity.Amount.HasValue ? (int?)Convert.ToInt32(entity.Amount.Value) : null,
+                // Entity’de Description alanı yok; formda Description'ı CommissionNote ile eşliyoruz:
+                Description = entity.CommissionNote
             };
 
             await FillDropdownsAsync(vm);
@@ -241,7 +245,7 @@ namespace WEB.Areas.Request.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateRequest(Guid id, CreateRequestVM model)
         {
-            // Form yeniden çizilirse üst bilgileri doldur
+            // form yeniden çizilirse üst bilgileri doldur
             await PopulateRequesterFieldsAsync(model);
 
             if (!model.RequestDate.HasValue)
@@ -255,7 +259,6 @@ namespace WEB.Areas.Request.Controllers
                 var file = model.ProductFeaturesFile;
                 var isPdf = file.ContentType?.Equals("application/pdf", StringComparison.OrdinalIgnoreCase) == true
                             || Path.GetExtension(file.FileName).Equals(".pdf", StringComparison.OrdinalIgnoreCase);
-
                 if (!isPdf)
                     ModelState.AddModelError(nameof(model.ProductFeaturesFile), "Sadece PDF yükleyebilirsiniz.");
 
@@ -270,37 +273,50 @@ namespace WEB.Areas.Request.Controllers
                 return View("CreateRequest", model);
             }
 
-            // Dosya yüklendiyse diske kaydet ve path'i DTO'ya vereceğiz
-            string? fileName = null;
+            // mevcut entity'yi çek
+            var entity = await _requestManager.GetByDefaultAsync<RequestEntity>(
+                x => x.Id == id && x.Status != Status.Passive
+            );
+
+            if (entity == null)
+            {
+                TempData["Error"] = "Güncellenecek talep bulunamadı.";
+                await FillDropdownsAsync(model);
+                return View("CreateRequest", model);
+            }
+
+            // değiştirilebilir alanlar
+            entity.RequestDate = model.RequestDate;
+            entity.SpecialProductName = model.SpecialProductName;
+            entity.Amount = model.Amount.HasValue ? Convert.ToDecimal(model.Amount.Value) : (decimal?)null;
+            // Description'ı CommissionNote olarak saklıyoruz
+            entity.CommissionNote = model.Description;
+
+            if (!model.ProductId.HasValue)
+            {
+                ModelState.AddModelError(nameof(model.ProductId), "Lütfen bir ürün seçiniz.");
+                await FillDropdownsAsync(model);
+                return View("CreateRequest", model);
+            }
+            entity.ProductId = model.ProductId.Value;
+
+            // Dosya yüklendiyse kaydet ve yolu güncelle
             if (model.ProductFeaturesFile != null)
             {
-                fileName = Guid.NewGuid() + Path.GetExtension(model.ProductFeaturesFile.FileName);
+                var fileName = Guid.NewGuid() + Path.GetExtension(model.ProductFeaturesFile.FileName);
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName);
 
                 Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
                 using var stream = new FileStream(filePath, FileMode.Create);
                 await model.ProductFeaturesFile.CopyToAsync(stream);
+
+                entity.ProductFeaturesFilePath = fileName;
             }
 
-            // DTO oluştur: sadece değiştirilebilir alanları set et
-            var dto = new DTO.Concrete.RequestDTO.UpdateRequestDTO
-            {
-                Id = id,
-                RequestDate = model.RequestDate,
-                SpecialProductName = model.SpecialProductName,
-                Amount = model.Amount,
-                Description = model.Description,
-                ProductId = model.ProductId,                          // zorunluysa dolu gelmiş olacak
-                ProductFeaturesFilePath = fileName ?? null            // dosya gelmediyse null -> map'te dokunulmayacak
-                                                                      // FK'lere (AppUserId, EmployeeId, DepartmentId, TitleId) dokunmuyoruz
-            };
-
-            // KAYDET
-            var ok = await _requestManager.UpdateAsync(dto, id);
-
+            var ok = await _requestManager.UpdateEntityAsync(entity);
             if (!ok)
             {
-                TempData["Error"] = "Talep güncellenemedi veya bulunamadı.";
+                TempData["Error"] = "Talep güncellenemedi.";
                 await FillDropdownsAsync(model);
                 return View("CreateRequest", model);
             }
@@ -308,7 +324,6 @@ namespace WEB.Areas.Request.Controllers
             TempData["Success"] = "Talep başarıyla güncellendi.";
             return RedirectToAction(nameof(Index));
         }
-
 
 
         // --- Helpers ---
