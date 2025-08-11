@@ -12,12 +12,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using WEB.Areas.PurchaseTransaction.Models.PurchaseTransactionVM;
 using RequestEntity = CORE.Entities.Concrete.Request;
+using DTO.Concrete.RequestDTO; // <-- DTO güncellemesi için
 
 namespace WEB.Areas.PurchaseTransaction.Controllers
 {
     [Area("PurchaseTransaction")]
     [Authorize(Roles = "SatinAlmaBirimi,Admin")]
-    [Route("PurchaseTransaction/[controller]")] // => /PurchaseTransaction/Orders
+    [Route("PurchaseTransaction/[controller]")]
     public class OrdersController : Controller
     {
         private readonly IRequestManager _requestManager;
@@ -42,27 +43,25 @@ namespace WEB.Areas.PurchaseTransaction.Controllers
                         Id = x.Id,
                         RequestDate = x.RequestDate,
                         CreatedDate = x.CreatedDate,
-
                         EmployeeFullName = x.Employee != null ? (x.Employee.FirstName + " " + x.Employee.LastName) : string.Empty,
                         EmployeeEmail = x.Employee != null ? (x.Employee.Email ?? string.Empty) : string.Empty,
                         DepartmentName = (x.Employee != null && x.Employee.Department != null)
-                                         ? (x.Employee.Department.DepartmentName ?? string.Empty)
-                                         : string.Empty,
-
+                            ? (x.Employee.Department.DepartmentName ?? string.Empty)
+                            : string.Empty,
                         CategoryName = (x.Product != null && x.Product.SubCategory != null && x.Product.SubCategory.Category != null)
-                                         ? (x.Product.SubCategory.Category.CategoryName ?? "-")
-                                         : "-",
+                            ? (x.Product.SubCategory.Category.CategoryName ?? "-")
+                            : "-",
                         SubCategoryName = (x.Product != null && x.Product.SubCategory != null)
-                                         ? (x.Product.SubCategory.SubCategoryName ?? "-")
-                                         : "-",
+                            ? (x.Product.SubCategory.SubCategoryName ?? "-")
+                            : "-",
                         ProductName = (x.Product != null && !string.IsNullOrWhiteSpace(x.Product.ProductName))
-                                         ? x.Product.ProductName!
-                                         : (x.SpecialProductName ?? "-"),
-
+                            ? x.Product.ProductName!
+                            : (x.SpecialProductName ?? "-"),
                         Amount = x.Amount,
                         SpecPath = x.ProductFeaturesFilePath,
                         StatusText = ToTrStatus(x.Status)
                     },
+                    // Satın alma ekranında: Komisyon onaylı olanlar
                     where: x =>
                         x.Status == Status.Modified &&
                         (string.IsNullOrWhiteSpace(q) ||
@@ -76,7 +75,7 @@ namespace WEB.Areas.PurchaseTransaction.Controllers
                 );
 
                 var model = list.Take(take).ToList();
-                return View(model); // Views/Orders/Index.cshtml  -> @model IEnumerable<...OrderListVM>
+                return View(model);
             }
             catch (Exception ex)
             {
@@ -145,12 +144,12 @@ namespace WEB.Areas.PurchaseTransaction.Controllers
             }
 
             candidates.Add(rawPath);
-            candidates.Add(Path.Combine(_env.ContentRootPath, "uploads", System.IO.Path.GetFileName(rawPath)));
+            candidates.Add(Path.Combine(_env.ContentRootPath, "uploads", Path.GetFileName(rawPath)));
 
             string? found = candidates.FirstOrDefault(System.IO.File.Exists);
             if (found == null) return NotFound("Şartname dosyası bulunamadı.");
 
-            var fileName = System.IO.Path.GetFileName(found);
+            var fileName = Path.GetFileName(found);
             Response.Headers["Content-Disposition"] = $"inline; filename=\"{fileName}\"";
             return PhysicalFile(found, "application/pdf", enableRangeProcessing: true);
         }
@@ -161,7 +160,104 @@ namespace WEB.Areas.PurchaseTransaction.Controllers
                 Status.Active => "AKTİF",
                 Status.Modified => "GÜNCELLENDİ",
                 Status.Passive => "PASİF",
+                // yeni durumlar eklediyseniz:
+                Status.WaitingPayment => "ÖDEME BEKLİYOR",
+                Status.Paid => "ÖDENDİ",
                 _ => status.ToString().ToUpperInvariant()
             };
+
+        // Satın alma formu
+        [HttpGet("Buy/{id:guid}")]
+        public async Task<IActionResult> Buy(Guid id)
+        {
+            var list = await _requestManager.GetByDefaultsAsync<RequestEntity>(
+                x => x.Id == id && x.Status == Status.Modified,
+                join: q => q
+                    .Include(r => r.Employee!).ThenInclude(e => e.Department!)
+                    .Include(r => r.Product!).ThenInclude(p => p.SubCategory!).ThenInclude(sc => sc.Category!)
+            );
+
+            var r = list.FirstOrDefault();
+            if (r is null)
+            {
+                TempData["Error"] = "Talep bulunamadı veya onaylı değil.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var vm = new PurchaseCreateVM
+            {
+                RequestId = r.Id,
+                RequestDate = r.RequestDate ?? r.CreatedDate,
+                EmployeeFullName = $"{r.Employee?.FirstName} {r.Employee?.LastName}".Trim(),
+                DepartmentName = r.Employee?.Department?.DepartmentName ?? "-",
+                CategoryName = r.Product?.SubCategory?.Category?.CategoryName ?? "-",
+                SubCategoryName = r.Product?.SubCategory?.SubCategoryName ?? "-",
+                ProductName = r.Product?.ProductName ?? (r.SpecialProductName ?? "-"),
+                RequestedAmount = r.Amount,
+                SpecPath = r.ProductFeaturesFilePath,
+                Quantity = r.Amount
+            };
+
+            return View("Buy", vm);
+        }
+
+        // Satın alma formu POST -> Ödeme birimine gönder
+        [HttpPost("Buy/{id:guid}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Buy(Guid id, PurchaseCreateVM model)
+        {
+            if (model.Quantity is null || model.Quantity <= 0)
+                ModelState.AddModelError(nameof(model.Quantity), "Adet giriniz.");
+
+            if (model.UnitPrice is null || model.UnitPrice < 0)
+                ModelState.AddModelError(nameof(model.UnitPrice), "Birim fiyat giriniz.");
+
+            if (!ModelState.IsValid)
+                return View("Buy", model);
+
+            // Tutar hesapları
+            var subtotal = (model.Quantity ?? 0) * (model.UnitPrice ?? 0);
+            var discountAmount = subtotal * (model.DiscountRate / 100m);
+            var net = subtotal - discountAmount;
+            var vatAmount = net * (model.VatRate / 100m);
+            var grand = net + vatAmount;
+
+            model.Subtotal = subtotal;
+            model.DiscountAmount = discountAmount;
+            model.VatAmount = vatAmount;
+            model.GrandTotal = grand;
+
+            // (opsiyonel) Teklif PDF kaydı
+            if (model.OfferPdf != null && model.OfferPdf.Length > 0)
+            {
+                var dir = Path.Combine(_env.WebRootPath ?? Path.Combine(_env.ContentRootPath, "wwwroot"), "uploads", "purchases");
+                Directory.CreateDirectory(dir);
+                var fname = $"{Guid.NewGuid()}{Path.GetExtension(model.OfferPdf.FileName)}";
+                var fpath = Path.Combine(dir, fname);
+                using (var fs = System.IO.File.Create(fpath))
+                    await model.OfferPdf.CopyToAsync(fs);
+                // dosya yolunu bir yere yazmak istiyorsanız: model.OfferPdfPath = $"uploads/purchases/{fname}";
+            }
+
+            // 🔴 TALEBİ ÖDEME BİRİMİNE GÖNDER: durumu WaitingPayment yap
+            var update = new UpdateRequestDTO
+            {
+                Status = Status.WaitingPayment,     // enum’a eklendiğini varsayıyoruz
+                UpdatedDate = DateTime.UtcNow,
+                // Finans’a kısa not bırakmak isterseniz mevcut bir metin alanına yazın:
+                CommissionNote = $"Satınalma oluşturdu. Genel Toplam: {grand:0.##} {model.Currency}"
+            };
+
+            var ok = await _requestManager.UpdateAsync(update, id);
+            if (!ok)
+            {
+                TempData["Error"] = "Talep güncellenemedi (Ödeme birimine gönderilemedi).";
+                return View("Buy", model);
+            }
+
+            TempData["Success"] = "Satın alma emri oluşturuldu ve Ödeme Birimi’ne gönderildi.";
+            // Ödeme birimi ekranına yönlendir
+            return RedirectToAction("Index", "PaymentTransaction", new { area = "PaymentTransaction" });
+        }
     }
 }

@@ -33,6 +33,12 @@ public class UserRoleSeedData : IEntityTypeConfiguration<IdentityUserRole<Guid>>
             {
                 UserId = Guid.Parse("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"), // Zeynep Şahin
                 RoleId = Guid.Parse("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee")  // DepoBirimi
+            },
+
+            new IdentityUserRole<Guid>
+            {
+                UserId = Guid.Parse("99999999-9999-9999-9999-999999999999"), // Fatma Öz
+                RoleId = Guid.Parse("ffffffff-ffff-ffff-ffff-ffffffffffff")  // OdemeBirimi
             }
         );
     }

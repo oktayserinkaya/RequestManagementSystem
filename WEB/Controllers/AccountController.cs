@@ -89,7 +89,7 @@ namespace WEB.Controllers
                 return RedirectToAction("Index", "Stock", new { area = "Warehouse" });
 
             if (await _userManager.IsUserInRoleAsync(username, "OdemeBirimi"))
-                return RedirectToAction("Index", "Payments", new { area = "Finance" });
+                return LocalRedirect("~/Finance/Payments");
 
             return RedirectToAction("Index", "Home");
         }

@@ -80,6 +80,21 @@ public class AppUserSeedData : IEntityTypeConfiguration<AppUser>
                 HasFirstPasswordChanged = true,
                 SecurityStamp = Guid.NewGuid().ToString("D"),
                 PasswordHash = hasher.HashPassword(null!, "123")
+            },
+
+            new AppUser
+            {
+                Id = Guid.Parse("99999999-9999-9999-9999-999999999999"),
+                UserName = "fatmaoz",
+                NormalizedUserName = "FATMAOZ",
+                Email = "fatma.oz@example.com",
+                NormalizedEmail = "FATMA.OZ@EXAMPLE.COM",
+                EmailConfirmed = true,
+                FirstName = "Fatma",
+                LastName = "Öz",
+                HasFirstPasswordChanged = true,
+                SecurityStamp = Guid.NewGuid().ToString("D"),
+                PasswordHash = hasher.HashPassword(null!, "123")
             }
         };
 

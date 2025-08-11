@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DATAACCESS.Migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20250810191417_Init")]
+    [Migration("20250811203456_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -67,7 +67,7 @@ namespace DATAACCESS.Migrations
                         new
                         {
                             Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                            CreatedDate = new DateTime(2025, 8, 10, 22, 14, 15, 308, DateTimeKind.Local).AddTicks(8351),
+                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 54, 908, DateTimeKind.Local).AddTicks(3475),
                             Name = "Admin",
                             NormalizedName = "ADMIN",
                             Status = 1
@@ -75,7 +75,7 @@ namespace DATAACCESS.Migrations
                         new
                         {
                             Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-                            CreatedDate = new DateTime(2025, 8, 10, 22, 14, 15, 308, DateTimeKind.Local).AddTicks(8378),
+                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 54, 908, DateTimeKind.Local).AddTicks(3505),
                             Name = "TalepOluşturanBirim",
                             NormalizedName = "TALEPOLUSTURANBIRIM",
                             Status = 1
@@ -83,7 +83,7 @@ namespace DATAACCESS.Migrations
                         new
                         {
                             Id = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
-                            CreatedDate = new DateTime(2025, 8, 10, 22, 14, 15, 308, DateTimeKind.Local).AddTicks(8380),
+                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 54, 908, DateTimeKind.Local).AddTicks(3507),
                             Name = "IhtiyacTespitKomisyonu",
                             NormalizedName = "IHTIYACTESPITKOMISYONU",
                             Status = 1
@@ -91,7 +91,7 @@ namespace DATAACCESS.Migrations
                         new
                         {
                             Id = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"),
-                            CreatedDate = new DateTime(2025, 8, 10, 22, 14, 15, 308, DateTimeKind.Local).AddTicks(8381),
+                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 54, 908, DateTimeKind.Local).AddTicks(3509),
                             Name = "SatinAlmaBirimi",
                             NormalizedName = "SATINALMABIRIMI",
                             Status = 1
@@ -99,7 +99,7 @@ namespace DATAACCESS.Migrations
                         new
                         {
                             Id = new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"),
-                            CreatedDate = new DateTime(2025, 8, 10, 22, 14, 15, 308, DateTimeKind.Local).AddTicks(8383),
+                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 54, 908, DateTimeKind.Local).AddTicks(3511),
                             Name = "DepoBirimi",
                             NormalizedName = "DEPOBIRIMI",
                             Status = 1
@@ -107,7 +107,7 @@ namespace DATAACCESS.Migrations
                         new
                         {
                             Id = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"),
-                            CreatedDate = new DateTime(2025, 8, 10, 22, 14, 15, 308, DateTimeKind.Local).AddTicks(8386),
+                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 54, 908, DateTimeKind.Local).AddTicks(3513),
                             Name = "OdemeBirimi",
                             NormalizedName = "ODEMEBIRIMI",
                             Status = 1
@@ -210,8 +210,8 @@ namespace DATAACCESS.Migrations
                             Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
                             AccessFailedCount = 0,
                             Birthdate = new DateOnly(1, 1, 1),
-                            ConcurrencyStamp = "700842e1-6742-447e-b05d-c6de73466362",
-                            CreatedDate = new DateTime(2025, 8, 10, 22, 14, 15, 308, DateTimeKind.Local).AddTicks(8598),
+                            ConcurrencyStamp = "76636936-00f3-4376-a94d-0ce9f1bb6dcd",
+                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 54, 908, DateTimeKind.Local).AddTicks(3800),
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             FirstName = "Sistem",
@@ -220,9 +220,9 @@ namespace DATAACCESS.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIrZDA/e1ENrV4rl3PV067VzUeRvuy2cClFurVayiNorDpnopfSLB5sPGr5mB6hVSQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEN0f1e0P38PaFXvygL6mG0qtRVR/8EEbQoAYjO9dMxitSyjEIIxQTL6qo2ZKJaseZw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4e679c59-b2ba-4581-9093-ff1004bb3240",
+                            SecurityStamp = "7bc9e953-6d45-41cb-a14d-7ddeb3d01afe",
                             Status = 1,
                             TwoFactorEnabled = false,
                             UserName = "admin"
@@ -232,8 +232,8 @@ namespace DATAACCESS.Migrations
                             Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
                             AccessFailedCount = 0,
                             Birthdate = new DateOnly(1, 1, 1),
-                            ConcurrencyStamp = "4d8e749d-63a6-4bb9-a90c-cc55c8ad4f74",
-                            CreatedDate = new DateTime(2025, 8, 10, 22, 14, 15, 368, DateTimeKind.Local).AddTicks(2897),
+                            ConcurrencyStamp = "0bc44677-6ebf-424a-be3c-3be782a3cbce",
+                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 54, 968, DateTimeKind.Local).AddTicks(7419),
                             Email = "ahmet.yilmaz@example.com",
                             EmailConfirmed = true,
                             FirstName = "Ahmet",
@@ -242,9 +242,9 @@ namespace DATAACCESS.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "AHMET.YILMAZ@EXAMPLE.COM",
                             NormalizedUserName = "AHMETYILMAZ",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIYTCO8CpcRQIy8k8WC7tKP3SgLX6s9dj3hFY3NRrIsLUCUcIcnoCmzg/MgL+Au8zg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECN0sZ1RKQWm7QHOnB8veEWR09r62u9GmX2J92/4FwTOGdY8q84VUoHxr1aLB61D4Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f51cf757-cddd-4be8-bbb8-f40b9e01265f",
+                            SecurityStamp = "1a01df05-02c0-42fb-b148-1ad4a6776e24",
                             Status = 1,
                             TwoFactorEnabled = false,
                             UserName = "ahmetyilmaz"
@@ -254,8 +254,8 @@ namespace DATAACCESS.Migrations
                             Id = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
                             AccessFailedCount = 0,
                             Birthdate = new DateOnly(1, 1, 1),
-                            ConcurrencyStamp = "5e59b3f5-097d-4d4c-92d1-a66892d9a5d5",
-                            CreatedDate = new DateTime(2025, 8, 10, 22, 14, 15, 425, DateTimeKind.Local).AddTicks(5798),
+                            ConcurrencyStamp = "5e94555f-dcb1-4fd3-bc48-0a4cb71b74f3",
+                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 55, 26, DateTimeKind.Local).AddTicks(7400),
                             Email = "elif.kara@example.com",
                             EmailConfirmed = true,
                             FirstName = "Elif",
@@ -264,9 +264,9 @@ namespace DATAACCESS.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ELIF.KARA@EXAMPLE.COM",
                             NormalizedUserName = "ELIFKARA",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKddNPnfqKslNqHxaJ0BWOHp/R2rAtOVMJp7SXA4yYIfsjH5KPMnlIhCyLqrTvg3Sw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHV9bRmeoOCsaPG7gvrM9cjPXzxFE9btp70NPDfGvpFt/z812oQm38ytbDCnd9lM9Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e294f1d4-8b3b-4296-887d-3e98b4d2e011",
+                            SecurityStamp = "da1244b2-c887-4dae-9653-47b431295ec7",
                             Status = 1,
                             TwoFactorEnabled = false,
                             UserName = "elifkara"
@@ -276,8 +276,8 @@ namespace DATAACCESS.Migrations
                             Id = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"),
                             AccessFailedCount = 0,
                             Birthdate = new DateOnly(1, 1, 1),
-                            ConcurrencyStamp = "b0c271ac-9325-48bb-a351-0a8bc3594dce",
-                            CreatedDate = new DateTime(2025, 8, 10, 22, 14, 15, 484, DateTimeKind.Local).AddTicks(3283),
+                            ConcurrencyStamp = "a32d84aa-18c8-4794-9ded-7b485252bf6b",
+                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 55, 86, DateTimeKind.Local).AddTicks(8401),
                             Email = "mehmet.demir@example.com",
                             EmailConfirmed = true,
                             FirstName = "Mehmet",
@@ -286,9 +286,9 @@ namespace DATAACCESS.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "MEHMET.DEMIR@EXAMPLE.COM",
                             NormalizedUserName = "MEHMETDEMIR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDDCqHTi8Pevf0/iwhKcn6Nox0EOrgynhFmTmW82bPcYUguacpVXt0sxlvtAsk2QEQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEF5zyzMhRDHOhVnEWPV0ib7qMlksUUDMYfLe4fTcJidg+ZHal1kzDuNYEYWW70gtig==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3333c628-da37-4cff-96da-ab2c8e66cfda",
+                            SecurityStamp = "5114e2bf-1acc-43e7-bb5d-7532536f4760",
                             Status = 1,
                             TwoFactorEnabled = false,
                             UserName = "mehmetdemir"
@@ -298,8 +298,8 @@ namespace DATAACCESS.Migrations
                             Id = new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"),
                             AccessFailedCount = 0,
                             Birthdate = new DateOnly(1, 1, 1),
-                            ConcurrencyStamp = "a8fdb037-2e5b-4689-bee3-f9d3280f6bfa",
-                            CreatedDate = new DateTime(2025, 8, 10, 22, 14, 15, 543, DateTimeKind.Local).AddTicks(9429),
+                            ConcurrencyStamp = "0b592fe1-b660-445e-a88d-8622df5bbf18",
+                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 55, 147, DateTimeKind.Local).AddTicks(668),
                             Email = "zeynep.sahin@example.com",
                             EmailConfirmed = true,
                             FirstName = "Zeynep",
@@ -308,12 +308,34 @@ namespace DATAACCESS.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ZEYNEP.SAHIN@EXAMPLE.COM",
                             NormalizedUserName = "ZEYNEPSAHIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAnihRSkaIAsvmUxdY6h1uLmiwMx3jBP/ymLozKOpF0FLui2Ik4DgobYzD4ZXsdjYw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEARhYv1ob5SBuDv3dK42pyeXb7AGeKaoIy70VuDNZPkUvodfI+bYSqC7WWP4668OLw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b1036d4c-d04a-406e-8eec-7bd7e84eb12d",
+                            SecurityStamp = "d7150d37-ca96-4ae4-8e8b-88c54dae40f6",
                             Status = 1,
                             TwoFactorEnabled = false,
                             UserName = "zeynepsahin"
+                        },
+                        new
+                        {
+                            Id = new Guid("99999999-9999-9999-9999-999999999999"),
+                            AccessFailedCount = 0,
+                            Birthdate = new DateOnly(1, 1, 1),
+                            ConcurrencyStamp = "66b1cb20-0363-4773-95cc-09f94f07f525",
+                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 55, 209, DateTimeKind.Local).AddTicks(2423),
+                            Email = "fatma.oz@example.com",
+                            EmailConfirmed = true,
+                            FirstName = "Fatma",
+                            HasFirstPasswordChanged = true,
+                            LastName = "Öz",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "FATMA.OZ@EXAMPLE.COM",
+                            NormalizedUserName = "FATMAOZ",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKmOZi/GPTU5Srs21KWo3wfyonoYdhIzz0VkKhsFw3/Atmo/6GFCw18lHIkVM6eCIA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "33cc7f09-8d93-4938-bc81-79fda2bd9a16",
+                            Status = 1,
+                            TwoFactorEnabled = false,
+                            UserName = "fatmaoz"
                         });
                 });
 
@@ -425,6 +447,11 @@ namespace DATAACCESS.Migrations
                         {
                             UserId = new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"),
                             RoleId = new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee")
+                        },
+                        new
+                        {
+                            UserId = new Guid("99999999-9999-9999-9999-999999999999"),
+                            RoleId = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff")
                         });
                 });
 
