@@ -1,0 +1,164 @@
+﻿@model IEnumerable<WEB.Areas.PaymentTransaction.Models.PaymentTransactionVM.PaymentTransactionListVM>
+@{
+    ViewData["Title"] = "Ödeme İşlemleri";
+    string q = Context.Request.Query["q"];
+    Func<string?, string> safe = s => string.IsNullOrWhiteSpace(s) ? "-" : s!;
+}
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900" />
+<link href="~/TemplateResources/css/nucleo-icons.css" rel="stylesheet" />
+<link href="~/TemplateResources/css/nucleo-svg.css" rel="stylesheet" />
+<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link id="pagestyle" href="~/TemplateResources/css/material-dashboard.css?v=3.2.0" rel="stylesheet" />
+
+<style>
+    .header-dark {
+        background: linear-gradient(90deg,#2b2f36,#333843);
+    }
+
+    .chip {
+        border-radius: 9999px;
+        padding: .25rem .6rem;
+        font-weight: 600;
+        font-size: .75rem;
+    }
+
+    .btn-outline-rose {
+        border-color: #ff3b6e;
+        color: #ff3b6e
+    }
+
+        .btn-outline-rose:hover {
+            background: #ff3b6e;
+            color: #fff
+        }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="card">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="header-dark shadow-dark border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+                <h6 class="text-white text-capitalize ps-3 mb-0">Ödeme Birimi | Ödeme Bekleyen Talepler</h6>
+
+            </div>
+        </div>
+
+        <div class="card-body px-0 pb-2">
+            @if (TempData["Success"] is string s && !string.IsNullOrWhiteSpace(s))
+            {
+                <div class="alert alert-success mx-3 mt-3">@s</div>
+            }
+            @if (TempData["Error"] is string e && !string.IsNullOrWhiteSpace(e))
+            {
+                <div class="alert alert-danger mx-3 mt-3">@e</div>
+            }
+
+            <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0">
+                    <thead>
+                        <tr>
+                            <th>Talep Tarihi</th>
+                            <th>Personel</th>
+                            <th>Departman</th>
+                            <th>Kategori</th>
+                            <th>Alt Kategori</th>
+                            <th>Ürün</th>
+                            <th class="text-end">Adet</th>
+                            <th class="text-center">Şartname</th>
+                            <th class="text-center">Ödeme</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model == null || !Model.Any())
+                        {
+                            <tr>
+                                <td colspan="9" class="text-center text-secondary py-4">Ödeme bekleyen talep bulunamadı.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            foreach (var i in Model)
+                            {
+                                <tr>
+                                    <td>@(i.RequestDate?.ToString("dd.MM.yyyy") ?? i.CreatedDate.ToString("dd.MM.yyyy"))</td>
+                                    <td>
+                                        <div class="fw-semibold">@safe(i.EmployeeFullName)</div>
+                                        <div class="text-muted small">@safe(i.EmployeeEmail)</div>
+                                    </td>
+                                    <td>@safe(i.DepartmentName)</td>
+                                    <td>@safe(i.CategoryName)</td>
+                                    <td>@safe(i.SubCategoryName)</td>
+                                    <td>@safe(i.ProductName)</td>
+                                    <td class="text-end">@((i.Amount?.ToString() ?? "-"))</td>
+                                    <td class="text-center">
+                                        @if (!string.IsNullOrWhiteSpace(i.SpecPath))
+                                        {
+                                            <a class="btn btn-sm btn-outline-secondary"
+                                               asp-area="PaymentTransaction"
+                                               asp-controller="PaymentTransaction"
+                                               asp-action="Spec"
+                                               asp-route-id="@i.Id"
+                                               target="_blank" rel="noopener noreferrer">
+                                                Şartnameyi Gör
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Yok</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button"
+                                                class="btn btn-sm btn-success"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#payModal"
+                                                data-id="@i.Id">
+                                            Ödeme Yap
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Onay modali *@
+<div class="modal fade" id="payModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="post"
+              asp-area="PaymentTransaction"
+              asp-controller="PaymentTransaction"
+              asp-action="Pay"
+              class="modal-content">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" id="pay-id" />
+            <div class="modal-header">
+                <h5 class="modal-title">Ödeme Onayı</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+            </div>
+            <div class="modal-body">
+                Bu talep için <strong>ödeme yapıldı</strong> olarak işaretlemek istediğinize emin misiniz?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Vazgeç</button>
+                <button type="submit" class="btn btn-success">Evet, Ödemeyi Tamamla</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const payModal = document.getElementById('payModal');
+        payModal?.addEventListener('show.bs.modal', event => {
+            const btn = event.relatedTarget;
+            const id = btn?.getAttribute('data-id');
+            document.getElementById('pay-id').value = id || '';
+        });
+    </script>
+}

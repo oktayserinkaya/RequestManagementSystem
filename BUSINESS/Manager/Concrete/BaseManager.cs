@@ -9,6 +9,7 @@ using BUSINESS.Manager.Interface;
 using CORE.Entities.Abstract;
 using CORE.Interface;
 using DTO.Abstract;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -33,12 +34,31 @@ namespace BUSINESS.Manager.Concrete
         }
         public async Task<bool> UpdateAsync(BaseDTO dto, Guid id)
         {
-            var entity = await _service.GetByIdAsync(id);
-            if(entity == null)
+            var entity = await _service.GetByIdAsync(id); // tracked olmalı (AsNoTracking YOK)
+            if (entity == null)
                 return false;
-            
+
             _mapper.Map(dto, entity);
-            return await _service.UpdateAsync(entity);
+
+            var entry = _service.Entry(entity);
+
+            // PK'yi asla modified yapma
+            foreach (var p in entry.Properties.Where(p => p.Metadata.IsPrimaryKey()))
+                p.IsModified = false;
+
+            // FK adayları – sizdeki isimlere göre listeyi düzenleyin
+            MarkUnmodified(entry, "AppUserId", "EmployeeId", "DepartmentId", "TitleId", "ProductId");
+
+            return await _service.SaveChangesAsync() > 0;
+        }
+
+        private static void MarkUnmodified(EntityEntry entry, params string[] names)
+        {
+            foreach (var n in names)
+            {
+                var prop = entry.Properties.FirstOrDefault(p => p.Metadata.Name == n);
+                if (prop != null) prop.IsModified = false;
+            }
         }
 
         public async Task<bool> UpdateEntityAsync(C entity)

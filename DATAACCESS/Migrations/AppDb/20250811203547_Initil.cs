@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DATAACCESS.Migrations.AppDb
 {
     /// <inheritdoc />
-    public partial class Initiliaz : Migration
+    public partial class Initil : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

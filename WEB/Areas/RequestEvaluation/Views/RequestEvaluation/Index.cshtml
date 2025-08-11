@@ -1,0 +1,146 @@
+﻿@model IEnumerable<WEB.Areas.RequestEvaluation.Models.RequestEvaluationVM.RequestEvaluationListVM>
+
+@{
+    Func<string, string> statusClass = s => s switch
+    {
+        "AKTİF" => "badge-aktif",
+        "GÜNCELLENDİ" => "badge-guncellendi",
+        "PASİF" => "badge-pasif",
+        _ => "badge-pasif"
+    };
+}
+
+<style>
+    .header-dark {
+        background: linear-gradient(90deg,#2b2f36,#333843);
+    }
+
+    .table thead th {
+        font-size: .65rem;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        color: #9da3ae !important;
+    }
+
+    .table td {
+        vertical-align: middle
+    }
+
+    .name {
+        font-weight: 700
+    }
+
+    .chip-badge {
+        border-radius: 9999px;
+        padding: .35rem .7rem;
+        font-weight: 700;
+        letter-spacing: .3px;
+        font-size: .7rem;
+        color: #fff;
+    }
+
+    .badge-aktif {
+        background: #22c55e
+    }
+
+    .badge-guncellendi {
+        background: #f59e0b
+    }
+
+    .badge-pasif {
+        background: #4b5563
+    }
+
+    .btn-outline-rose {
+        border-color: #ff3b6e;
+        color: #ff3b6e
+    }
+
+        .btn-outline-rose:hover {
+            background: #ff3b6e;
+            color: #fff
+        }
+</style>
+
+<main>
+    <div class="container-fluid py-4">
+        <div class="card">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                <!-- SADE BAŞLIK: sadece Son Talepler -->
+                <div class="header-dark shadow-dark border-radius-lg pt-4 pb-3">
+                    <h6 class="text-white text-capitalize ps-3 mb-0">Son Talepler</h6>
+                </div>
+            </div>
+
+            <div class="card-body px-0 pb-2">
+                <div class="table-responsive p-0">
+                    <colgroup>
+                        <col />
+                        <col style="width:260px" />
+                        <col style="width:110px" />
+                        <col style="width:110px" />
+                        <col style="width:120px" />
+                    </colgroup>
+
+                    <table class="table align-items-center mb-0">
+                        <thead>
+                            <tr>
+                                <th>Talep Oluşturan</th>
+                                <th class="ps-2">Birim / Görev</th>
+                                <th class="text-center">Durum</th>
+                                <th class="text-center">Talep Tarihi</th>
+                                <th class="ps-2">İncele</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model is null || !Model.Any())
+                            {
+                                <tr>
+                                    <td class="text-center text-secondary" colspan="5">Kayıt bulunamadı.</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <div class="name mb-0 text-sm">@item.CreatorFullName</div>
+                                                    <div class="text-xs text-secondary mb-0">@item.CreatorEmail</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-xs fw-bold mb-0">@item.DepartmentName</div>
+                                            <div class="text-xs text-secondary mb-0">@item.TitleName</div>
+                                        </td>
+                                        <td class="align-middle text-center text-sm">
+                                            <span class="chip-badge @statusClass(item.StatusText)">@item.StatusText</span>
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            <span class="text-secondary text-xs fw-bold">
+                                                @item.CreatedDate.ToString("dd.MM.yy")
+                                            </span>
+                                        </td>
+                                        <td class="align-middle">
+                                            <a asp-area="RequestEvaluation"
+                                               asp-controller="RequestEvaluation"
+                                               asp-action="Detail"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-sm btn-outline-rose">
+                                                İncele
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

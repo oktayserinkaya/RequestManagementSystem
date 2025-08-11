@@ -1,0 +1,141 @@
+﻿@model IEnumerable<WEB.Areas.PurchaseTransaction.Models.PurchaseTransactionVM.OrderListVM>
+
+@{
+    Func<string, string> statusClass = s => s switch
+    {
+        "AKTİF" => "badge-aktif",
+        "GÜNCELLENDİ" => "badge-guncellendi",
+        "PASİF" => "badge-pasif",
+        _ => "badge-pasif"
+    };
+}
+
+<style>
+    .header-dark {
+        background: linear-gradient(90deg,#2b2f36,#333843);
+    }
+
+    .table thead th {
+        font-size: .65rem;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        color: #9da3ae !important;
+    }
+
+    .table td {
+        vertical-align: middle
+    }
+
+    .name {
+        font-weight: 700
+    }
+
+    .chip-badge {
+        border-radius: 9999px;
+        padding: .35rem .7rem;
+        font-weight: 700;
+        letter-spacing: .3px;
+        font-size: .7rem;
+        color: #fff;
+    }
+
+    .badge-aktif {
+        background: #22c55e
+    }
+
+    .badge-guncellendi {
+        background: #f59e0b
+    }
+
+    .badge-pasif {
+        background: #4b5563
+    }
+</style>
+
+<main>
+    <div class="container-fluid py-4">
+        <div class="card">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                <div class="header-dark shadow-dark border-radius-lg pt-4 pb-3">
+                    <h6 class="text-white text-capitalize ps-3 mb-0">Satın Alma Talepleri (Onaylananlar)</h6>
+                </div>
+            </div>
+
+            <div class="card-body px-0 pb-2">
+                <div class="table-responsive p-0">
+                    <colgroup>
+                        <col /> <!-- Talep Tarihi -->
+                        <col /> <!-- Personel -->
+                        <col /> <!-- Departman -->
+                        <col /> <!-- Kategori -->
+                        <col /> <!-- Alt Kategori -->
+                        <col /> <!-- Ürün -->
+                        <col style="width:100px" /> <!-- Adet -->
+                        <col style="width:120px" /> <!-- Durum -->
+                        <col style="width:130px" /> <!-- İşlem -->
+                    </colgroup>
+
+                    <table class="table align-items-center mb-0">
+                        <thead>
+                            <tr>
+                                <th>Talep Tarihi</th>
+                                <th class="ps-2">Personel</th>
+                                <th class="ps-2">Departman</th>
+                                <th class="ps-2">Kategori</th>
+                                <th class="ps-2">Alt Kategori</th>
+                                <th class="ps-2">Ürün</th>
+                                <th class="text-center">Adet</th>
+                                <th class="text-center">Durum</th>
+                                <th class="ps-2">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model is null || !Model.Any())
+                            {
+                                <tr>
+                                    <td class="text-center text-secondary" colspan="9">Kayıt bulunamadı.</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (var i in Model)
+                                {
+                                    <tr>
+                                        <td>@(i.RequestDate?.ToString("dd.MM.yyyy") ?? "-")</td>
+
+                                        <td>
+                                            <div class="name mb-0 text-sm">@i.EmployeeFullName</div>
+                                            <div class="text-xs text-secondary mb-0">@i.EmployeeEmail</div>
+                                        </td>
+
+                                        <td>@i.DepartmentName</td>
+                                        <td>@i.CategoryName</td>
+                                        <td>@i.SubCategoryName</td>
+                                        <td>@i.ProductName</td>
+
+                                        <td class="text-center">@((i.Amount?.ToString()) ?? "-")</td>
+
+                                        <td class="align-middle text-center text-sm">
+                                            <span class="chip-badge @statusClass(i.StatusText)">@i.StatusText</span>
+                                        </td>
+
+                                        <td class="align-middle">
+                                            <!-- SADECE 'Satın Al' butonu -->
+                                            <a class="btn btn-sm btn-primary"
+                                               asp-area="PurchaseTransaction"
+                                               asp-controller="Orders"
+                                               asp-action="Buy"
+                                               asp-route-id="@i.Id">
+                                                Satın Al
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

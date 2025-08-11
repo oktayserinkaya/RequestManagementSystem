@@ -26,15 +26,9 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\PaymentTransaction\Controllers\" />
     <Folder Include="Areas\PaymentTransaction\Data\" />
-    <Folder Include="Areas\PaymentTransaction\Models\" />
-    <Folder Include="Areas\PurchaseTransaction\Controllers\" />
     <Folder Include="Areas\PurchaseTransaction\Data\" />
-    <Folder Include="Areas\PurchaseTransaction\Models\" />
-    <Folder Include="Areas\RequestEvaluation\Controllers\" />
     <Folder Include="Areas\RequestEvaluation\Data\" />
-    <Folder Include="Areas\RequestEvaluation\Models\" />
     <Folder Include="Areas\Request\Data\" />
     <Folder Include="Areas\WarehouseDepartment\Controllers\" />
     <Folder Include="Areas\WarehouseDepartment\Data\" />

@@ -1,0 +1,302 @@
+﻿@model WEB.Areas.PurchaseTransaction.Models.PurchaseTransactionVM.PurchaseCreateVM
+@{
+    ViewData["Title"] = "Satın Al";
+}
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900" />
+<link href="~/TemplateResources/css/nucleo-icons.css" rel="stylesheet" />
+<link href="~/TemplateResources/css/nucleo-svg.css" rel="stylesheet" />
+<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link id="pagestyle" href="~/TemplateResources/css/material-dashboard.css?v=3.2.0" rel="stylesheet" />
+
+<style>
+    /* Form elemanları için daha belirgin iç kenarlar */
+    .card .form-control,
+    .card .form-select,
+    .card textarea.form-control,
+    .card input[type="file"].form-control {
+        border: 1.8px solid #1f2937 !important; /* koyu gri */
+        border-radius: .5rem; /* hafif yuvarlak */
+        box-shadow: inset 0 0 0 0 rgba(0,0,0,0), 0 .05rem .25rem rgba(0,0,0,.04);
+    }
+
+        /* Odak görünümü; hafif parıltı */
+        .card .form-control:focus,
+        .card .form-select:focus {
+            border-color: #111827 !important;
+            box-shadow: 0 0 0 .18rem rgba(17,24,39,.15) !important;
+        }
+
+        /* Okunurluk için salt-okunur alanlar */
+        .card .form-control[readonly] {
+            background-color: #fff;
+            border-style: solid;
+            opacity: 1;
+        }
+
+    /* Bölüm başlık alt çizgisi de belirgin olsun */
+    .card .card-header {
+        border-bottom: 1.5px solid #d1d5db;
+    }
+
+    * Kart başlıklarını üst şerit ile aynı görünüme yaklaştır */
+    .card .section-header {
+        border-bottom: 0; /* alt çizgiyi kaldır */
+        border-top-left-radius: .75rem; /* üst köşeleri yuvarla */
+        border-top-right-radius: .75rem;
+        letter-spacing: .2px;
+    }
+
+    .card .section-header strong {
+        color: #fff; /* metin beyaz */
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center px-3">
+            <h6 class="text-white text-capitalize m-0">Satın Alma Emri Oluştur</h6>
+
+            @if (!string.IsNullOrWhiteSpace(Model?.SpecPath))
+            {
+                <a class="btn btn-outline-light btn-sm"
+                   asp-area="PurchaseTransaction"
+                   asp-controller="Orders"
+                   asp-action="Spec"
+                   asp-route-id="@Model.RequestId"
+                   target="_blank" rel="noopener noreferrer">
+                    Şartnameyi Gör
+                </a>
+            }
+        </div>
+
+        <div class="card-body">
+
+            <!-- Talep Özeti -->
+            <div class="row g-4 mb-2">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Talep Tarihi</label>
+                    <input class="form-control border border-dark shadow-sm"
+                           value="@((Model?.RequestDate ?? DateTime.Now).ToString("dd.MM.yyyy"))"
+                           readonly />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Talep Eden</label>
+                    <input class="form-control border border-dark shadow-sm"
+                           value="@Model?.EmployeeFullName" readonly />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Departman</label>
+                    <input class="form-control border border-dark shadow-sm"
+                           value="@Model?.DepartmentName" readonly />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Talep Edilen Adet</label>
+                    <input class="form-control border border-dark shadow-sm"
+                           value="@(Model?.RequestedAmount?.ToString() ?? "-")" readonly />
+                </div>
+            </div>
+
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label">Kategori</label>
+                    <input class="form-control border border-dark shadow-sm"
+                           value="@Model?.CategoryName" readonly />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Alt Kategori</label>
+                    <input class="form-control border border-dark shadow-sm"
+                           value="@Model?.SubCategoryName" readonly />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Ürün</label>
+                    <input class="form-control border border-dark shadow-sm"
+                           value="@Model?.ProductName" readonly />
+                </div>
+            </div>
+
+            <form method="post"
+                  asp-area="PurchaseTransaction"
+                  asp-controller="Orders"
+                  asp-action="Buy"
+                  asp-route-id="@Model!.RequestId"
+                  enctype="multipart/form-data"
+                  class="mt-2">
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(false, "", new { @class = "text-danger mb-3" })
+
+                <div class="row g-4">
+
+                    <!-- Tedarikçi Bilgileri -->
+                    <div class="col-lg-6">
+                        <div class="card border h-100">
+                            <div class="card-header bg-gradient-dark text-white shadow-dark rounded-top py-2 px-3 section-header">
+                                <strong class="text-white">Tedarikçi Bilgileri</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label asp-for="SupplierName" class="form-label">Tedarikçi Adı</label>
+                                    <input asp-for="SupplierName" class="form-control" />
+                                    <span asp-validation-for="SupplierName" class="text-danger"></span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="SupplierTaxNo" class="form-label">Vergi No</label>
+                                        <input asp-for="SupplierTaxNo" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="SupplierEmail" class="form-label">E-Posta</label>
+                                        <input asp-for="SupplierEmail" class="form-control" type="email" />
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="OfferNo" class="form-label">Teklif No</label>
+                                        <input asp-for="OfferNo" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="OfferDate" class="form-label">Teklif Tarihi</label>
+                                        <input asp-for="OfferDate" type="date" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="OfferPdf" class="form-label">Teklif (PDF)</label>
+                                    <input asp-for="OfferPdf" type="file" accept="application/pdf" class="form-control" />
+                                    <div class="form-text">yalnızca PDF.</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="PaymentTerms" class="form-label">Ödeme / Teslimat Şartları</label>
+                                    <input type="text" asp-for="PaymentTerms" rows="3" class="form-control"/>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Notes" class="form-label">Notlar</label>
+                                    <input type="text" asp-for="Notes" rows="2" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fiyatlandırma -->
+                    <div class="col-lg-6">
+                        <div class="card border h-100">
+                            <div class="card-header bg-gradient-dark text-white shadow-dark rounded-top py-2 px-3 section-header">
+                                <strong class="text-white">Fiyatlandırma</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label asp-for="Quantity" class="form-label">Adet</label>
+                                        <input asp-for="Quantity" type="number" step="1" min="0" class="form-control calc" />
+                                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label asp-for="UnitPrice" class="form-label">Birim Fiyat</label>
+                                        <input asp-for="UnitPrice" type="number" step="0.01" min="0" class="form-control calc" />
+                                        <span asp-validation-for="UnitPrice" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label asp-for="Currency" class="form-label">Para Birimi</label>
+                                        <select asp-for="Currency" class="form-select">
+                                            <option>TRY</option>
+                                            <option>USD</option>
+                                            <option>EUR</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label asp-for="DiscountRate" class="form-label">İskonto (%)</label>
+                                        <input asp-for="DiscountRate" type="number" step="0.01" min="0" class="form-control calc" />
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label asp-for="VatRate" class="form-label">KDV (%)</label>
+                                        <input asp-for="VatRate" type="number" step="0.01" min="0" class="form-control calc" />
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label asp-for="DeliveryDate" class="form-label">Teslim Tarihi</label>
+                                        <input asp-for="DeliveryDate" type="date" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <hr />
+
+                                <!-- Hesap özet -->
+                                <div class="row g-3">
+                                    <div class="col-sm-6">
+                                        <label class="form-label">Ara Toplam</label>
+                                        <input asp-for="Subtotal" class="form-control" readonly />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="form-label">İskonto Tutarı</label>
+                                        <input asp-for="DiscountAmount" class="form-control" readonly />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="form-label">KDV Tutarı</label>
+                                        <input asp-for="VatAmount" class="form-control" readonly />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="form-label fw-bold">Genel Toplam</label>
+                                        <input asp-for="GrandTotal" class="form-control fw-bold" readonly />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <a asp-area="PurchaseTransaction" asp-controller="Orders" asp-action="Index" class="btn btn-outline-secondary">
+                        ← Listeye dön
+                    </a>
+                    <button type="submit" class="btn btn-primary">Satın Alma Emrini Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            function num(v) { return isNaN(v) || v === null ? 0 : Number(v); }
+            function recalc() {
+                const qty = num(document.getElementById("Quantity")?.value);
+                const unit = num(document.getElementById("UnitPrice")?.value);
+                const disc = num(document.getElementById("DiscountRate")?.value);
+                const vat  = num(document.getElementById("VatRate")?.value);
+
+                const subtotal = qty * unit;
+                const discountAmount = subtotal * (disc / 100.0);
+                const net = subtotal - discountAmount;
+                const vatAmount = net * (vat / 100.0);
+                const grand = net + vatAmount;
+
+                const set = (id, val) => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = (Math.round(val * 100) / 100).toFixed(2);
+                };
+
+                set("Subtotal", subtotal);
+                set("DiscountAmount", discountAmount);
+                set("VatAmount", vatAmount);
+                set("GrandTotal", grand);
+            }
+
+            document.querySelectorAll(".calc").forEach(el => {
+                el.addEventListener("input", recalc);
+                el.addEventListener("change", recalc);
+            });
+
+            // ilk hesap
+            recalc();
+        })();
+    </script>
+}

@@ -18,6 +18,8 @@ namespace CORE.Enums
         Passive,
 
         Pending,
-        Completed
+        Completed,
+        WaitingPayment,
+        Paid
     }
 }

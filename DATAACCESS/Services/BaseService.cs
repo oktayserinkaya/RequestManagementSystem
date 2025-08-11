@@ -9,6 +9,7 @@ using CORE.Enums;
 using CORE.Interface;
 using DATAACCESS.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -99,5 +100,7 @@ namespace DATAACCESS.Services
 
         private async Task<bool> SaveAsync() => await _context.SaveChangesAsync() > 0;
 
+        public Task<int> SaveChangesAsync() => _context.SaveChangesAsync();
+        public EntityEntry Entry(object entity) => _context.Entry(entity);
     }
 }

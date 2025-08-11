@@ -1,58 +1,40 @@
 ﻿using AutoMapper;
-using BUSINESS.Manager.Concrete;
 using BUSINESS.Manager.Interface;
-using CORE.Enums;
 using CORE.IdentityEntities;
 using DTO.Concrete.AccountDTO;
-using DTO.Concrete.CategoryDTO;
-using DTO.Concrete.DepatmentDTO;
 using DTO.Concrete.EmployeeDTO;
-using DTO.Concrete.PaymentDTO;
-using DTO.Concrete.ProductDTO;
-using DTO.Concrete.RequestDTO;
-using DTO.Concrete.SubCategoryDTO;
 using DTO.Concrete.UserDTO;
-using DTO.Concrete.WarehouseDTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using WEB.ActionFilters;
-using WEB.Areas.Request.Models.RequestVM;
 using WEB.Models.ViewModels.AccountVM;
 
 namespace WEB.Controllers
 {
-    public class AccountController(
-        IUserManager userManager,
-        IRequestManager requestManager,
-        IDepartmentManager departmentManager,
-        IWarehouseManager warehouseManager,
-        IPaymentManager paymentManager,
-        IEmployeeManager employeeManager,
-        ICategoryManager categoryManager,
-        ISubCategoryManager subCategoryManager,
-        IProductManager productManager,
-        IMapper mapper
-    ) : Controller
+    [Route("Account")] // -> /Account/...
+    public class AccountController : Controller
     {
-        private readonly IUserManager _userManager = userManager;
-        private readonly IRequestManager _requestManager = requestManager;
-        private readonly IDepartmentManager _departmentManager = departmentManager;
-        private readonly IWarehouseManager _warehouseManager = warehouseManager;
-        private readonly IPaymentManager _paymentManager = paymentManager;
-        private readonly IEmployeeManager _employeeManager = employeeManager;
-        private readonly ICategoryManager _categoryManager = categoryManager;
-        private readonly ISubCategoryManager _subCategoryManager = subCategoryManager;
-        private readonly IProductManager _productManager = productManager;
-        private readonly IMapper _mapper = mapper;
+        private readonly IUserManager _userManager;
+        private readonly IEmployeeManager _employeeManager;
+        private readonly IMapper _mapper;
+
+        public AccountController(
+            IUserManager userManager,
+            IEmployeeManager employeeManager,
+            IMapper mapper)
+        {
+            _userManager = userManager;
+            _employeeManager = employeeManager;
+            _mapper = mapper;
+        }
 
         [AllowAnonymous]
-        [HttpGet]
+        [HttpGet("~/")]
+        [HttpGet("Login")] // GET /Account/Login
+
         public async Task<IActionResult> Login()
         {
             if (User?.Identity?.IsAuthenticated == true)
             {
-                // Zaten girişli kullanıcıyı rolüne göre yönlendir
                 var userName = User.Identity!.Name!;
                 if (await _userManager.IsUserInRoleAsync(userName, "Admin"))
                     return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
@@ -62,13 +44,12 @@ namespace WEB.Controllers
 
                 return RedirectToAction("Index", "Home");
             }
-
             return View();
         }
 
         [AllowAnonymous]
-        [HttpPost, ValidateAntiForgeryToken]
-      
+        [HttpPost("Login")] // POST /Account/Login
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginVM model)
         {
             if (!ModelState.IsValid)
@@ -76,7 +57,6 @@ namespace WEB.Controllers
 
             var dto = _mapper.Map<LoginDTO>(model);
 
-            // Giriş
             var signIn = await _userManager.LoginAsync(dto);
             if (!signIn.Succeeded)
             {
@@ -84,20 +64,15 @@ namespace WEB.Controllers
                 return View(model);
             }
 
-            // NOT: Aynı request içinde HttpContext.User'ı kullanma.
-            // Rol ve ilk şifre kontrolünü username ile yap.
-            var username = dto.Username; // sizde "Username" ise: var username = dto.Username;
-
-            // İlk şifre değişimi zorunluluğu (AppUser.HasFirstPasswordChanged)
+            var username = dto.Username;
             var userEntity = await _userManager.FindByNameAsync(username);
             if (userEntity is not null && userEntity.HasFirstPasswordChanged == false)
             {
-                TempData["Error"] = "İlk kez giriş yaptığınız için e-postanıza gelen linkten şifrenizi değiştiriniz!";
+                TempData["Error"] = "İlk kez giriş: e-postadaki linkten şifrenizi değiştiriniz.";
                 await _userManager.LogoutAsync();
                 return RedirectToAction(nameof(Login));
             }
 
-            // Rol bazlı yönlendirme
             if (await _userManager.IsUserInRoleAsync(username, "Admin"))
                 return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
 
@@ -105,24 +80,22 @@ namespace WEB.Controllers
                 return RedirectToAction("MyRequests", "Requests", new { area = "Request" });
 
             if (await _userManager.IsUserInRoleAsync(username, "IhtiyacTespitKomisyonu"))
-                return RedirectToAction("Index", "Review", new { area = "Commission" });
+                return RedirectToAction("Index", "RequestEvaluation", new { area = "RequestEvaluation" });
 
             if (await _userManager.IsUserInRoleAsync(username, "SatinAlmaBirimi"))
-                return RedirectToAction("Index", "Orders", new { area = "Procurement" });
+                return RedirectToAction("Index", "Orders", new { area = "PurchaseTransaction" });
 
             if (await _userManager.IsUserInRoleAsync(username, "DepoBirimi"))
                 return RedirectToAction("Index", "Stock", new { area = "Warehouse" });
 
             if (await _userManager.IsUserInRoleAsync(username, "OdemeBirimi"))
-                return RedirectToAction("Index", "Payments", new { area = "Finance" });
+                return LocalRedirect("~/Finance/Payments");
 
-            // Varsayılan
             return RedirectToAction("Index", "Home");
         }
 
-
         [Authorize]
-        [HttpPost]
+        [HttpPost("Logout")] // POST /Account/Logout
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
@@ -131,6 +104,7 @@ namespace WEB.Controllers
         }
 
         [Authorize]
+        [HttpGet("EditUser")]
         public async Task<IActionResult> EditUser()
         {
             var dto = await _userManager.FindUserByClaimsAsync<EditUserDTO>(User);
@@ -141,7 +115,6 @@ namespace WEB.Controllers
             }
 
             var model = _mapper.Map<EditUserVM>(dto);
-
             var employee = await _employeeManager.GetByDefaultAsync<GetEmployeeDTO>(x => x.AppUserId == model.Id);
 
             if (await _userManager.IsUserInRoleAsync(dto.Username, "Admin"))
@@ -178,7 +151,9 @@ namespace WEB.Controllers
             return View(model);
         }
 
-        [Authorize, HttpPost, ValidateAntiForgeryToken]
+        [Authorize]
+        [HttpPost("EditUser")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditUser(EditUserVM model)
         {
             if (await _userManager.AnyAsync(x => x.UserName == model.UserName && x.Id != model.Id))
@@ -202,11 +177,12 @@ namespace WEB.Controllers
                 return RedirectToAction(nameof(EditUser));
             }
 
-            TempData["Success"] = "Kullanıcı bilgileri başarıyla güncellendi.";
+            TempData["Success"] = "Kullanıcı bilgileri güncellendi.";
             return View(model);
         }
 
         [Authorize]
+        [HttpGet("ChangePassword")]
         public async Task<IActionResult> ChangePassword()
         {
             var userId = await _userManager.GetUserIdByClaimsAsync(User);
@@ -214,7 +190,9 @@ namespace WEB.Controllers
             return View(model);
         }
 
-        [Authorize, HttpPost, ValidateAntiForgeryToken]
+        [Authorize]
+        [HttpPost("ChangePassword")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangedPasswordVM model)
         {
             var dto = _mapper.Map<ChangePasswordDTO>(model);
@@ -226,13 +204,13 @@ namespace WEB.Controllers
                 return View(model);
             }
 
-            TempData["Success"] = "Şifreniz başarıyla değiştirildi.";
+            TempData["Success"] = "Şifre değiştirildi.";
             await _userManager.LogoutAsync();
             return RedirectToAction(nameof(Login));
         }
 
-       
-
+        [AllowAnonymous]
+        [HttpGet("AccessDenied")] // GET /Account/AccessDenied
         public IActionResult AccessDenied() => View();
     }
 }
