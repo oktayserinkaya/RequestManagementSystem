@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WEB.Areas.Request.Models.RequestVM;
 using RequestEntity = CORE.Entities.Concrete.Request;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;           
+using Microsoft.AspNetCore.Http;
 
 namespace WEB.Areas.Request.Controllers
 {
@@ -30,6 +33,7 @@ namespace WEB.Areas.Request.Controllers
         private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
         private readonly ILogger<RequestsController> _logger;
+        private readonly IWebHostEnvironment _env;
 
         public RequestsController(
             IRequestManager requestManager,
@@ -39,7 +43,8 @@ namespace WEB.Areas.Request.Controllers
             IEmployeeManager employeeManager,
             IUserManager userManager,
             ISubCategoryManager subCategoryManager,
-            IProductManager productManager)
+            IProductManager productManager,
+            IWebHostEnvironment env)
         {
             _requestManager = requestManager;
             _categoryManager = categoryManager;
@@ -49,6 +54,7 @@ namespace WEB.Areas.Request.Controllers
             _userManager = userManager;
             _subCategoryManager = subCategoryManager;
             _productManager = productManager;
+            _env = env;
         }
 
         [HttpGet("")]
@@ -176,14 +182,9 @@ namespace WEB.Areas.Request.Controllers
             }
 
             // Dosya yükleme
-            if (dto.ProductFeaturesFile != null)
+            if (model.ProductFeaturesFile != null)
             {
-                var fileName = Guid.NewGuid() + Path.GetExtension(dto.ProductFeaturesFile.FileName);
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName);
-                Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
-                using var stream = new FileStream(filePath, FileMode.Create);
-                await dto.ProductFeaturesFile.CopyToAsync(stream);
-                entity.ProductFeaturesFilePath = fileName;
+                entity.ProductFeaturesFilePath = await SavePdfToUploadsAsync(model.ProductFeaturesFile);
             }
 
             var result = await _requestManager.AddEntityAsync(entity);
@@ -445,6 +446,37 @@ namespace WEB.Areas.Request.Controllers
             model.ProductList = new SelectList(products, "Id", "Name", model.ProductId);
         }
 
+        private async Task<string> SavePdfToUploadsAsync(IFormFile file)
+        {
+            // Tarih bazlı klasör: /uploads/yyyy/MM
+            var y = DateTime.UtcNow.ToString("yyyy");
+            var m = DateTime.UtcNow.ToString("MM");
+            var uploadsRoot = Path.Combine(_env.WebRootPath ?? string.Empty, "uploads", y, m);
+            Directory.CreateDirectory(uploadsRoot);
+
+            var ext = Path.GetExtension(file.FileName);
+            if (!ext.Equals(".pdf", StringComparison.OrdinalIgnoreCase))
+                ext = ".pdf";
+
+            var name = $"{Guid.NewGuid():N}{ext}";
+            var physicalPath = Path.Combine(uploadsRoot, name);
+
+            using (var fs = System.IO.File.Create(physicalPath))
+                await file.CopyToAsync(fs);
+
+            // DB'ye yazılacak web yolu:
+            var webPath = $"/uploads/{y}/{m}/{name}";
+            return webPath;
+        }
+
+        private string WebToPhysical(string webPath)
+        {
+            // '/uploads/yy/MM/file.pdf' -> {wwwroot}\uploads\yy\MM\file.pdf
+            var p = webPath.Replace('\\', '/');
+            if (p.StartsWith("~/")) p = p[2..];
+            if (p.StartsWith("/")) p = p[1..];
+            return Path.Combine(_env.WebRootPath ?? string.Empty, p.Replace('/', Path.DirectorySeparatorChar));
+        }
 
 
 

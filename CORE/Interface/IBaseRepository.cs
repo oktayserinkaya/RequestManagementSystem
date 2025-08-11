@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using CORE.Entities.Abstract;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -34,6 +35,13 @@ namespace CORE.Interface
 
         Task<IDbContextTransaction> BeginTransactionAsync();
 
-        
+
+        // 🔽 EKLEDİK: tracked entity için SaveChanges
+        Task<int> SaveChangesAsync();
+
+        // 🔽 EKLEDİK: EntityEntry'e erişim (PK'yi modified olmaktan çıkaracağız)
+        EntityEntry Entry(object entity);
+
+
     }
 }

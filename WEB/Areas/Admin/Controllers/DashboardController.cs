@@ -3,23 +3,24 @@ using System.Threading.Tasks;
 using BUSINESS.Manager.Interface;
 using CORE.Enums;
 using CORE.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WEB.Areas.Request.Models.RequestVM;
 using WEB.Areas.Admin.Models.DashboardVM;
+using WEB.Areas.Request.Models.RequestVM;
 using RequestEntity = CORE.Entities.Concrete.Request;
-using Microsoft.AspNetCore.Authorization;
 
 namespace WEB.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Route("Admin")] // -> /Admin
     [Authorize(Policy = "AdminPolicy")]
     public class DashboardController : Controller
     {
         private readonly IRequestManager _requestManager;
         public DashboardController(IRequestManager requestManager) => _requestManager = requestManager;
 
-        [HttpGet("")]
+        [HttpGet("")] // GET /Admin
         public async Task<IActionResult> Index()
         {
             var entities = await _requestManager.GetByDefaultsAsync<RequestEntity>(
@@ -29,10 +30,9 @@ namespace WEB.Areas.Admin.Controllers
                     .Include(z => z.Title!)
             );
 
-            // Kart sayıları (ihtiyacınıza göre uyarlayın)
             var total = entities.Count;
-            var pending = entities.Count(x => x.Status == Status.Active);    // örnek: Pending ~ Active
-            var completed = entities.Count(x => x.Status == Status.Modified); // örnek: Completed ~ Modified
+            var pending = entities.Count(x => x.Status == Status.Active);
+            var completed = entities.Count(x => x.Status == Status.Modified);
 
             var list = entities
                 .Select(x => new GetRequestsVM

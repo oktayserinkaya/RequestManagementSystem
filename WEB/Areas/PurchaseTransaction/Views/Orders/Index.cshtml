@@ -1,0 +1,121 @@
+﻿@model IEnumerable<WEB.Areas.PurchaseTransaction.Models.PurchaseTransactionVM.OrderListVM>
+@{
+    ViewData["Title"] = "Satın Alma Talepleri (Onaylananlar)";
+
+    Func<string, string> statusClass = s => s switch
+    {
+        "AKTİF" => "bg-success",
+        "GÜNCELLENDİ" => "bg-warning",
+        "PASİF" => "bg-secondary",
+        _ => "bg-secondary"
+    };
+}
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900" />
+<link href="~/TemplateResources/css/nucleo-icons.css" rel="stylesheet" />
+<link href="~/TemplateResources/css/nucleo-svg.css" rel="stylesheet" />
+<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link id="pagestyle" href="~/TemplateResources/css/material-dashboard.css?v=3.2.0" rel="stylesheet" />
+
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <!-- Detay sayfasıyla aynı başlık şeridi -->
+        <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
+            <h6 class="text-white text-capitalize ps-3">Satın Alma Talepleri (Onaylananlar)</h6>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0">
+                    <thead>
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Talep Tarihi</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Personel</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Departman</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Kategori</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Alt Kategori</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ürün</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Adet</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Durum</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model is null || !Model.Any())
+                        {
+                            <tr>
+                                <td class="text-center text-secondary" colspan="9">Kayıt bulunamadı.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            foreach (var i in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <span class="text-secondary text-xs font-weight-bold">
+                                            @(i.RequestDate?.ToString("dd.MM.yyyy") ?? "-")
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <span class="text-sm fw-bold">@i.EmployeeFullName</span>
+                                            <span class="text-xs text-secondary">@i.EmployeeEmail</span>
+                                        </div>
+                                    </td>
+
+                                    <td class="text-sm">@i.DepartmentName</td>
+                                    <td class="text-sm">@i.CategoryName</td>
+                                    <td class="text-sm">@i.SubCategoryName</td>
+                                    <td class="text-sm">@i.ProductName</td>
+
+                                    <td class="text-center text-sm">
+                                        @(i.Amount?.ToString() ?? "-")
+                                    </td>
+
+                                    <td class="text-center">
+                                        <span class="badge @statusClass(i.StatusText)">@i.StatusText</span>
+                                    </td>
+
+                                    <td class="align-middle">
+                                        <div class="btn-group" role="group">
+                                            @* Şartname varsa yeni sekmede görüntüle *@
+                                            @if (!string.IsNullOrWhiteSpace(i.SpecPath))
+                                            {
+                                                <a class="btn btn-sm btn-outline-dark"
+                                                   asp-area="PurchaseTransaction"
+                                                   asp-controller="Orders"
+                                                   asp-action="Spec"
+                                                   asp-route-id="@i.Id"
+                                                   target="_blank" rel="noopener noreferrer">
+                                                    Görüntüle
+                                                </a>
+                                            }
+
+                                            <a class="btn btn-sm btn-outline-primary"
+                                               asp-area="PurchaseTransaction"
+                                               asp-controller="Orders"
+                                               asp-action="Detail"
+                                               asp-route-id="@i.Id">
+                                                İncele
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-3 d-flex justify-content-end">
+                <a asp-area="PurchaseTransaction" asp-controller="Orders" asp-action="Index"
+                   class="btn btn-outline-secondary">
+                    Yenile
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
