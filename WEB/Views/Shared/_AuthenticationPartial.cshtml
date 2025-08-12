@@ -147,11 +147,14 @@ else
             </li>
         }
 
+        <!-- Ödeme Birimi -->
         @if (isFinance || isAdmin)
         {
             <li class="nav-item">
                 <a class="nav-link text-white@(active("PaymentTransaction", "PaymentTransaction", "Index"))"
-                   href="~/Finance/Payments">
+                   asp-area="PaymentTransaction"
+                   asp-controller="PaymentTransaction"
+                   asp-action="Index">
                     <i class="material-symbols-rounded me-2">payments</i> Ödeme Birimi
                 </a>
             </li>

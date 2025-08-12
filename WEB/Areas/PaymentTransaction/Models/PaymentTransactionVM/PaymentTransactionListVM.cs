@@ -9,6 +9,7 @@
         public string EmployeeFullName { get; set; } = "";
         public string EmployeeEmail { get; set; } = "";
         public string DepartmentName { get; set; } = "";
+        public string TitleName { get; set; } = "";
 
         public string CategoryName { get; set; } = "";
         public string SubCategoryName { get; set; } = "";

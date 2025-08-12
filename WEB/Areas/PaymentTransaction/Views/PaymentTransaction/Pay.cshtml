@@ -1,0 +1,159 @@
+﻿@model WEB.Areas.PaymentTransaction.Models.PaymentTransactionVM.PaymentFormVM
+@{
+    ViewData["Title"] = "Ödeme Yap";
+    string Safe(string? s) => string.IsNullOrWhiteSpace(s) ? "-" : s!;
+}
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900" />
+<link id="pagestyle" href="~/TemplateResources/css/material-dashboard.css?v=3.2.0" rel="stylesheet" />
+
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center px-3">
+            <h6 class="text-white text-capitalize m-0">Ödeme Yap</h6>
+            @if (!string.IsNullOrWhiteSpace(Model?.SpecPath))
+            {
+                <a class="btn btn-outline-light btn-sm"
+                   asp-area="PaymentTransaction"
+                   asp-controller="PaymentTransaction"
+                   asp-action="Spec"
+                   asp-route-id="@Model.RequestId"
+                   target="_blank" rel="noopener noreferrer">
+                    Şartnameyi Gör
+                </a>
+            }
+        </div>
+
+        <div class="card-body">
+
+            @Html.ValidationSummary(false, "", new { @class = "text-danger mb-3" })
+
+            <!-- Özet -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Talep No</label>
+                    <input class="form-control border border-dark shadow-sm" value="@Model.RequestId" readonly />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Talep Tarihi</label>
+                    <input class="form-control border border-dark shadow-sm" value="@((Model.RequestDate ?? Model.CreatedDate).ToString("dd.MM.yyyy"))" readonly />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Personel</label>
+                    <input class="form-control border border-dark shadow-sm" value="@Safe(Model.EmployeeFullName)" readonly />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Departman</label>
+                    <input class="form-control border border-dark shadow-sm" value="@Safe(Model.DepartmentName)" readonly />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Ürün</label>
+                    <input class="form-control border border-dark shadow-sm" value="@Safe(Model.ProductName)" readonly />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Talep Adedi</label>
+                    <input class="form-control border border-dark shadow-sm" value="@Model.RequestedAmount?.ToString() ?? " -"" readonly />
+                </div>
+            </div>
+
+            <form method="post" asp-area="PaymentTransaction" asp-controller="PaymentTransaction" asp-action="Pay" asp-route-id="@Model.RequestId">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="RequestId" />
+
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <div class="card border h-100">
+                            <div class="card-header bg-light"><strong>Tedarikçi Bilgileri</strong></div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label asp-for="SupplierName" class="form-label">Tedarikçi Adı</label>
+                                    <input asp-for="SupplierName" class="form-control" />
+                                    <span asp-validation-for="SupplierName" class="text-danger"></span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="SupplierTaxNo" class="form-label">Vergi No</label>
+                                        <input asp-for="SupplierTaxNo" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="SupplierIban" class="form-label">IBAN</label>
+                                        <input asp-for="SupplierIban" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="SupplierEmail" class="form-label">E-Posta</label>
+                                        <input asp-for="SupplierEmail" type="email" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="SupplierPhone" class="form-label">Telefon</label>
+                                        <input asp-for="SupplierPhone" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card border h-100">
+                            <div class="card-header bg-light"><strong>Fatura / Ödeme</strong></div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="InvoiceNo" class="form-label">Fatura No</label>
+                                        <input asp-for="InvoiceNo" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="InvoiceDate" class="form-label">Fatura Tarihi</label>
+                                        <input asp-for="InvoiceDate" type="date" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="PaymentMethod" class="form-label">Ödeme Yöntemi</label>
+                                        <select asp-for="PaymentMethod" class="form-select">
+                                            <option>EFT/Havale</option>
+                                            <option>Kredi Kartı</option>
+                                            <option>Nakit</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="PaymentDate" class="form-label">Ödeme Tarihi</label>
+                                        <input asp-for="PaymentDate" type="date" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="PaymentAmount" class="form-label">Ödeme Tutarı</label>
+                                        <input asp-for="PaymentAmount" type="number" step="0.01" min="0" class="form-control" />
+                                        <span asp-validation-for="PaymentAmount" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label asp-for="Currency" class="form-label">Para Birimi</label>
+                                        <select asp-for="Currency" class="form-select">
+                                            <option>TRY</option>
+                                            <option>USD</option>
+                                            <option>EUR</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Notes" class="form-label">Notlar</label>
+                                    <textarea asp-for="Notes" rows="2" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <a asp-area="PaymentTransaction" asp-controller="PaymentTransaction" asp-action="Index" class="btn btn-outline-secondary">← Listeye Dön</a>
+                    <button type="submit" class="btn btn-primary">Ödemeyi Kaydet & PDF İndir</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
