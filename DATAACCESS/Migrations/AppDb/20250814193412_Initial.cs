@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DATAACCESS.Migrations.AppDb
 {
     /// <inheritdoc />
-    public partial class Initil : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -247,6 +247,43 @@ namespace DATAACCESS.Migrations.AppDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "Purchases",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    RequestId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SupplierName = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    SupplierTaxNo = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    SupplierIban = table.Column<string>(type: "character varying(34)", maxLength: 34, nullable: true),
+                    SupplierEmail = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    SupplierPhone = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: true),
+                    Quantity = table.Column<int>(type: "integer", nullable: true),
+                    UnitPrice = table.Column<decimal>(type: "numeric(18,2)", nullable: true),
+                    DiscountRate = table.Column<decimal>(type: "numeric(5,2)", nullable: false),
+                    VatRate = table.Column<decimal>(type: "numeric(5,2)", nullable: false),
+                    Subtotal = table.Column<decimal>(type: "numeric(18,2)", nullable: true),
+                    DiscountAmount = table.Column<decimal>(type: "numeric(18,2)", nullable: true),
+                    VatAmount = table.Column<decimal>(type: "numeric(18,2)", nullable: true),
+                    GrandTotal = table.Column<decimal>(type: "numeric(18,2)", nullable: true),
+                    Currency = table.Column<string>(type: "character varying(8)", maxLength: 8, nullable: false),
+                    OfferPdfPath = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    Status = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Purchases", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Purchases_Requests_RequestId",
+                        column: x => x.RequestId,
+                        principalTable: "Requests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Warehouses",
                 columns: table => new
                 {
@@ -438,6 +475,12 @@ namespace DATAACCESS.Migrations.AppDb
                 column: "SubCategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Purchases_RequestId",
+                table: "Purchases",
+                column: "RequestId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Requests_EmployeeId",
                 table: "Requests",
                 column: "EmployeeId");
@@ -508,6 +551,9 @@ namespace DATAACCESS.Migrations.AppDb
         {
             migrationBuilder.DropTable(
                 name: "Payments");
+
+            migrationBuilder.DropTable(
+                name: "Purchases");
 
             migrationBuilder.DropTable(
                 name: "Warehouses");

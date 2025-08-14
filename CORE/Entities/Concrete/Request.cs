@@ -46,6 +46,8 @@ namespace CORE.Entities.Concrete
 
         public Guid DepartmentId { get; set; }
 
+        public Purchase? Purchase { get; set; }
+
         public virtual List<Payment> Payments { get; set; }
         public virtual List<Warehouse> Warehouses { get; set; }
     }

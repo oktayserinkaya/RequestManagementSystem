@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DATAACCESS.Migrations.AppDb
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250811203547_Initil")]
-    partial class Initil
+    [Migration("20250814193412_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -419,6 +419,88 @@ namespace DATAACCESS.Migrations.AppDb
                             StockAmount = 50.0,
                             SubCategoryId = new Guid("0f111111-0000-0000-0000-0000000000ae")
                         });
+                });
+
+            modelBuilder.Entity("CORE.Entities.Concrete.Purchase", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<decimal?>("DiscountAmount")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("DiscountRate")
+                        .HasColumnType("numeric(5,2)");
+
+                    b.Property<decimal?>("GrandTotal")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<string>("OfferPdfPath")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("RequestId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal?>("Subtotal")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<string>("SupplierEmail")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("SupplierIban")
+                        .HasMaxLength(34)
+                        .HasColumnType("character varying(34)");
+
+                    b.Property<string>("SupplierName")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("SupplierPhone")
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("SupplierTaxNo")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<decimal?>("UnitPrice")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<decimal?>("VatAmount")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<decimal>("VatRate")
+                        .HasColumnType("numeric(5,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RequestId")
+                        .IsUnique();
+
+                    b.ToTable("Purchases");
                 });
 
             modelBuilder.Entity("CORE.Entities.Concrete.Request", b =>
@@ -894,6 +976,17 @@ namespace DATAACCESS.Migrations.AppDb
                     b.Navigation("SubCategory");
                 });
 
+            modelBuilder.Entity("CORE.Entities.Concrete.Purchase", b =>
+                {
+                    b.HasOne("CORE.Entities.Concrete.Request", "Request")
+                        .WithOne("Purchase")
+                        .HasForeignKey("CORE.Entities.Concrete.Purchase", "RequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Request");
+                });
+
             modelBuilder.Entity("CORE.Entities.Concrete.Request", b =>
                 {
                     b.HasOne("CORE.Entities.Concrete.Employee", "Employee")
@@ -1028,6 +1121,8 @@ namespace DATAACCESS.Migrations.AppDb
             modelBuilder.Entity("CORE.Entities.Concrete.Request", b =>
                 {
                     b.Navigation("Payments");
+
+                    b.Navigation("Purchase");
 
                     b.Navigation("Warehouses");
                 });

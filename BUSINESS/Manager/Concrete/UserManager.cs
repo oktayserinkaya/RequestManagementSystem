@@ -19,7 +19,7 @@ namespace BUSINESS.Manager.Concrete
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        private readonly UserManager<AppUser> _identityUserManager; // <-- ASP.NET Identity UserManager
+        private readonly Microsoft.AspNetCore.Identity.UserManager<AppUser> _identityUserManager;
 
         public UserManager(IUserRepository userRepository, IMapper mapper, UserManager<AppUser> identityUserManager)
         {

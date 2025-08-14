@@ -125,8 +125,19 @@ namespace WEB.Areas.PaymentTransaction.Controllers
         [HttpGet("Pay/{id:guid}")]
         public async Task<IActionResult> Pay(Guid id)
         {
-            var req = await _requestManager.GetByIdAsync<RequestEntity>(id);
-            if (req is null) { TempData["Error"] = "Talep bulunamadı."; return RedirectToAction(nameof(Index)); }
+            // Request + Employee + Department (+ Product) birlikte yüklensin
+            var req = (await _requestManager.GetByDefaultsAsync<RequestEntity>(
+                x => x.Id == id,
+                join: q => q
+                    .Include(r => r.Employee)!.ThenInclude(e => e!.Department!)
+                    .Include(r => r.Product!)
+            )).FirstOrDefault();
+
+            if (req is null)
+            {
+                TempData["Error"] = "Talep bulunamadı.";
+                return RedirectToAction(nameof(Index));
+            }
 
             var vm = new PaymentFormVM
             {
@@ -144,7 +155,7 @@ namespace WEB.Areas.PaymentTransaction.Controllers
                 PaymentDate = DateTime.Today
             };
 
-            return View(vm); // Views/PaymentTransaction/Pay.cshtml
+            return View(vm);
         }
 
         // ÖDEMEYİ İŞLE + PDF ÜRET (POST)

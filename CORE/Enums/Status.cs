@@ -15,11 +15,19 @@ namespace CORE.Enums
         [Display(Name = "Güncellenmiş")]
         Modified,
 
+        [Display(Name = "Pasif")]
         Passive,
 
+        [Display(Name = "Beklemede")]
         Pending,
+
+        [Display(Name = "Tamamlanmış")]
         Completed,
+
+        [Display(Name = "Ödeme Bekleniyor")]
         WaitingPayment,
+
+        [Display(Name = "Ödendi")]
         Paid
     }
 }

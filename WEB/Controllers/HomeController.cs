@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using BUSINESS.Manager.Interface;
 using CORE.Enums;
 using CORE.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WEB.Areas.Admin.Models.DashboardVM;     // DashboardIndexVM
@@ -11,15 +12,14 @@ using RequestEntity = CORE.Entities.Concrete.Request;
 
 namespace WEB.Controllers
 {
-    [Route("")] // -> /  ve /Home/Index ile çalışır
+    [Authorize]
+    [Route("")]
     public class HomeController : Controller
     {
         private readonly IRequestManager _requestManager;
         public HomeController(IRequestManager requestManager) => _requestManager = requestManager;
 
         [HttpGet("")]
-        [HttpGet("Home")]
-        [HttpGet("Home/Index")]
         public async Task<IActionResult> Index()
         {
             var entities = await _requestManager.GetByDefaultsAsync<RequestEntity>(
