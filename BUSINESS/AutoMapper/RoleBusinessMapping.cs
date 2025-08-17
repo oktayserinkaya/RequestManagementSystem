@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,10 +15,31 @@ namespace BUSINESS.AutoMapper
     {
         public RoleBusinessMapping()
         {
-            CreateMap<GetRoleDTO, AppRole>().ReverseMap()
-            .ForMember(x => x.UpdatedDate, dest => dest.MapFrom(z => z.UpdatedDate != null ? z.UpdatedDate.ToString() : " - "))
-            .ForMember(x => x.Status, dest => dest.MapFrom(z => z.Status == Status.Active ? "Aktif" : "Güncellenmiş"));
+            // Entity -> DTO (formatlama burada string'e dönüşüyor)
+            CreateMap<AppRole, GetRoleDTO>()
+                .ForMember(d => d.UpdatedDate, o => o.MapFrom(s =>
+                    s.UpdatedDate.HasValue
+                        ? s.UpdatedDate.Value.ToString("dd.MM.yyyy HH:mm", CultureInfo.GetCultureInfo("tr-TR"))
+                        : " - "))
+                .ForMember(d => d.Status, o => o.MapFrom(s =>
+                    s.Status == Status.Active
+                        ? "Aktif"
+                        : (s.Status == Status.Modified ? "Güncellenmiş" : "Pasif")));
 
+            // DTO -> Entity (string -> enum, string -> DateTime?)
+            CreateMap<GetRoleDTO, AppRole>()
+                .ForMember(d => d.Status, o => o.MapFrom(s =>
+                    (s.Status != null && s.Status.Trim() == "Aktif")
+                        ? Status.Active
+                        : ((s.Status != null && s.Status.Trim() == "Güncellenmiş")
+                            ? Status.Modified
+                            : Status.Passive)))
+                .ForMember(d => d.UpdatedDate, o => o.MapFrom(s =>
+                    string.IsNullOrWhiteSpace(s.UpdatedDate) || s.UpdatedDate.Trim() == "-"
+                        ? (DateTime?)null
+                        : DateTime.Parse(s.UpdatedDate, CultureInfo.GetCultureInfo("tr-TR"))));
+
+            // Create / Update DTO'ları
             CreateMap<AppRole, CreateRoleDTO>().ReverseMap();
             CreateMap<AppRole, UpdateRoleDTO>().ReverseMap();
         }

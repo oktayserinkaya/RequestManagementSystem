@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CORE.Entities.Concrete;
 using CORE.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -15,78 +11,17 @@ namespace DATAACCESS.SeedData.EntitySeedData
         public void Configure(EntityTypeBuilder<Warehouse> builder)
         {
             builder.HasData(
-                new Warehouse
-                {
-                    Id = Guid.Parse("1a30dfe7-0cf1-41c7-bb85-eeb0a0cf1001"),
-                    StockOutAmount = 3,
-                    StockInAmount = 8,
-                    GeneralStockAmount = 5,
-                    WaybillNumber = "WB-1007",
-                    WaybillPrice = "18400",
-                    ProductId = Guid.Parse("11111111-aaaa-bbbb-cccc-111111111111"),
-                    CategoryId = Guid.Parse("11111111-1111-1111-1111-111111111111"), // Bilgisayarlar
-                    SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-0000000000ab"), // Ofis Bilgisayarları
-                    EmployeeId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-                    RequestId = Guid.Parse("10000000-0000-0000-0000-0000000000ab"),
-                    DepartmentId = Guid.Parse("11111111-1111-1111-1111-111111111111"), // Ar-Ge
-                    CreatedDate = DateTime.Parse("2025-07-01"),
-                    Status = Status.Active
-                },
-new Warehouse
-{
-    Id = Guid.Parse("94d41b56-9634-49b3-abc5-75fce7f41002"),
-    StockOutAmount = 1,
-    StockInAmount = 6,
-    GeneralStockAmount = 5,
-    WaybillNumber = "WB-1008",
-    WaybillPrice = "9000",
-    ProductId = Guid.Parse("22222222-aaaa-bbbb-cccc-222222222222"),
-    CategoryId = Guid.Parse("22222222-2222-2222-2222-222222222222"), // Güvenlik
-    SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-0000000000ac"), // Güvenlik Kameraları
-    EmployeeId = Guid.Parse("22222222-2222-2222-2222-222222222222"),
-    RequestId = Guid.Parse("10000000-0000-0000-0000-0000000000ac"),
-    DepartmentId = Guid.Parse("22222222-2222-2222-2222-222222222222"), // Kalite Kontrol
-    CreatedDate = DateTime.Parse("2025-07-01"),
-    Status = Status.Active
-},
-new Warehouse
-{
-    Id = Guid.Parse("e8911d5e-9ef6-465a-988c-bc6bcbb11003"),
-    StockOutAmount = 0,
-    StockInAmount = 5,
-    GeneralStockAmount = 5,
-    WaybillNumber = "WB-1009",
-    WaybillPrice = "6700",
-    ProductId = Guid.Parse("33333333-aaaa-bbbb-cccc-333333333333"),
-    CategoryId = Guid.Parse("33333333-3333-3333-3333-333333333333"), // Ağ Cihazları
-    SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-0000000000ad"), // Depolama Aygıtları
-    EmployeeId = Guid.Parse("33333333-3333-3333-3333-333333333333"),
-    RequestId = Guid.Parse("10000000-0000-0000-0000-0000000000ad"),
-    DepartmentId = Guid.Parse("33333333-3333-3333-3333-333333333333"), // Bakım ve Onarım
-    CreatedDate = DateTime.Parse("2025-07-01"),
-    Status = Status.Active
-},
-new Warehouse
-{
-    Id = Guid.Parse("a7074ea5-3c5d-45c7-9872-4de0a2f21004"),
-    StockOutAmount = 2,
-    StockInAmount = 10,
-    GeneralStockAmount = 8,
-    WaybillNumber = "WB-1010",
-    WaybillPrice = "10400",
-    ProductId = Guid.Parse("44444444-aaaa-bbbb-cccc-444444444444"),
-    CategoryId = Guid.Parse("44444444-4444-4444-4444-444444444444"), // Çevre Birimleri
-    SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-0000000000ae"), // Gaming Aksesuarlar
-    EmployeeId = Guid.Parse("44444444-4444-4444-4444-444444444444"),
-    RequestId = Guid.Parse("10000000-0000-0000-0000-0000000000ae"),
-    DepartmentId = Guid.Parse("44444444-4444-4444-4444-444444444444"), // Yönetim
-    CreatedDate = DateTime.Parse("2025-07-01"),
-    Status = Status.Active
-}
+                new Warehouse { Id = Guid.Parse("1a30dfe7-0cf1-41c7-bb85-eeb0a0cf1001"), StockOutAmount = 1, StockInAmount = 3, GeneralStockAmount = 2, WaybillNumber = "WB-2001", WaybillPrice = "42000", ProductId = Guid.Parse("11111111-aaaa-bbbb-cccc-111111111111"), CategoryId = Guid.Parse("11111111-1111-1111-1111-111111111111"), SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-000000000001"), EmployeeId = Guid.Parse("e1111111-1111-1111-1111-111111111111"), RequestId = Guid.Parse("10000000-0000-0000-0000-000000000001"), DepartmentId = Guid.Parse("11111111-1111-1111-1111-111111111111"), CreatedDate = DateTime.Parse("2025-07-01"), Status = Status.Active },
+                new Warehouse { Id = Guid.Parse("1a30dfe7-0cf1-41c7-bb85-eeb0a0cf1002"), StockOutAmount = 50, StockInAmount = 200, GeneralStockAmount = 150, WaybillNumber = "WB-2002", WaybillPrice = "9500.5", ProductId = Guid.Parse("22222222-aaaa-bbbb-cccc-222222222222"), CategoryId = Guid.Parse("22222222-2222-2222-2222-222222222222"), SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-000000000002"), EmployeeId = Guid.Parse("e2222222-2222-2222-2222-222222222222"), RequestId = Guid.Parse("10000000-0000-0000-0000-000000000002"), DepartmentId = Guid.Parse("22222222-2222-2222-2222-222222222222"), CreatedDate = DateTime.Parse("2025-07-01"), Status = Status.Active },
+                new Warehouse { Id = Guid.Parse("1a30dfe7-0cf1-41c7-bb85-eeb0a0cf1003"), StockOutAmount = 20, StockInAmount = 120, GeneralStockAmount = 100, WaybillNumber = "WB-2003", WaybillPrice = "7200.75", ProductId = Guid.Parse("33333333-aaaa-bbbb-cccc-333333333333"), CategoryId = Guid.Parse("33333333-3333-3333-3333-333333333333"), SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-000000000003"), EmployeeId = Guid.Parse("e3333333-3333-3333-3333-333333333333"), RequestId = Guid.Parse("10000000-0000-0000-0000-000000000003"), DepartmentId = Guid.Parse("33333333-3333-3333-3333-333333333333"), CreatedDate = DateTime.Parse("2025-07-01"), Status = Status.Active },
+                new Warehouse { Id = Guid.Parse("1a30dfe7-0cf1-41c7-bb85-eeb0a0cf1004"), StockOutAmount = 5, StockInAmount = 20, GeneralStockAmount = 15, WaybillNumber = "WB-2004", WaybillPrice = "16850.9", ProductId = Guid.Parse("44444444-aaaa-bbbb-cccc-444444444444"), CategoryId = Guid.Parse("44444444-4444-4444-4444-444444444444"), SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-000000000004"), EmployeeId = Guid.Parse("e4444444-4444-4444-4444-444444444444"), RequestId = Guid.Parse("10000000-0000-0000-0000-000000000004"), DepartmentId = Guid.Parse("44444444-4444-4444-4444-444444444444"), CreatedDate = DateTime.Parse("2025-07-01"), Status = Status.Active },
+                new Warehouse { Id = Guid.Parse("1a30dfe7-0cf1-41c7-bb85-eeb0a0cf1005"), StockOutAmount = 30, StockInAmount = 120, GeneralStockAmount = 90, WaybillNumber = "WB-2005", WaybillPrice = "11000", ProductId = Guid.Parse("55555555-aaaa-bbbb-cccc-555555555555"), CategoryId = Guid.Parse("55555555-5555-5555-5555-555555555555"), SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-000000000005"), EmployeeId = Guid.Parse("e5555555-5555-5555-5555-555555555555"), RequestId = Guid.Parse("10000000-0000-0000-0000-000000000005"), DepartmentId = Guid.Parse("55555555-5555-5555-5555-555555555555"), CreatedDate = DateTime.Parse("2025-07-01"), Status = Status.Active },
+                new Warehouse { Id = Guid.Parse("1a30dfe7-0cf1-41c7-bb85-eeb0a0cf1006"), StockOutAmount = 1, StockInAmount = 2, GeneralStockAmount = 1, WaybillNumber = "WB-2006", WaybillPrice = "54000", ProductId = Guid.Parse("66666666-aaaa-bbbb-cccc-666666666666"), CategoryId = Guid.Parse("66666666-6666-6666-6666-666666666666"), SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-000000000006"), EmployeeId = Guid.Parse("e6666666-6666-6666-6666-666666666666"), RequestId = Guid.Parse("10000000-0000-0000-0000-000000000006"), DepartmentId = Guid.Parse("66666666-6666-6666-6666-666666666666"), CreatedDate = DateTime.Parse("2025-07-01"), Status = Status.Active },
+                new Warehouse { Id = Guid.Parse("1a30dfe7-0cf1-41c7-bb85-eeb0a0cf1007"), StockOutAmount = 5, StockInAmount = 25, GeneralStockAmount = 20, WaybillNumber = "WB-2007", WaybillPrice = "7800", ProductId = Guid.Parse("77777777-aaaa-bbbb-cccc-777777777777"), CategoryId = Guid.Parse("77777777-7777-7777-7777-777777777777"), SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-000000000007"), EmployeeId = Guid.Parse("e7777777-7777-7777-7777-777777777777"), RequestId = Guid.Parse("10000000-0000-0000-0000-000000000007"), DepartmentId = Guid.Parse("77777777-7777-7777-7777-777777777777"), CreatedDate = DateTime.Parse("2025-07-01"), Status = Status.Active },
+                new Warehouse { Id = Guid.Parse("1a30dfe7-0cf1-41c7-bb85-eeb0a0cf1008"), StockOutAmount = 10, StockInAmount = 40, GeneralStockAmount = 30, WaybillNumber = "WB-2008", WaybillPrice = "9300", ProductId = Guid.Parse("88888888-aaaa-bbbb-cccc-888888888888"), CategoryId = Guid.Parse("88888888-8888-8888-8888-888888888888"), SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-000000000008"), EmployeeId = Guid.Parse("e8888888-8888-8888-8888-888888888888"), RequestId = Guid.Parse("10000000-0000-0000-0000-000000000008"), DepartmentId = Guid.Parse("88888888-8888-8888-8888-888888888888"), CreatedDate = DateTime.Parse("2025-07-01"), Status = Status.Active },
+                new Warehouse { Id = Guid.Parse("1a30dfe7-0cf1-41c7-bb85-eeb0a0cf1009"), StockOutAmount = 4, StockInAmount = 20, GeneralStockAmount = 16, WaybillNumber = "WB-2009", WaybillPrice = "25600", ProductId = Guid.Parse("99999999-aaaa-bbbb-cccc-999999999999"), CategoryId = Guid.Parse("99999999-9999-9999-9999-999999999999"), SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-000000000009"), EmployeeId = Guid.Parse("e9999999-9999-9999-9999-999999999999"), RequestId = Guid.Parse("10000000-0000-0000-0000-000000000009"), DepartmentId = Guid.Parse("99999999-9999-9999-9999-999999999999"), CreatedDate = DateTime.Parse("2025-07-01"), Status = Status.Active },
+                new Warehouse { Id = Guid.Parse("1a30dfe7-0cf1-41c7-bb85-eeb0a0cf1010"), StockOutAmount = 1, StockInAmount = 10, GeneralStockAmount = 9, WaybillNumber = "WB-2010", WaybillPrice = "12400", ProductId = Guid.Parse("aaaaaaaa-aaaa-bbbb-cccc-aaaaaaaaaaaa"), CategoryId = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), SubCategoryId = Guid.Parse("0f111111-0000-0000-0000-000000000010"), EmployeeId = Guid.Parse("eaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), RequestId = Guid.Parse("10000000-0000-0000-0000-000000000010"), DepartmentId = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), CreatedDate = DateTime.Parse("2025-07-01"), Status = Status.Active }
             );
         }
     }
-
-
-
 }

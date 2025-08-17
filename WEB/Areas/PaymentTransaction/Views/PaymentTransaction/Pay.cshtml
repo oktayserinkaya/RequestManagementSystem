@@ -52,7 +52,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-label fw-bold">Talep Adedi</label>
-                    <input class="form-control border border-dark shadow-sm" value="@Model.RequestedAmount?.ToString() ?? " -"" readonly />
+                    <input class="form-control border border-dark shadow-sm" value="@(Model.RequestedAmount?.ToString() ?? "-")" readonly />
                 </div>
             </div>
 
@@ -61,6 +61,61 @@
                 <input type="hidden" asp-for="RequestId" />
 
                 <div class="row g-4">
+                    <!-- Satınalma Özeti (readonly) -->
+                    <div class="col-lg-6">
+                        <div class="card border h-100">
+                            <div class="card-header bg-light"><strong>Satınalma Özeti</strong></div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Adet</label>
+                                        <input class="form-control" value="@(Model.Quantity?.ToString() ?? "-")" readonly />
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Birim Fiyat</label>
+                                        <input class="form-control" value="@(Model.UnitPrice?.ToString("0.##") ?? "-")" readonly />
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Para Birimi</label>
+                                        <input class="form-control" value="@Model.Currency" readonly />
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">İskonto (%)</label>
+                                        <input class="form-control" value="@Model.DiscountRate.ToString("0.##")" readonly />
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">KDV (%)</label>
+                                        <input class="form-control" value="@Model.VatRate.ToString("0.##")" readonly />
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Genel Toplam</label>
+                                        <input class="form-control fw-bold" value="@(Model.GrandTotal?.ToString("0.##") ?? "-")" readonly />
+                                    </div>
+                                </div>
+
+                                <hr />
+                                <div class="row g-3">
+                                    <div class="col-sm-6">
+                                        <label class="form-label">Ara Toplam</label>
+                                        <input class="form-control" value="@(Model.Subtotal?.ToString("0.##") ?? "-")" readonly />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="form-label">İskonto Tutarı</label>
+                                        <input class="form-control" value="@(Model.DiscountAmount?.ToString("0.##") ?? "-")" readonly />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="form-label">KDV Tutarı</label>
+                                        <input class="form-control" value="@(Model.VatAmount?.ToString("0.##") ?? "-")" readonly />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tedarikçi Bilgileri (prefill, düzenlenebilir bıraktım) -->
                     <div class="col-lg-6">
                         <div class="card border h-100">
                             <div class="card-header bg-light"><strong>Tedarikçi Bilgileri</strong></div>
@@ -90,27 +145,45 @@
                                         <input asp-for="SupplierPhone" class="form-control" />
                                     </div>
                                 </div>
+
+                                @* İsteğe bağlı meta *@
+                                @if (!string.IsNullOrWhiteSpace(Model?.OfferNo) || Model?.OfferDate != null || !string.IsNullOrWhiteSpace(Model?.PaymentTerms))
+                                {
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Teklif No</label>
+                                            <input class="form-control" value="@Safe(Model?.OfferNo)" readonly />
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Teklif Tarihi</label>
+                                            <input class="form-control" value="@(Model?.OfferDate?.ToString("dd.MM.yyyy") ?? "-")" readonly />
+                                        </div>
+                                        <div class="col-12 mb-3">
+                                            <label class="form-label">Ödeme/Teslimat Şartları</label>
+                                            <input class="form-control" value="@Safe(Model?.PaymentTerms)" readonly />
+                                        </div>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-lg-6">
-                        <div class="card border h-100">
+                    <!-- Fatura / Ödeme -->
+                    <div class="col-12">
+                        <div class="card border h-100 mt-4">
                             <div class="card-header bg-light"><strong>Fatura / Ödeme</strong></div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-3 mb-3">
                                         <label asp-for="InvoiceNo" class="form-label">Fatura No</label>
                                         <input asp-for="InvoiceNo" class="form-control" />
                                     </div>
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-3 mb-3">
                                         <label asp-for="InvoiceDate" class="form-label">Fatura Tarihi</label>
                                         <input asp-for="InvoiceDate" type="date" class="form-control" />
                                     </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-3 mb-3">
                                         <label asp-for="PaymentMethod" class="form-label">Ödeme Yöntemi</label>
                                         <select asp-for="PaymentMethod" class="form-select">
                                             <option>EFT/Havale</option>
@@ -118,35 +191,32 @@
                                             <option>Nakit</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-3 mb-3">
                                         <label asp-for="PaymentDate" class="form-label">Ödeme Tarihi</label>
                                         <input asp-for="PaymentDate" type="date" class="form-control" />
                                     </div>
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-3 mb-3">
                                         <label asp-for="PaymentAmount" class="form-label">Ödeme Tutarı</label>
                                         <input asp-for="PaymentAmount" type="number" step="0.01" min="0" class="form-control" />
                                         <span asp-validation-for="PaymentAmount" class="text-danger"></span>
                                     </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label class="form-label">Para Birimi</label>
+                                        <input class="form-control" value="@Model.Currency" readonly />
+                                    </div>
                                     <div class="col-md-6 mb-3">
-                                        <label asp-for="Currency" class="form-label">Para Birimi</label>
-                                        <select asp-for="Currency" class="form-select">
-                                            <option>TRY</option>
-                                            <option>USD</option>
-                                            <option>EUR</option>
-                                        </select>
+                                        <label asp-for="Notes" class="form-label">Notlar</label>
+                                        <textarea asp-for="Notes" rows="2" class="form-control"></textarea>
                                     </div>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label asp-for="Notes" class="form-label">Notlar</label>
-                                    <textarea asp-for="Notes" rows="2" class="form-control"></textarea>
-                                </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center mt-4">

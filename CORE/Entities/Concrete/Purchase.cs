@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CORE.Entities.Abstract;
 
 namespace CORE.Entities.Concrete
@@ -18,6 +14,13 @@ namespace CORE.Entities.Concrete
         public string? SupplierIban { get; set; }
         public string? SupplierEmail { get; set; }
         public string? SupplierPhone { get; set; }
+
+        // Teklif / Lojistik meta (yeni)
+        public string? OfferNo { get; set; }
+        public DateTime? OfferDate { get; set; }
+        public string? PaymentTerms { get; set; }
+        public string? Notes { get; set; }
+        public DateTime? DeliveryDate { get; set; }
 
         // Fiyatlandırma
         public int? Quantity { get; set; }

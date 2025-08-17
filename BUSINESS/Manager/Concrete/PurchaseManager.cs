@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoMapper;
+using BUSINESS.Manager.Interface;
 using CORE.Entities.Concrete;
 using CORE.Interface;
 using DTO.Concrete.PurchaseDTO;
-using BUSINESS.Manager.Interface;
 
 namespace BUSINESS.Manager.Concrete
 {
@@ -19,12 +19,6 @@ namespace BUSINESS.Manager.Concrete
             _mapper = mapper;
         }
 
-        public async Task<GetPurchaseForPaymentDTO?> GetForPaymentAsync(Guid requestId)
-        {
-            var purchase = await _repo.GetByDefaultAsync(x => x.RequestId == requestId);
-            return purchase is null ? null : _mapper.Map<GetPurchaseForPaymentDTO>(purchase);
-        }
-
         public async Task<bool> UpsertAsync(CreateOrUpdatePurchaseDTO dto)
         {
             var existing = await _repo.GetByDefaultAsync(x => x.RequestId == dto.RequestId);
@@ -36,14 +30,22 @@ namespace BUSINESS.Manager.Concrete
             }
             else
             {
+                // Supplier
                 existing.SupplierName = dto.SupplierName;
                 existing.SupplierTaxNo = dto.SupplierTaxNo;
                 existing.SupplierIban = dto.SupplierIban;
                 existing.SupplierEmail = dto.SupplierEmail;
                 existing.SupplierPhone = dto.SupplierPhone;
 
-                // Quantity int? — DTO da int? olmalı; eğer decimal? ise map’te int? cevir
-                existing.Quantity = dto.Quantity;
+                // Offer meta
+                existing.OfferNo = dto.OfferNo;
+                existing.OfferDate = dto.OfferDate;
+                existing.PaymentTerms = dto.PaymentTerms;
+                existing.Notes = dto.Notes;
+                existing.DeliveryDate = dto.DeliveryDate;
+
+                // Pricing
+                existing.Quantity = dto.Quantity;          // int?
                 existing.UnitPrice = dto.UnitPrice;
                 existing.DiscountRate = dto.DiscountRate;
                 existing.VatRate = dto.VatRate;
@@ -56,6 +58,39 @@ namespace BUSINESS.Manager.Concrete
 
                 return await _repo.UpdateAsync(existing);
             }
+        }
+
+        public async Task<GetPurchaseForPaymentDTO?> GetForPaymentAsync(Guid requestId)
+        {
+            var p = await _repo.GetByDefaultAsync(x => x.RequestId == requestId);
+            if (p is null) return null;
+
+            // Manuel map (tip uyumları garanti olsun)
+            return new GetPurchaseForPaymentDTO
+            {
+                SupplierName = p.SupplierName,
+                SupplierTaxNo = p.SupplierTaxNo,
+                SupplierIban = p.SupplierIban,
+                SupplierEmail = p.SupplierEmail,
+                SupplierPhone = p.SupplierPhone,
+
+                OfferNo = p.OfferNo,
+                OfferDate = p.OfferDate,
+                PaymentTerms = p.PaymentTerms,
+                Notes = p.Notes,
+                DeliveryDate = p.DeliveryDate,
+
+                Quantity = p.Quantity.HasValue ? (decimal?)p.Quantity.Value : null, // int? -> decimal?
+                UnitPrice = p.UnitPrice,
+                DiscountRate = p.DiscountRate,
+                VatRate = p.VatRate,
+                Subtotal = p.Subtotal,
+                DiscountAmount = p.DiscountAmount,
+                VatAmount = p.VatAmount,
+                GrandTotal = p.GrandTotal,
+                Currency = p.Currency,
+                OfferPdfPath = p.OfferPdfPath
+            };
         }
     }
 }

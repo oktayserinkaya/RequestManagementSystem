@@ -312,6 +312,12 @@ namespace WEB.Areas.PurchaseTransaction.Controllers
                 SupplierEmail = model.SupplierEmail,
                 SupplierPhone = model.SupplierPhone,
 
+                OfferNo = model.OfferNo,                 // EKLENDİ
+                OfferDate = model.OfferDate,             // EKLENDİ
+                PaymentTerms = model.PaymentTerms,       // EKLENDİ
+                Notes = model.Notes,                     // EKLENDİ
+                DeliveryDate = model.DeliveryDate,       // EKLENDİ
+
                 Quantity = model.Quantity.HasValue ? (int?)Convert.ToInt32(model.Quantity.Value) : null,
                 UnitPrice = model.UnitPrice,
                 DiscountRate = model.DiscountRate,

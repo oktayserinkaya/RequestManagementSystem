@@ -1,19 +1,20 @@
 ﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using BUSINESS.Manager.Concrete;
 using BUSINESS.Manager.Interface;
 using CORE.Enums;
 using DTO.Concrete.RequestDTO;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Hosting;
 using QuestPDF.Fluent;
-using QuestPDF.Infrastructure;
 using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 using WEB.Areas.PaymentTransaction.Models.PaymentTransactionVM;
 using RequestEntity = CORE.Entities.Concrete.Request;
 
@@ -25,15 +26,18 @@ namespace WEB.Areas.PaymentTransaction.Controllers
     public class PaymentTransactionController : Controller
     {
         private readonly IRequestManager _requestManager;
+        private readonly IPurchaseManager _purchaseManager;
         private readonly ILogger<PaymentTransactionController> _logger;
         private readonly IWebHostEnvironment _env;
 
         public PaymentTransactionController(
             IRequestManager requestManager,
+            IPurchaseManager purchaseManager,
             ILogger<PaymentTransactionController> logger,
             IWebHostEnvironment env)
         {
             _requestManager = requestManager;
+            _purchaseManager = purchaseManager;
             _logger = logger;
             _env = env;
         }
@@ -120,12 +124,98 @@ namespace WEB.Areas.PaymentTransaction.Controllers
             Response.Headers["Content-Disposition"] = $"inline; filename=\"{fileName}\"";
             return PhysicalFile(found, "application/pdf", enableRangeProcessing: true);
         }
-
         // ÖDEME FORMU (GET)
         [HttpGet("Pay/{id:guid}")]
         public async Task<IActionResult> Pay(Guid id)
         {
-            // Request + Employee + Department (+ Product) birlikte yüklensin
+            var req = (await _requestManager.GetByDefaultsAsync<RequestEntity>(
+                x => x.Id == id,
+                join: q => q
+                    .Include(r => r.Employee)!.ThenInclude(e => e!.Department!)
+                    .Include(r => r.Product!)
+                    .Include(r => r.Purchase!)
+            )).FirstOrDefault();
+
+            if (req is null)
+            {
+                TempData["Error"] = "Talep bulunamadı.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var purchase = await _purchaseManager.GetForPaymentAsync(id);
+
+            // >>> decimal sabitleri 0m olsun
+            decimal qty = purchase?.Quantity ?? 0;    // int? -> decimal implicit
+            decimal unit = purchase?.UnitPrice ?? 0m;  // 0m !!
+            decimal subtotal = qty * unit;
+            decimal discRate = purchase?.DiscountRate ?? 0m;
+            decimal vatRate = purchase?.VatRate ?? 0m;
+            decimal discAmt = subtotal * discRate / 100m;
+            decimal net = subtotal - discAmt;
+            decimal vatAmt = net * vatRate / 100m;
+            decimal grand = purchase?.GrandTotal ?? (net + vatAmt);
+
+            var vm = new PaymentFormVM
+            {
+                // Talep özeti
+                RequestId = req.Id,
+                RequestDate = req.RequestDate ?? req.CreatedDate,     // null ise CreatedDate’i kullan
+                CreatedDate = req.CreatedDate,
+                EmployeeFullName = req.Employee != null ? $"{req.Employee.FirstName} {req.Employee.LastName}" : "-",
+                DepartmentName = req.Employee?.Department?.DepartmentName ?? "-",
+                ProductName = req.Product?.ProductName ?? (req.SpecialProductName ?? "-"),
+                RequestedAmount = req.Amount,
+                SpecPath = req.ProductFeaturesFilePath,
+
+                // Tedarikçi (satın alma)
+                SupplierName = purchase?.SupplierName,
+                SupplierTaxNo = purchase?.SupplierTaxNo,
+                SupplierIban = purchase?.SupplierIban,
+                SupplierEmail = purchase?.SupplierEmail,
+                SupplierPhone = purchase?.SupplierPhone,
+
+                // Teklif meta (varsa)
+                OfferNo = purchase?.OfferNo,
+                OfferDate = purchase?.OfferDate,
+                PaymentTerms = purchase?.PaymentTerms,
+                Notes = purchase?.Notes,
+
+                // Fiyatlandırma
+                Quantity = purchase?.Quantity,       // int? -> decimal? implicit OK
+                UnitPrice = purchase?.UnitPrice,
+                DiscountRate = discRate,
+                VatRate = vatRate,
+                Subtotal = purchase?.Subtotal ?? subtotal,
+                DiscountAmount = purchase?.DiscountAmount ?? discAmt,
+                VatAmount = purchase?.VatAmount ?? vatAmt,
+                GrandTotal = grand,
+                Currency = purchase?.Currency ?? "TRY",
+
+                // Ödeme varsayılanları
+                PaymentMethod = "EFT/Havale",
+                PaymentDate = DateTime.Today,
+                PaymentAmount = grand,
+
+                // Fatura tarihi varsayılanı – PDF’te boş kalmasın
+                InvoiceDate = DateTime.Today
+            };
+
+            return View(vm);
+        }
+        // ÖDEMEYİ İŞLE + PDF ÜRET (POST)
+        [HttpPost("Pay/{id:guid}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Pay(Guid id, PaymentFormVM model)
+        {
+            if (id != model.RequestId)
+                ModelState.AddModelError("", "Talep uyumsuz.");
+
+            if (model.PaymentAmount <= 0)
+                ModelState.AddModelError(nameof(model.PaymentAmount), "Ödeme tutarı giriniz.");
+
+            if (!ModelState.IsValid)
+                return View(model);
+
             var req = (await _requestManager.GetByDefaultsAsync<RequestEntity>(
                 x => x.Id == id,
                 join: q => q
@@ -139,41 +229,42 @@ namespace WEB.Areas.PaymentTransaction.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var vm = new PaymentFormVM
-            {
-                RequestId = req.Id,
-                RequestDate = req.RequestDate,
-                CreatedDate = req.CreatedDate,
-                EmployeeFullName = req.Employee != null ? $"{req.Employee.FirstName} {req.Employee.LastName}" : "-",
-                DepartmentName = req.Employee?.Department?.DepartmentName ?? "-",
-                ProductName = req.Product?.ProductName ?? (req.SpecialProductName ?? "-"),
-                RequestedAmount = req.Amount,
-                SpecPath = req.ProductFeaturesFilePath,
+            var purchase = await _purchaseManager.GetForPaymentAsync(id);
 
-                Currency = "TRY",
-                PaymentMethod = "EFT/Havale",
-                PaymentDate = DateTime.Today
-            };
+            // ---------- ÖZET ALANLARI (PDF'te boş kalmasın) ----------
+            if (!model.RequestDate.HasValue)
+                model.RequestDate = req.RequestDate ?? req.CreatedDate;
 
-            return View(vm);
-        }
+            // CreatedDate non-nullable olduğu için default kontrolü
+            if (model.CreatedDate == default)
+                model.CreatedDate = req.CreatedDate;
 
-        // ÖDEMEYİ İŞLE + PDF ÜRET (POST)
-        [HttpPost("Pay/{id:guid}")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Pay(Guid id, PaymentFormVM model)
-        {
-            if (id != model.RequestId) ModelState.AddModelError("", "Talep uyumsuz.");
-            if (model.PaymentAmount <= 0) ModelState.AddModelError(nameof(model.PaymentAmount), "Ödeme tutarı giriniz.");
-            if (!ModelState.IsValid) return View(model);
+            if (string.IsNullOrWhiteSpace(model.EmployeeFullName))
+                model.EmployeeFullName = req.Employee != null ? $"{req.Employee.FirstName} {req.Employee.LastName}" : "-";
 
-            var req = await _requestManager.GetByIdAsync<RequestEntity>(id);
-            if (req is null) { TempData["Error"] = "Talep bulunamadı."; return RedirectToAction(nameof(Index)); }
+            if (string.IsNullOrWhiteSpace(model.DepartmentName))
+                model.DepartmentName = req.Employee?.Department?.DepartmentName ?? "-";
 
-            // Ödendi olarak işaretleyin (enum’unuzda Paid varsa onu kullanın)
+            if (string.IsNullOrWhiteSpace(model.ProductName))
+                model.ProductName = req.Product?.ProductName ?? (req.SpecialProductName ?? "-");
+
+            if (model.RequestedAmount == null)
+                model.RequestedAmount = req.Amount;
+
+            // Fatura tarihi için varsayılan
+            if (!model.InvoiceDate.HasValue)
+                model.InvoiceDate = DateTime.Today;
+
+            // Tedarikçi alanlarını da boşsa satın almadan doldur
+            model.SupplierName ??= purchase?.SupplierName;
+            model.SupplierTaxNo ??= purchase?.SupplierTaxNo;
+            model.SupplierIban ??= purchase?.SupplierIban;
+            model.SupplierEmail ??= purchase?.SupplierEmail;
+            model.SupplierPhone ??= purchase?.SupplierPhone;
+
             var ok = await _requestManager.UpdateAsync(new UpdateRequestDTO
             {
-                Status = Status.Active, // Status.Paid varsa: Status = Status.Paid
+                Status = Status.Paid,
                 UpdatedDate = DateTime.UtcNow
             }, id);
 
@@ -183,10 +274,8 @@ namespace WEB.Areas.PaymentTransaction.Controllers
                 return View(model);
             }
 
-            // PDF üret
             var pdfBytes = GeneratePaymentPdf(model);
 
-            // (Opsiyonel) sunucuya kaydet
             var root = _env.WebRootPath ?? Path.Combine(_env.ContentRootPath, "wwwroot");
             var dir = Path.Combine(root, "uploads", "payments");
             Directory.CreateDirectory(dir);
@@ -196,6 +285,7 @@ namespace WEB.Areas.PaymentTransaction.Controllers
             TempData["Success"] = "Ödeme kaydedildi ve PDF oluşturuldu.";
             return File(pdfBytes, "application/pdf", fileName);
         }
+
 
         // --- PDF ÜRETİCİ ---
         private byte[] GeneratePaymentPdf(PaymentFormVM m)
