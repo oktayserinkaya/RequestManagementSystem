@@ -1,4 +1,5 @@
-﻿using CORE.Entities.Concrete;
+﻿using System;
+using CORE.Entities.Concrete;
 using CORE.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -8,74 +9,16 @@ public class RequestSeedData : IEntityTypeConfiguration<Request>
     public void Configure(EntityTypeBuilder<Request> builder)
     {
         builder.HasData(
-            new
-            {
-                Id = Guid.Parse("10000000-0000-0000-0000-0000000000ab"),
-                RequestDate = DateTime.Parse("2025-06-26"),
-                SpecialProductName = "Projeksiyon Cihazı",
-                Amount = 1.0m,
-                ProductFeatures = "Full HD, HDMI destekli",
-                CommissionNote = "Toplantı odası için",
-                IsApproved = false,
-                EmployeeId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-                AppUserId = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                ProductId = Guid.Parse("11111111-aaaa-bbbb-cccc-111111111111"),
-                TitleId = Guid.Parse("f0000011-aaaa-bbbb-cccc-0000000000ab"),
-                DepartmentId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-                CreatedDate = DateTime.Parse("2025-06-26"),
-                Status = Status.Active
-            },
-            new
-            {
-                Id = Guid.Parse("10000000-0000-0000-0000-0000000000ac"),
-                RequestDate = DateTime.Parse("2025-06-27"),
-                SpecialProductName = "Projeksiyon Cihazı", // Açıkça string olarak null atama
-                Amount = 2.0m,
-                ProductFeatures = "Full HD, HDMI destekli", // Açıkça string olarak null atama
-                CommissionNote = "Bilgi İşlem birimi için",
-                IsApproved = true,
-                EmployeeId = Guid.Parse("22222222-2222-2222-2222-222222222222"),
-                AppUserId = Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-                ProductId = Guid.Parse("22222222-aaaa-bbbb-cccc-222222222222"),
-                TitleId = Guid.Parse("f0000012-aaaa-bbbb-cccc-0000000000ac"),
-                DepartmentId = Guid.Parse("22222222-2222-2222-2222-222222222222"),
-                CreatedDate = DateTime.Parse("2025-06-27"),
-                Status = Status.Active
-            },
-            new
-            {
-                Id = Guid.Parse("10000000-0000-0000-0000-0000000000ad"),
-                RequestDate = DateTime.Parse("2025-06-28"),
-                SpecialProductName = "Full HD, HDMI destekli", // Açıkça string olarak null atama
-                Amount = 1.0m,
-                ProductFeatures = "Full HD, HDMI destekli", // Açıkça string olarak null atama
-                CommissionNote = "Yönetici kullanımı",
-                IsApproved = true,
-                EmployeeId = Guid.Parse("33333333-3333-3333-3333-333333333333"),
-                AppUserId = Guid.Parse("cccccccc-cccc-cccc-cccc-cccccccccccc"),
-                ProductId = Guid.Parse("33333333-aaaa-bbbb-cccc-333333333333"),
-                TitleId = Guid.Parse("f0000013-aaaa-bbbb-cccc-0000000000ad"),
-                DepartmentId = Guid.Parse("33333333-3333-3333-3333-333333333333"),
-                CreatedDate = DateTime.Parse("2025-06-28"),
-                Status = Status.Active
-            },
-            new
-            {
-                Id = Guid.Parse("10000000-0000-0000-0000-0000000000ae"),
-                RequestDate = DateTime.Parse("2025-06-30"),
-                SpecialProductName = "Full HD, HDMI destekli", // Açıkça string olarak null atama
-                Amount = 4.0m,
-                ProductFeatures = "Full HD, HDMI destekli", // Açıkça string olarak null atama
-                CommissionNote = "Etkinlik alanı için ses sistemi",
-                IsApproved = false,
-                EmployeeId = Guid.Parse("44444444-4444-4444-4444-444444444444"),
-                AppUserId = Guid.Parse("dddddddd-dddd-dddd-dddd-dddddddddddd"),
-                ProductId = Guid.Parse("44444444-aaaa-bbbb-cccc-444444444444"),
-                TitleId = Guid.Parse("f0000014-aaaa-bbbb-cccc-0000000000ae"),
-                DepartmentId = Guid.Parse("44444444-4444-4444-4444-444444444444"),
-                CreatedDate = DateTime.Parse("2025-06-30"),
-                Status = Status.Active
-            }
+            new { Id = Guid.Parse("10000000-0000-0000-0000-000000000001"), RequestDate = DateTime.Parse("2025-06-26"), SpecialProductName = "Defibrilatör", Amount = 1.0m, ProductFeatures = "Bifazik, AED modu", CommissionNote = "Acil servis için", IsApproved = true, EmployeeId = Guid.Parse("e1111111-1111-1111-1111-111111111111"), AppUserId = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), ProductId = Guid.Parse("11111111-aaaa-bbbb-cccc-111111111111"), TitleId = Guid.Parse("f0000011-aaaa-bbbb-cccc-0000000000ab"), DepartmentId = Guid.Parse("11111111-1111-1111-1111-111111111111"), CreatedDate = DateTime.Parse("2025-06-26"), Status = Status.Active },
+            new { Id = Guid.Parse("10000000-0000-0000-0000-000000000002"), RequestDate = DateTime.Parse("2025-06-27"), SpecialProductName = "Enjektör 5 ml", Amount = 200.0m, ProductFeatures = "Steril, Luer lock", CommissionNote = "Ameliyathane stok takviyesi", IsApproved = true, EmployeeId = Guid.Parse("e2222222-2222-2222-2222-222222222222"), AppUserId = Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), ProductId = Guid.Parse("22222222-aaaa-bbbb-cccc-222222222222"), TitleId = Guid.Parse("f0000017-aaaa-bbbb-cccc-0000000000b1"), DepartmentId = Guid.Parse("22222222-2222-2222-2222-222222222222"), CreatedDate = DateTime.Parse("2025-06-27"), Status = Status.Active },
+            new { Id = Guid.Parse("10000000-0000-0000-0000-000000000003"), RequestDate = DateTime.Parse("2025-06-28"), SpecialProductName = "Otoklav Poşeti", Amount = 100.0m, ProductFeatures = "200x300 mm", CommissionNote = "CSSD için", IsApproved = false, EmployeeId = Guid.Parse("e3333333-3333-3333-3333-333333333333"), AppUserId = Guid.Parse("cccccccc-cccc-cccc-cccc-cccccccccccc"), ProductId = Guid.Parse("33333333-aaaa-bbbb-cccc-333333333333"), TitleId = Guid.Parse("f0000019-aaaa-bbbb-cccc-0000000000b3"), DepartmentId = Guid.Parse("33333333-3333-3333-3333-333333333333"), CreatedDate = DateTime.Parse("2025-06-28"), Status = Status.Active },
+            new { Id = Guid.Parse("10000000-0000-0000-0000-000000000004"), RequestDate = DateTime.Parse("2025-06-29"), SpecialProductName = "Biyokimya Reaktifi", Amount = 5.0m, ProductFeatures = "Reaktif seti", CommissionNote = "Laboratuvar paneli", IsApproved = true, EmployeeId = Guid.Parse("e4444444-4444-4444-4444-444444444444"), AppUserId = Guid.Parse("dddddddd-dddd-dddd-dddd-dddddddddddd"), ProductId = Guid.Parse("44444444-aaaa-bbbb-cccc-444444444444"), TitleId = Guid.Parse("f0000014-aaaa-bbbb-cccc-0000000000ae"), DepartmentId = Guid.Parse("44444444-4444-4444-4444-444444444444"), CreatedDate = DateTime.Parse("2025-06-29"), Status = Status.Active },
+            new { Id = Guid.Parse("10000000-0000-0000-0000-000000000005"), RequestDate = DateTime.Parse("2025-06-30"), SpecialProductName = "IV Serum Seti", Amount = 80.0m, ProductFeatures = "Hava filtresi, steril", CommissionNote = "Servisler için", IsApproved = true, EmployeeId = Guid.Parse("e5555555-5555-5555-5555-555555555555"), AppUserId = Guid.Parse("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"), ProductId = Guid.Parse("55555555-aaaa-bbbb-cccc-555555555555"), TitleId = Guid.Parse("f0000015-aaaa-bbbb-cccc-0000000000af"), DepartmentId = Guid.Parse("55555555-5555-5555-5555-555555555555"), CreatedDate = DateTime.Parse("2025-06-30"), Status = Status.Active },
+            new { Id = Guid.Parse("10000000-0000-0000-0000-000000000006"), RequestDate = DateTime.Parse("2025-07-01"), SpecialProductName = "Kurşun Önlük", Amount = 2.0m, ProductFeatures = "0.5 mm Pb eşdeğeri", CommissionNote = "Radyoloji güvenliği", IsApproved = true, EmployeeId = Guid.Parse("e6666666-6666-6666-6666-666666666666"), AppUserId = Guid.Parse("ffffffff-ffff-ffff-ffff-ffffffffffff"), ProductId = Guid.Parse("66666666-aaaa-bbbb-cccc-666666666666"), TitleId = Guid.Parse("f0000013-aaaa-bbbb-cccc-0000000000ad"), DepartmentId = Guid.Parse("66666666-6666-6666-6666-666666666666"), CreatedDate = DateTime.Parse("2025-07-01"), Status = Status.Active },
+            new { Id = Guid.Parse("10000000-0000-0000-0000-000000000007"), RequestDate = DateTime.Parse("2025-07-02"), SpecialProductName = "Ortopedik Kol Ateli", Amount = 20.0m, ProductFeatures = "Ayarlanabilir", CommissionNote = "Ortopedi stoğu", IsApproved = false, EmployeeId = Guid.Parse("e7777777-7777-7777-7777-777777777777"), AppUserId = Guid.Parse("00000000-0000-0000-0000-00000000000a"), ProductId = Guid.Parse("77777777-aaaa-bbbb-cccc-777777777777"), TitleId = Guid.Parse("f0000016-aaaa-bbbb-cccc-0000000000b0"), DepartmentId = Guid.Parse("77777777-7777-7777-7777-777777777777"), CreatedDate = DateTime.Parse("2025-07-02"), Status = Status.Active },
+            new { Id = Guid.Parse("10000000-0000-0000-0000-000000000008"), RequestDate = DateTime.Parse("2025-07-03"), SpecialProductName = "Anestezi Maskesi", Amount = 30.0m, ProductFeatures = "Latex-free", CommissionNote = "Ameliyathane için", IsApproved = true, EmployeeId = Guid.Parse("e8888888-8888-8888-8888-888888888888"), AppUserId = Guid.Parse("00000000-0000-0000-0000-00000000000b"), ProductId = Guid.Parse("88888888-aaaa-bbbb-cccc-888888888888"), TitleId = Guid.Parse("f0000018-aaaa-bbbb-cccc-0000000000b2"), DepartmentId = Guid.Parse("88888888-8888-8888-8888-888888888888"), CreatedDate = DateTime.Parse("2025-07-03"), Status = Status.Active },
+            new { Id = Guid.Parse("10000000-0000-0000-0000-000000000009"), RequestDate = DateTime.Parse("2025-07-04"), SpecialProductName = "Ventilatör Devresi", Amount = 12.0m, ProductFeatures = "Yetişkin, steril", CommissionNote = "Yoğun bakım devriyesi", IsApproved = true, EmployeeId = Guid.Parse("e9999999-9999-9999-9999-999999999999"), AppUserId = Guid.Parse("00000000-0000-0000-0000-00000000000c"), ProductId = Guid.Parse("99999999-aaaa-bbbb-cccc-999999999999"), TitleId = Guid.Parse("f0000017-aaaa-bbbb-cccc-0000000000b1"), DepartmentId = Guid.Parse("99999999-9999-9999-9999-999999999999"), CreatedDate = DateTime.Parse("2025-07-04"), Status = Status.Active },
+            new { Id = Guid.Parse("10000000-0000-0000-0000-000000000010"), RequestDate = DateTime.Parse("2025-07-05"), SpecialProductName = "Diş El Aleti Seti", Amount = 4.0m, ProductFeatures = "Steril set", CommissionNote = "Diş kliniği", IsApproved = false, EmployeeId = Guid.Parse("eaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), AppUserId = Guid.Parse("00000000-0000-0000-0000-00000000000d"), ProductId = Guid.Parse("aaaaaaaa-aaaa-bbbb-cccc-aaaaaaaaaaaa"), TitleId = Guid.Parse("f0000020-aaaa-bbbb-cccc-0000000000b4"), DepartmentId = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), CreatedDate = DateTime.Parse("2025-07-05"), Status = Status.Active }
         );
     }
 }

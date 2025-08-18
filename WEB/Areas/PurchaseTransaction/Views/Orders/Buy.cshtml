@@ -1,4 +1,5 @@
-﻿@model WEB.Areas.PurchaseTransaction.Models.PurchaseTransactionVM.PurchaseCreateVM
+﻿@using DTO.Concrete.PurchaseDTO
+@model PurchaseCreateVM
 @{
     ViewData["Title"] = "Satın Al";
 }
@@ -11,46 +12,41 @@
 <link id="pagestyle" href="~/TemplateResources/css/material-dashboard.css?v=3.2.0" rel="stylesheet" />
 
 <style>
-    /* Form elemanları için daha belirgin iç kenarlar */
     .card .form-control,
     .card .form-select,
     .card textarea.form-control,
     .card input[type="file"].form-control {
-        border: 1.8px solid #1f2937 !important; /* koyu gri */
-        border-radius: .5rem; /* hafif yuvarlak */
+        border: 1.8px solid #1f2937 !important;
+        border-radius: .5rem;
         box-shadow: inset 0 0 0 0 rgba(0,0,0,0), 0 .05rem .25rem rgba(0,0,0,.04);
     }
 
-        /* Odak görünümü; hafif parıltı */
         .card .form-control:focus,
         .card .form-select:focus {
             border-color: #111827 !important;
             box-shadow: 0 0 0 .18rem rgba(17,24,39,.15) !important;
         }
 
-        /* Okunurluk için salt-okunur alanlar */
         .card .form-control[readonly] {
             background-color: #fff;
             border-style: solid;
             opacity: 1;
         }
 
-    /* Bölüm başlık alt çizgisi de belirgin olsun */
     .card .card-header {
         border-bottom: 1.5px solid #d1d5db;
     }
 
-    * Kart başlıklarını üst şerit ile aynı görünüme yaklaştır */
     .card .section-header {
-        border-bottom: 0; /* alt çizgiyi kaldır */
-        border-top-left-radius: .75rem; /* üst köşeleri yuvarla */
+        border-bottom: 0;
+        border-top-left-radius: .75rem;
         border-top-right-radius: .75rem;
         letter-spacing: .2px;
     }
 
-    .card .section-header strong {
-        color: #fff; /* metin beyaz */
-    }
+        .card .section-header strong {
+            color: #fff;
+        }
 </style>
 
 <div class="container mt-5">
@@ -101,19 +97,29 @@
             <div class="row g-4 mb-4">
                 <div class="col-md-4">
                     <label class="form-label">Kategori</label>
-                    <input class="form-control border border-dark shadow-sm"
-                           value="@Model?.CategoryName" readonly />
+                    <input class="form-control border border-dark shadow-sm" value="@Model?.CategoryName" readonly />
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Alt Kategori</label>
-                    <input class="form-control border border-dark shadow-sm"
-                           value="@Model?.SubCategoryName" readonly />
+                    <input class="form-control border border-dark shadow-sm" value="@Model?.SubCategoryName" readonly />
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Ürün</label>
-                    <input class="form-control border border-dark shadow-sm"
-                           value="@Model?.ProductName" readonly />
+                    <label class="form-label">Ürün (Katalog)</label>
+                    <input class="form-control border border-dark shadow-sm" value="@Model?.ProductName" readonly />
                 </div>
+
+                @* ÖZEL ÜRÜN *@
+                @if (!string.IsNullOrWhiteSpace(Model?.SpecialProductName))
+                {
+                    <div class="col-md-12">
+                        <label asp-for="SpecialProductName" class="form-label">Özel Ürün</label>
+                        <input asp-for="SpecialProductName" class="form-control border border-dark shadow-sm" readonly />
+                    </div>
+                }
+                else
+                {
+                    <input type="hidden" asp-for="SpecialProductName" />
+                }
             </div>
 
             <form method="post"
@@ -171,12 +177,12 @@
 
                                 <div class="mb-3">
                                     <label asp-for="PaymentTerms" class="form-label">Ödeme / Teslimat Şartları</label>
-                                    <input type="text" asp-for="PaymentTerms" rows="3" class="form-control"/>
+                                    <input type="text" asp-for="PaymentTerms" class="form-control" />
                                 </div>
 
                                 <div class="mb-3">
                                     <label asp-for="Notes" class="form-label">Notlar</label>
-                                    <input type="text" asp-for="Notes" rows="2" class="form-control"/>
+                                    <input type="text" asp-for="Notes" class="form-control" />
                                 </div>
                             </div>
                         </div>
@@ -268,7 +274,7 @@
         (function () {
             function num(v) { return isNaN(v) || v === null ? 0 : Number(v); }
             function recalc() {
-                const qty = num(document.getElementById("Quantity")?.value);
+                const qty  = num(document.getElementById("Quantity")?.value);
                 const unit = num(document.getElementById("UnitPrice")?.value);
                 const disc = num(document.getElementById("DiscountRate")?.value);
                 const vat  = num(document.getElementById("VatRate")?.value);
@@ -294,8 +300,6 @@
                 el.addEventListener("input", recalc);
                 el.addEventListener("change", recalc);
             });
-
-            // ilk hesap
             recalc();
         })();
     </script>

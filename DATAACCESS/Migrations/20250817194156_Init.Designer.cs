@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DATAACCESS.Migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20250811203456_Init")]
+    [Migration("20250817194156_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -67,7 +67,7 @@ namespace DATAACCESS.Migrations
                         new
                         {
                             Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 54, 908, DateTimeKind.Local).AddTicks(3475),
+                            CreatedDate = new DateTime(2025, 8, 17, 22, 41, 54, 707, DateTimeKind.Local).AddTicks(5814),
                             Name = "Admin",
                             NormalizedName = "ADMIN",
                             Status = 1
@@ -75,7 +75,7 @@ namespace DATAACCESS.Migrations
                         new
                         {
                             Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 54, 908, DateTimeKind.Local).AddTicks(3505),
+                            CreatedDate = new DateTime(2025, 8, 17, 22, 41, 54, 707, DateTimeKind.Local).AddTicks(5845),
                             Name = "TalepOluşturanBirim",
                             NormalizedName = "TALEPOLUSTURANBIRIM",
                             Status = 1
@@ -83,7 +83,7 @@ namespace DATAACCESS.Migrations
                         new
                         {
                             Id = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
-                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 54, 908, DateTimeKind.Local).AddTicks(3507),
+                            CreatedDate = new DateTime(2025, 8, 17, 22, 41, 54, 707, DateTimeKind.Local).AddTicks(5851),
                             Name = "IhtiyacTespitKomisyonu",
                             NormalizedName = "IHTIYACTESPITKOMISYONU",
                             Status = 1
@@ -91,7 +91,7 @@ namespace DATAACCESS.Migrations
                         new
                         {
                             Id = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"),
-                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 54, 908, DateTimeKind.Local).AddTicks(3509),
+                            CreatedDate = new DateTime(2025, 8, 17, 22, 41, 54, 707, DateTimeKind.Local).AddTicks(5864),
                             Name = "SatinAlmaBirimi",
                             NormalizedName = "SATINALMABIRIMI",
                             Status = 1
@@ -99,7 +99,7 @@ namespace DATAACCESS.Migrations
                         new
                         {
                             Id = new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"),
-                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 54, 908, DateTimeKind.Local).AddTicks(3511),
+                            CreatedDate = new DateTime(2025, 8, 17, 22, 41, 54, 707, DateTimeKind.Local).AddTicks(5866),
                             Name = "DepoBirimi",
                             NormalizedName = "DEPOBIRIMI",
                             Status = 1
@@ -107,7 +107,7 @@ namespace DATAACCESS.Migrations
                         new
                         {
                             Id = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"),
-                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 54, 908, DateTimeKind.Local).AddTicks(3513),
+                            CreatedDate = new DateTime(2025, 8, 17, 22, 41, 54, 707, DateTimeKind.Local).AddTicks(5868),
                             Name = "OdemeBirimi",
                             NormalizedName = "ODEMEBIRIMI",
                             Status = 1
@@ -210,8 +210,8 @@ namespace DATAACCESS.Migrations
                             Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
                             AccessFailedCount = 0,
                             Birthdate = new DateOnly(1, 1, 1),
-                            ConcurrencyStamp = "76636936-00f3-4376-a94d-0ce9f1bb6dcd",
-                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 54, 908, DateTimeKind.Local).AddTicks(3800),
+                            ConcurrencyStamp = "09d17653-e6f8-4728-8a2d-bc9d58359f87",
+                            CreatedDate = new DateTime(2025, 8, 17, 22, 41, 54, 707, DateTimeKind.Local).AddTicks(6097),
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             FirstName = "Sistem",
@@ -220,9 +220,9 @@ namespace DATAACCESS.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEN0f1e0P38PaFXvygL6mG0qtRVR/8EEbQoAYjO9dMxitSyjEIIxQTL6qo2ZKJaseZw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEECQgh6lkgbeN+4b/qtg5LBvbyRAkfeQmANykz9QH3itHD2YzRR59bvqf8VUy5cwrQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7bc9e953-6d45-41cb-a14d-7ddeb3d01afe",
+                            SecurityStamp = "5dc20935-a266-4165-9101-783deae50679",
                             Status = 1,
                             TwoFactorEnabled = false,
                             UserName = "admin"
@@ -232,19 +232,19 @@ namespace DATAACCESS.Migrations
                             Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
                             AccessFailedCount = 0,
                             Birthdate = new DateOnly(1, 1, 1),
-                            ConcurrencyStamp = "0bc44677-6ebf-424a-be3c-3be782a3cbce",
-                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 54, 968, DateTimeKind.Local).AddTicks(7419),
-                            Email = "ahmet.yilmaz@example.com",
+                            ConcurrencyStamp = "2ad378c3-5bf9-420e-abf1-eba6175b22cb",
+                            CreatedDate = new DateTime(2025, 8, 17, 22, 41, 54, 768, DateTimeKind.Local).AddTicks(6438),
+                            Email = "ahmet.yilmaz@hospital.local",
                             EmailConfirmed = true,
                             FirstName = "Ahmet",
                             HasFirstPasswordChanged = true,
                             LastName = "Yılmaz",
                             LockoutEnabled = false,
-                            NormalizedEmail = "AHMET.YILMAZ@EXAMPLE.COM",
+                            NormalizedEmail = "AHMET.YILMAZ@HOSPITAL.LOCAL",
                             NormalizedUserName = "AHMETYILMAZ",
-                            PasswordHash = "AQAAAAIAAYagAAAAECN0sZ1RKQWm7QHOnB8veEWR09r62u9GmX2J92/4FwTOGdY8q84VUoHxr1aLB61D4Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFozcaO7jAyLFNfUmgHtRU30NXWmviiNVKr5dsPJGL1bzJ8YOun3MGscItqJz4dM+w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1a01df05-02c0-42fb-b148-1ad4a6776e24",
+                            SecurityStamp = "1b9d304b-9c11-47f3-9a61-85cb306f865f",
                             Status = 1,
                             TwoFactorEnabled = false,
                             UserName = "ahmetyilmaz"
@@ -254,19 +254,19 @@ namespace DATAACCESS.Migrations
                             Id = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
                             AccessFailedCount = 0,
                             Birthdate = new DateOnly(1, 1, 1),
-                            ConcurrencyStamp = "5e94555f-dcb1-4fd3-bc48-0a4cb71b74f3",
-                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 55, 26, DateTimeKind.Local).AddTicks(7400),
-                            Email = "elif.kara@example.com",
+                            ConcurrencyStamp = "7374514b-6715-4171-92a5-85b2fb139910",
+                            CreatedDate = new DateTime(2025, 8, 17, 22, 41, 54, 832, DateTimeKind.Local).AddTicks(3557),
+                            Email = "elif.kara@hospital.local",
                             EmailConfirmed = true,
                             FirstName = "Elif",
                             HasFirstPasswordChanged = true,
                             LastName = "Kara",
                             LockoutEnabled = false,
-                            NormalizedEmail = "ELIF.KARA@EXAMPLE.COM",
+                            NormalizedEmail = "ELIF.KARA@HOSPITAL.LOCAL",
                             NormalizedUserName = "ELIFKARA",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHV9bRmeoOCsaPG7gvrM9cjPXzxFE9btp70NPDfGvpFt/z812oQm38ytbDCnd9lM9Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEO0RHM88kS3giJBH52dv5Zs3jWiFf9ZiLr+UPj6xx003hHhZJ6cTxksFULH6jTxIVw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "da1244b2-c887-4dae-9653-47b431295ec7",
+                            SecurityStamp = "7fb0860e-8984-41da-ae00-d66a65533a2d",
                             Status = 1,
                             TwoFactorEnabled = false,
                             UserName = "elifkara"
@@ -276,19 +276,19 @@ namespace DATAACCESS.Migrations
                             Id = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"),
                             AccessFailedCount = 0,
                             Birthdate = new DateOnly(1, 1, 1),
-                            ConcurrencyStamp = "a32d84aa-18c8-4794-9ded-7b485252bf6b",
-                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 55, 86, DateTimeKind.Local).AddTicks(8401),
-                            Email = "mehmet.demir@example.com",
+                            ConcurrencyStamp = "2840ccb4-481c-4af7-9894-c2f18e7ce937",
+                            CreatedDate = new DateTime(2025, 8, 17, 22, 41, 54, 889, DateTimeKind.Local).AddTicks(3321),
+                            Email = "mehmet.demir@hospital.local",
                             EmailConfirmed = true,
                             FirstName = "Mehmet",
                             HasFirstPasswordChanged = true,
                             LastName = "Demir",
                             LockoutEnabled = false,
-                            NormalizedEmail = "MEHMET.DEMIR@EXAMPLE.COM",
+                            NormalizedEmail = "MEHMET.DEMIR@HOSPITAL.LOCAL",
                             NormalizedUserName = "MEHMETDEMIR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEF5zyzMhRDHOhVnEWPV0ib7qMlksUUDMYfLe4fTcJidg+ZHal1kzDuNYEYWW70gtig==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEO2+QB4sfOhSvLXW51wqi24OsoS5qvdVVmCJFGV7BOBaRTxFUQrPBDtigRyP3x3TNg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5114e2bf-1acc-43e7-bb5d-7532536f4760",
+                            SecurityStamp = "4ab7aee0-e1a7-4336-9143-426736ca7423",
                             Status = 1,
                             TwoFactorEnabled = false,
                             UserName = "mehmetdemir"
@@ -298,19 +298,19 @@ namespace DATAACCESS.Migrations
                             Id = new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"),
                             AccessFailedCount = 0,
                             Birthdate = new DateOnly(1, 1, 1),
-                            ConcurrencyStamp = "0b592fe1-b660-445e-a88d-8622df5bbf18",
-                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 55, 147, DateTimeKind.Local).AddTicks(668),
-                            Email = "zeynep.sahin@example.com",
+                            ConcurrencyStamp = "a28e3f9a-efed-433f-aa23-5b6e8600fcbc",
+                            CreatedDate = new DateTime(2025, 8, 17, 22, 41, 54, 975, DateTimeKind.Local).AddTicks(4361),
+                            Email = "zeynep.sahin@hospital.local",
                             EmailConfirmed = true,
                             FirstName = "Zeynep",
                             HasFirstPasswordChanged = true,
                             LastName = "Şahin",
                             LockoutEnabled = false,
-                            NormalizedEmail = "ZEYNEP.SAHIN@EXAMPLE.COM",
+                            NormalizedEmail = "ZEYNEP.SAHIN@HOSPITAL.LOCAL",
                             NormalizedUserName = "ZEYNEPSAHIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEARhYv1ob5SBuDv3dK42pyeXb7AGeKaoIy70VuDNZPkUvodfI+bYSqC7WWP4668OLw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDYq58AByVL41ZuIdcPOiFTWbsdGkaWU6WE1cUGm3gHYFsD9shxDljrkaHN3mD9ccA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d7150d37-ca96-4ae4-8e8b-88c54dae40f6",
+                            SecurityStamp = "4be7d901-ade4-40a5-8a15-81d78da091d9",
                             Status = 1,
                             TwoFactorEnabled = false,
                             UserName = "zeynepsahin"
@@ -320,22 +320,132 @@ namespace DATAACCESS.Migrations
                             Id = new Guid("99999999-9999-9999-9999-999999999999"),
                             AccessFailedCount = 0,
                             Birthdate = new DateOnly(1, 1, 1),
-                            ConcurrencyStamp = "66b1cb20-0363-4773-95cc-09f94f07f525",
-                            CreatedDate = new DateTime(2025, 8, 11, 23, 34, 55, 209, DateTimeKind.Local).AddTicks(2423),
-                            Email = "fatma.oz@example.com",
+                            ConcurrencyStamp = "c17133d6-0c36-46e1-82c4-3b91a8d6b853",
+                            CreatedDate = new DateTime(2025, 8, 17, 22, 41, 55, 48, DateTimeKind.Local).AddTicks(9651),
+                            Email = "fatma.oz@hospital.local",
                             EmailConfirmed = true,
                             FirstName = "Fatma",
                             HasFirstPasswordChanged = true,
                             LastName = "Öz",
                             LockoutEnabled = false,
-                            NormalizedEmail = "FATMA.OZ@EXAMPLE.COM",
+                            NormalizedEmail = "FATMA.OZ@HOSPITAL.LOCAL",
                             NormalizedUserName = "FATMAOZ",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKmOZi/GPTU5Srs21KWo3wfyonoYdhIzz0VkKhsFw3/Atmo/6GFCw18lHIkVM6eCIA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECcGu2fSx0ZiaWcn66N1AOTjaMLfVAoPDqBMeLhyf2Q0LsipVgUMLw+yG4jd647ljQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "33cc7f09-8d93-4938-bc81-79fda2bd9a16",
+                            SecurityStamp = "fabf2e08-0f17-4d2b-8fc2-82dbb7c92ff1",
                             Status = 1,
                             TwoFactorEnabled = false,
                             UserName = "fatmaoz"
+                        },
+                        new
+                        {
+                            Id = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"),
+                            AccessFailedCount = 0,
+                            Birthdate = new DateOnly(1, 1, 1),
+                            ConcurrencyStamp = "1ddb19a8-babd-497b-88d9-870c7cc55f2e",
+                            CreatedDate = new DateTime(2025, 8, 17, 22, 41, 55, 112, DateTimeKind.Local).AddTicks(7522),
+                            Email = "ayse.akin@hospital.local",
+                            EmailConfirmed = true,
+                            FirstName = "Ayşe",
+                            HasFirstPasswordChanged = true,
+                            LastName = "Akın",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "AYSE.AKIN@HOSPITAL.LOCAL",
+                            NormalizedUserName = "AYSEAKIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHZTHvUVeCfOqYNPUp5C/ws7Zq+k/v70+N9r0wLHfmjqV5z5rIKL/Ay5UvCMWMgYww==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "b5f6f8d6-1166-491b-af74-06a97a6ecfac",
+                            Status = 1,
+                            TwoFactorEnabled = false,
+                            UserName = "ayseakin"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-00000000000a"),
+                            AccessFailedCount = 0,
+                            Birthdate = new DateOnly(1, 1, 1),
+                            ConcurrencyStamp = "84bb4c5e-4c0a-4303-8312-663186ef28bf",
+                            CreatedDate = new DateTime(2025, 8, 17, 22, 41, 55, 192, DateTimeKind.Local).AddTicks(126),
+                            Email = "kerem.acar@hospital.local",
+                            EmailConfirmed = true,
+                            FirstName = "Kerem",
+                            HasFirstPasswordChanged = true,
+                            LastName = "Acar",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "KEREM.ACAR@HOSPITAL.LOCAL",
+                            NormalizedUserName = "KEREMACAR",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJWnhCfvOLrP8euFwooWpUR92kL7mEFSd7KYIdLEwyV8k9tb1pETwxOaj7reDWJwkg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "4e59776f-0417-4d07-868d-95f3b99d0fe1",
+                            Status = 1,
+                            TwoFactorEnabled = false,
+                            UserName = "keremacar"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-00000000000b"),
+                            AccessFailedCount = 0,
+                            Birthdate = new DateOnly(1, 1, 1),
+                            ConcurrencyStamp = "c9f3e38d-968b-4771-9933-e68c99e729de",
+                            CreatedDate = new DateTime(2025, 8, 17, 22, 41, 55, 269, DateTimeKind.Local).AddTicks(7353),
+                            Email = "derya.uslu@hospital.local",
+                            EmailConfirmed = true,
+                            FirstName = "Derya",
+                            HasFirstPasswordChanged = true,
+                            LastName = "Uslu",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "DERYA.USLU@HOSPITAL.LOCAL",
+                            NormalizedUserName = "DERYAUSLU",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKINBLaHVBc4p2m91ceSv5qSYaIVLCvjje6pBc+fLGBgS80R+Up9GaMPMSSXUUDcSA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "011a86fb-bd96-45cc-92a4-c56e311ee005",
+                            Status = 1,
+                            TwoFactorEnabled = false,
+                            UserName = "deryauslu"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-00000000000c"),
+                            AccessFailedCount = 0,
+                            Birthdate = new DateOnly(1, 1, 1),
+                            ConcurrencyStamp = "4a994d91-3f58-45e1-bd4e-86227dd34721",
+                            CreatedDate = new DateTime(2025, 8, 17, 22, 41, 55, 330, DateTimeKind.Local).AddTicks(4821),
+                            Email = "burak.keskin@hospital.local",
+                            EmailConfirmed = true,
+                            FirstName = "Burak",
+                            HasFirstPasswordChanged = true,
+                            LastName = "Keskin",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "BURAK.KESKIN@HOSPITAL.LOCAL",
+                            NormalizedUserName = "BURAKKESKIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPCuTLCR7YbrCGrJswBz1H1engH6cXQU1HCT9H3xnoKlkDIsZW2dM88DuTaNgelPSA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "ce776773-4c67-4ee9-a8fb-36eea83bdaa3",
+                            Status = 1,
+                            TwoFactorEnabled = false,
+                            UserName = "burakkeskin"
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-00000000000d"),
+                            AccessFailedCount = 0,
+                            Birthdate = new DateOnly(1, 1, 1),
+                            ConcurrencyStamp = "976e3339-dfd0-446e-a3fb-3afcc463cf2b",
+                            CreatedDate = new DateTime(2025, 8, 17, 22, 41, 55, 386, DateTimeKind.Local).AddTicks(6242),
+                            Email = "selin.koral@hospital.local",
+                            EmailConfirmed = true,
+                            FirstName = "Selin",
+                            HasFirstPasswordChanged = true,
+                            LastName = "Koral",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "SELIN.KORAL@HOSPITAL.LOCAL",
+                            NormalizedUserName = "SELINKORAL",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFEnUzvPUyOG3KSM/ph/wsRhbkkb1DCsc3TfmbslVGI7IS80mOjTPMx1x49xly5Sww==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "2d914b6f-bd29-454f-8ed6-b1df69a8cf87",
+                            Status = 1,
+                            TwoFactorEnabled = false,
+                            UserName = "selinkoral"
                         });
                 });
 
@@ -452,6 +562,31 @@ namespace DATAACCESS.Migrations
                         {
                             UserId = new Guid("99999999-9999-9999-9999-999999999999"),
                             RoleId = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff")
+                        },
+                        new
+                        {
+                            UserId = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"),
+                            RoleId = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff")
+                        },
+                        new
+                        {
+                            UserId = new Guid("00000000-0000-0000-0000-00000000000a"),
+                            RoleId = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb")
+                        },
+                        new
+                        {
+                            UserId = new Guid("00000000-0000-0000-0000-00000000000b"),
+                            RoleId = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd")
+                        },
+                        new
+                        {
+                            UserId = new Guid("00000000-0000-0000-0000-00000000000c"),
+                            RoleId = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc")
+                        },
+                        new
+                        {
+                            UserId = new Guid("00000000-0000-0000-0000-00000000000d"),
+                            RoleId = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb")
                         });
                 });
 

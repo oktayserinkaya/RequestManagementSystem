@@ -15,8 +15,11 @@ using Microsoft.EntityFrameworkCore;
 using WEB.Areas.Request.Models.RequestVM;
 using RequestEntity = CORE.Entities.Concrete.Request;
 using System.IO;
-using Microsoft.AspNetCore.Hosting;           
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace WEB.Areas.Request.Controllers
 {
@@ -57,6 +60,7 @@ namespace WEB.Areas.Request.Controllers
             _env = env;
         }
 
+        // /Request/Requests
         [HttpGet("")]
         public async Task<IActionResult> Index()
         {
@@ -86,7 +90,44 @@ namespace WEB.Areas.Request.Controllers
             foreach (var item in model)
                 item.Status = item.StatusEnum.GetDisplayName();
 
-            return View(model);
+            return View(model); // Views/Request/Requests/Index.cshtml
+        }
+
+        // /Request/Requests/MyRequests  ← EKLENDİ
+        [HttpGet("MyRequests")]
+        public async Task<IActionResult> MyRequests()
+        {
+            var userId = await _userManager.GetUserIdByClaimsAsync(User);
+
+            var model = await _requestManager.GetFilteredListAsync(
+                select: x => new GetRequestsVM
+                {
+                    Id = x.Id,
+                    RequestDate = x.RequestDate,
+                    FirstName = x.Employee != null ? x.Employee.FirstName : null,
+                    LastName = x.Employee != null ? x.Employee.LastName : null,
+                    Email = x.Employee != null ? x.Employee.Email : null,
+                    DepartmentName = (x.Employee != null && x.Employee.Department != null)
+                                       ? x.Employee.Department.DepartmentName
+                                       : string.Empty,
+                    TitleName = (x.Title != null) ? x.Title.TitleName : string.Empty,
+                    CreatedDate = x.CreatedDate,
+                    UpdatedDate = x.UpdatedDate,
+                    StatusEnum = x.Status
+                },
+                where: x => x.Status != Status.Passive && x.AppUserId == userId, // SADECE KENDİ TALEPLERİ
+                orderBy: q => q.OrderByDescending(z => z.CreatedDate),
+                join: q => q
+                    .Include(z => z.Employee!).ThenInclude(z => z.Department!)
+                    .Include(z => z.Title!)
+            );
+
+            foreach (var item in model)
+                item.Status = item.StatusEnum.GetDisplayName();
+
+            // Ayrı view yapmadan mevcut tabloyu kullanalım:
+            return View("Index", model); // aynı tabloyu kullanır
+            // İstersen Views/Request/Requests/MyRequests.cshtml oluşturup orada da gösterebilirsin.
         }
 
         // GET: /Request/Requests/CreateRequest
@@ -98,9 +139,7 @@ namespace WEB.Areas.Request.Controllers
                 RequestDate = DateTime.Today
             };
 
-            // Talep eden kişi/departman alanlarını doldur
             await PopulateRequesterFieldsAsync(vm);
-
             await FillDropdownsAsync(vm);
             return View(vm);
         }
@@ -136,7 +175,7 @@ namespace WEB.Areas.Request.Controllers
             }
 
             var userId = await _userManager.GetUserIdByClaimsAsync(User);
-            var employee = await _employeeManager.GetWithDepartmentByAppUserIdAsync(userId); // Include'lu versiyon
+            var employee = await _employeeManager.GetWithDepartmentByAppUserIdAsync(userId);
 
             if (employee == null)
             {
@@ -152,7 +191,6 @@ namespace WEB.Areas.Request.Controllers
                 return View(model);
             }
 
-            // Eğer Request.TitleId zorunlu bir alan ise:
             if (!employee.TitleId.HasValue)
             {
                 ModelState.AddModelError("", "Personelin unvanı (Title) tanımlı değil.");
@@ -160,15 +198,13 @@ namespace WEB.Areas.Request.Controllers
                 return View(model);
             }
 
-            // VM -> DTO -> Entity
             var dto = _mapper.Map<CreateRequestDTO>(model);
             var entity = _mapper.Map<CORE.Entities.Concrete.Request>(dto);
 
-            // 🔴 ZORUNLU FK’LERİ AYARLA
             entity.AppUserId = userId;
-            entity.EmployeeId = employee.Id;                 // <- ÖNEMLİ
-            entity.DepartmentId = employee.DepartmentId.Value; // <- ÖNEMLİ
-            entity.TitleId = employee.TitleId.Value;      // <- Title zorunluysa
+            entity.EmployeeId = employee.Id;
+            entity.DepartmentId = employee.DepartmentId.Value;
+            entity.TitleId = employee.TitleId.Value;
 
             if (model.ProductId.HasValue)
             {
@@ -181,7 +217,6 @@ namespace WEB.Areas.Request.Controllers
                 return View(model);
             }
 
-            // Dosya yükleme
             if (model.ProductFeaturesFile != null)
             {
                 entity.ProductFeaturesFilePath = await SavePdfToUploadsAsync(model.ProductFeaturesFile);
@@ -197,8 +232,7 @@ namespace WEB.Areas.Request.Controllers
 
             TempData["Success"] = "Talep başarıyla oluşturuldu.";
             return RedirectToAction(nameof(Index));
-        }   
-
+        }
 
         [HttpGet("UpdateRequest/{id:guid}")]
         public async Task<IActionResult> UpdateRequest(Guid id)
@@ -230,15 +264,12 @@ namespace WEB.Areas.Request.Controllers
                 EmployeeId = entity.EmployeeId,
                 DepartmentId = entity.DepartmentId,
                 TitleId = entity.TitleId,
-
-                // seçili hiyerarşi
                 SubCategoryId = entity.Product?.SubCategoryId,
                 CategoryId = entity.Product?.SubCategory?.CategoryId
             };
 
             await FillDropdownsAsync(vm);
             return View("UpdateRequest", vm);
-
         }
 
         [HttpPost("UpdateRequest/{id:guid}")]
@@ -262,7 +293,6 @@ namespace WEB.Areas.Request.Controllers
                 return View("UpdateRequest", model);
             }
 
-            // Alanlar
             entity.RequestDate = model.RequestDate;
             entity.SpecialProductName = model.SpecialProductName;
             entity.Amount = model.Amount;
@@ -271,7 +301,6 @@ namespace WEB.Areas.Request.Controllers
             entity.UpdatedDate = DateTime.Now;
             entity.Status = CORE.Enums.Status.Modified;
 
-            // Şartname yükleme
             if (model.ProductFeaturesFile != null)
             {
                 var fileName = Guid.NewGuid() + Path.GetExtension(model.ProductFeaturesFile.FileName);
@@ -294,12 +323,10 @@ namespace WEB.Areas.Request.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteRequest(Guid id)
         {
-            // DTO yerine entity çekiyoruz -> mapping hatası olmaz
             var entity = await _requestManager.GetByDefaultAsync<RequestEntity>(
                 x => x.Id == id && x.Status != CORE.Enums.Status.Passive
             );
@@ -310,14 +337,13 @@ namespace WEB.Areas.Request.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var ok = await _requestManager.DeleteAsync(id); // BaseService.DeleteAsync: Status = Passive yapar
+            var ok = await _requestManager.DeleteAsync(id);
             if (!ok)
             {
                 TempData["Error"] = "Talep silinemedi!";
                 return RedirectToAction(nameof(Index));
             }
 
-            // Şartname dosyası var ise fiziksel dosyayı da sil
             if (!string.IsNullOrEmpty(entity.ProductFeaturesFilePath))
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", entity.ProductFeaturesFilePath);
@@ -331,10 +357,6 @@ namespace WEB.Areas.Request.Controllers
 
         // --- Helpers ---
 
-        /// <summary>
-        /// Giriş yapan kullanıcının ad/soyad ve departman bilgilerini Employee üzerinden doldurur.
-        /// Employee bulunamazsa claims fallback’i dener.
-        /// </summary>
         private async Task PopulateRequesterFieldsAsync(CreateRequestVM vm)
         {
             var userId = await _userManager.GetUserIdByClaimsAsync(User);
@@ -349,14 +371,12 @@ namespace WEB.Areas.Request.Controllers
                 return;
             }
 
-            // Fallback: claims
             vm.FirstName = vm.FirstName ?? User.FindFirst("given_name")?.Value
                                         ?? User.FindFirst("FirstName")?.Value;
             vm.LastName = vm.LastName ?? User.FindFirst("family_name")?.Value
                                       ?? User.FindFirst("LastName")?.Value;
             vm.DepartmentName = vm.DepartmentName ?? User.FindFirst("Department")?.Value;
         }
-
 
         private async Task FillDropdownsAsync(CreateRequestVM model)
         {
@@ -419,7 +439,6 @@ namespace WEB.Areas.Request.Controllers
                 return;
             }
 
-            // Fallback: Claims
             vm.FirstName = vm.FirstName ?? User.FindFirst("given_name")?.Value
                                         ?? User.FindFirst("FirstName")?.Value;
             vm.LastName = vm.LastName ?? User.FindFirst("family_name")?.Value
@@ -448,7 +467,6 @@ namespace WEB.Areas.Request.Controllers
 
         private async Task<string> SavePdfToUploadsAsync(IFormFile file)
         {
-            // Tarih bazlı klasör: /uploads/yyyy/MM
             var y = DateTime.UtcNow.ToString("yyyy");
             var m = DateTime.UtcNow.ToString("MM");
             var uploadsRoot = Path.Combine(_env.WebRootPath ?? string.Empty, "uploads", y, m);
@@ -464,21 +482,16 @@ namespace WEB.Areas.Request.Controllers
             using (var fs = System.IO.File.Create(physicalPath))
                 await file.CopyToAsync(fs);
 
-            // DB'ye yazılacak web yolu:
             var webPath = $"/uploads/{y}/{m}/{name}";
             return webPath;
         }
 
         private string WebToPhysical(string webPath)
         {
-            // '/uploads/yy/MM/file.pdf' -> {wwwroot}\uploads\yy\MM\file.pdf
             var p = webPath.Replace('\\', '/');
             if (p.StartsWith("~/")) p = p[2..];
             if (p.StartsWith("/")) p = p[1..];
             return Path.Combine(_env.WebRootPath ?? string.Empty, p.Replace('/', Path.DirectorySeparatorChar));
         }
-
-
-
     }
 }

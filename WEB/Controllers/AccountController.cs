@@ -28,8 +28,7 @@ namespace WEB.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("~/")]
-        [HttpGet("Login")] // GET /Account/Login
+        [HttpGet("Login")]
 
         public async Task<IActionResult> Login()
         {
@@ -89,7 +88,7 @@ namespace WEB.Controllers
                 return RedirectToAction("Index", "Stock", new { area = "Warehouse" });
 
             if (await _userManager.IsUserInRoleAsync(username, "OdemeBirimi"))
-                return LocalRedirect("~/Finance/Payments");
+                return RedirectToAction("Index", "PaymentTransaction", new { area = "PaymentTransaction" });
 
             return RedirectToAction("Index", "Home");
         }

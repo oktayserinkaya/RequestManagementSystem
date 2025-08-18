@@ -9,44 +9,40 @@ namespace WEB.Areas.PurchaseTransaction.Models.PurchaseTransactionVM
         public DateTime? RequestDate { get; set; }
         public string? EmployeeFullName { get; set; }
         public string? DepartmentName { get; set; }
+        public decimal? RequestedAmount { get; set; }
+
+        // Kategori/Ürün
         public string? CategoryName { get; set; }
         public string? SubCategoryName { get; set; }
-        public string? ProductName { get; set; }
-        public decimal? RequestedAmount { get; set; }
-        public string? SpecPath { get; set; }
+        public string? ProductName { get; set; }            // katalog ürün adı
+        public string? SpecialProductName { get; set; }     // listede olmayan ürün adı (EKLENDİ)
+        public string? SpecPath { get; set; }               // şartname pdf yolu
 
-        // Fiyatlandırma girişleri
-        [Range(0, double.MaxValue)]
-        public decimal? Quantity { get; set; }
-
-        [Range(0, double.MaxValue)]
-        public decimal? UnitPrice { get; set; }
-
-        [Required]
-        public string Currency { get; set; } = "TRY";
-
-        [Range(0, 1000)]
-        public decimal DiscountRate { get; set; } = 0;
-
-        [Range(0, 1000)]
-        public decimal VatRate { get; set; } = 20;
-
-        public DateTime? DeliveryDate { get; set; }
-
-        // Tedarikçi / teklif
+        // Tedarikçi
         public string? SupplierName { get; set; }
         public string? SupplierTaxNo { get; set; }
-
-        [EmailAddress]
+        public string? SupplierIban { get; set; }
         public string? SupplierEmail { get; set; }
+        public string? SupplierPhone { get; set; }
 
+        // Teklif
         public string? OfferNo { get; set; }
         public DateTime? OfferDate { get; set; }
+        public string? OfferPdfPath { get; set; }
         public IFormFile? OfferPdf { get; set; }
+
         public string? PaymentTerms { get; set; }
         public string? Notes { get; set; }
+        public DateTime? DeliveryDate { get; set; }
 
-        // Hesaplanan alanlar
+        // Fiyatlandırma (View tarafında decimal? tutuyoruz)
+        public decimal? Quantity { get; set; }              // VM: decimal?
+        public decimal? UnitPrice { get; set; }
+        public decimal DiscountRate { get; set; } = 0m;
+        public decimal VatRate { get; set; } = 20m;
+        public string Currency { get; set; } = "TRY";
+
+        // Hesap özet
         public decimal? Subtotal { get; set; }
         public decimal? DiscountAmount { get; set; }
         public decimal? VatAmount { get; set; }

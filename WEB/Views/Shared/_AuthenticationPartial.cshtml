@@ -18,10 +18,15 @@
     bool inRequest = isHere("Request", "Requests", null);
     bool inCommission = isHere("RequestEvaluation", "RequestEvaluation", null);
 
+    // Admin alt menü açık kalsın
+    bool inAdminUsers = isHere("Admin", "Users", null);
+    bool inAdminRoles = isHere("Admin", "Roles", null);
+    bool inAdminMenu = inAdminUsers || inAdminRoles;
+
     // Rol bayrakları
     bool isAdmin = User.IsInRole("Admin");
     bool isCommissionR = User.IsInRole("IhtiyacTespitKomisyonu");
-    bool isRequester = User.IsInRole("TalepOluşturanBirim");  // <-- DÜZELTİLDİ (Türkçe karakterli)
+    bool isRequester = User.IsInRole("TalepOluşturanBirim"); // Türkçe karakterli ad
     bool isProcurement = User.IsInRole("SatinAlmaBirimi");
     bool isWarehouse = User.IsInRole("DepoBirimi");
     bool isFinance = User.IsInRole("OdemeBirimi");
@@ -82,16 +87,30 @@ else
         </li>
 
         <!-- Talepler -->
+        <!-- Talepler -->
         @if (isAdmin || isRequester || isProcurement || isWarehouse || isFinance)
         {
-            <li class="nav-item">
-                <a class="nav-link text-white@(active("Request", "Requests", "Index"))"
-                   asp-area="Request" asp-controller="Requests" asp-action="Index">
-                    <i class="material-symbols-rounded me-2">view_list</i> Tüm Talepler
-                </a>
-            </li>
+            @* Talep listesi: Requester ise Benim Taleplerim; diğer roller Tüm Talepler *@
+            @if (isRequester && !isAdmin)
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-white@(active("Request", "Requests", "MyRequests"))"
+                       asp-area="Request" asp-controller="Requests" asp-action="MyRequests">
+                        <i class="material-symbols-rounded me-2">person</i> Benim Taleplerim
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-white@(active("Request", "Requests", "Index"))"
+                       asp-area="Request" asp-controller="Requests" asp-action="Index">
+                        <i class="material-symbols-rounded me-2">view_list</i> Tüm Talepler
+                    </a>
+                </li>
+            }
 
-            @* Talep Oluştur ve Taleplerim sadece TalepOluşturanBirim (ve Admin) için *@
+            @* Talep Oluştur sadece TalepOluşturanBirim (ve Admin) için *@
             @if (isRequester || isAdmin)
             {
                 <li class="nav-item">
@@ -147,11 +166,14 @@ else
             </li>
         }
 
+        <!-- Ödeme Birimi -->
         @if (isFinance || isAdmin)
         {
             <li class="nav-item">
                 <a class="nav-link text-white@(active("PaymentTransaction", "PaymentTransaction", "Index"))"
-                   href="~/Finance/Payments">
+                   asp-area="PaymentTransaction"
+                   asp-controller="PaymentTransaction"
+                   asp-action="Index">
                     <i class="material-symbols-rounded me-2">payments</i> Ödeme Birimi
                 </a>
             </li>
@@ -160,14 +182,31 @@ else
         <li><hr class="horizontal light my-2" /></li>
         <li class="nav-item text-uppercase text-xs text-white-50 px-3">HESAPLAR</li>
 
-        <!-- Kullanıcılar/Roller -->
+        @* Yönetim (Admin) alt menü *@
         @if (isAdmin)
         {
             <li class="nav-item">
-                <a class="nav-link text-white@(active("Admin", "Users", "Index"))"
-                   asp-area="Admin" asp-controller="Users" asp-action="Index">
-                    <i class="material-symbols-rounded me-2">group</i> Kullanıcılar/Roller
+                <a class="nav-link text-white collapsed@(inAdminMenu ? " active" : "")"
+                   data-bs-toggle="collapse" href="#adminMenu"
+                   aria-expanded="@(inAdminMenu.ToString().ToLower())" aria-controls="adminMenu">
+                    <i class="material-symbols-rounded me-2">admin_panel_settings</i> Yönetim
                 </a>
+                <div class="collapse@(inAdminMenu ? " show" : "")" id="adminMenu">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item">
+                            <a class="nav-link text-white@(active("Admin", "Users", "Index"))"
+                               asp-area="Admin" asp-controller="Users" asp-action="Index">
+                                <i class="material-symbols-rounded me-2">group</i> Kullanıcılar
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white@(active("Admin", "Roles", "Index"))"
+                               asp-area="Admin" asp-controller="Roles" asp-action="Index">
+                                <i class="material-symbols-rounded me-2">workspace_premium</i> Roller
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
         }
 
