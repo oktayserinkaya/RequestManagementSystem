@@ -46,10 +46,29 @@
                     <label class="form-label fw-bold">Departman</label>
                     <input class="form-control border border-dark shadow-sm" value="@Safe(Model.DepartmentName)" readonly />
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label fw-bold">Ürün</label>
-                    <input class="form-control border border-dark shadow-sm" value="@Safe(Model.ProductName)" readonly />
-                </div>
+
+                @* Ürün (Katalog) varsa göster *@
+                @if (!string.IsNullOrWhiteSpace(Model?.ProductName) && Model.ProductName != "-")
+                {
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Ürün (Katalog)</label>
+                        <input class="form-control border border-dark shadow-sm" value="@Safe(Model.ProductName)" readonly />
+                    </div>
+                }
+
+                @* Özel Ürün varsa göster, yoksa POST'a taşımak için hidden gönder *@
+                @if (!string.IsNullOrWhiteSpace(Model?.SpecialProductName))
+                {
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Özel Ürün</label>
+                        <input asp-for="SpecialProductName" class="form-control border border-dark shadow-sm" readonly />
+                    </div>
+                }
+                else
+                {
+                    <input type="hidden" asp-for="SpecialProductName" />
+                }
+
                 <div class="col-md-3">
                     <label class="form-label fw-bold">Talep Adedi</label>
                     <input class="form-control border border-dark shadow-sm" value="@(Model.RequestedAmount?.ToString() ?? "-")" readonly />
@@ -115,7 +134,7 @@
                         </div>
                     </div>
 
-                    <!-- Tedarikçi Bilgileri (prefill, düzenlenebilir bıraktım) -->
+                    <!-- Tedarikçi Bilgileri (prefill, düzenlenebilir) -->
                     <div class="col-lg-6">
                         <div class="card border h-100">
                             <div class="card-header bg-light"><strong>Tedarikçi Bilgileri</strong></div>

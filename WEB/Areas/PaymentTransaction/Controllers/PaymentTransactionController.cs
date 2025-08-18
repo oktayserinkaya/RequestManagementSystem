@@ -144,9 +144,8 @@ namespace WEB.Areas.PaymentTransaction.Controllers
 
             var purchase = await _purchaseManager.GetForPaymentAsync(id);
 
-            // >>> decimal sabitleri 0m olsun
-            decimal qty = purchase?.Quantity ?? 0;    // int? -> decimal implicit
-            decimal unit = purchase?.UnitPrice ?? 0m;  // 0m !!
+            decimal qty = purchase?.Quantity ?? 0m;
+            decimal unit = purchase?.UnitPrice ?? 0m;
             decimal subtotal = qty * unit;
             decimal discRate = purchase?.DiscountRate ?? 0m;
             decimal vatRate = purchase?.VatRate ?? 0m;
@@ -159,11 +158,14 @@ namespace WEB.Areas.PaymentTransaction.Controllers
             {
                 // Talep özeti
                 RequestId = req.Id,
-                RequestDate = req.RequestDate ?? req.CreatedDate,     // null ise CreatedDate’i kullan
+                RequestDate = req.RequestDate ?? req.CreatedDate,
                 CreatedDate = req.CreatedDate,
                 EmployeeFullName = req.Employee != null ? $"{req.Employee.FirstName} {req.Employee.LastName}" : "-",
                 DepartmentName = req.Employee?.Department?.DepartmentName ?? "-",
-                ProductName = req.Product?.ProductName ?? (req.SpecialProductName ?? "-"),
+
+                // Ürün bilgileri
+                ProductName = req.Product?.ProductName ?? "-",   // katalog adı
+                SpecialProductName = req.SpecialProductName,            // <-- EKLENDİ
                 RequestedAmount = req.Amount,
                 SpecPath = req.ProductFeaturesFilePath,
 
@@ -181,7 +183,7 @@ namespace WEB.Areas.PaymentTransaction.Controllers
                 Notes = purchase?.Notes,
 
                 // Fiyatlandırma
-                Quantity = purchase?.Quantity,       // int? -> decimal? implicit OK
+                Quantity = purchase?.Quantity,
                 UnitPrice = purchase?.UnitPrice,
                 DiscountRate = discRate,
                 VatRate = vatRate,
@@ -196,12 +198,14 @@ namespace WEB.Areas.PaymentTransaction.Controllers
                 PaymentDate = DateTime.Today,
                 PaymentAmount = grand,
 
-                // Fatura tarihi varsayılanı – PDF’te boş kalmasın
+                // Fatura tarihi varsayılanı
                 InvoiceDate = DateTime.Today
             };
 
             return View(vm);
         }
+
+
         // ÖDEMEYİ İŞLE + PDF ÜRET (POST)
         [HttpPost("Pay/{id:guid}")]
         [ValidateAntiForgeryToken]
@@ -231,11 +235,10 @@ namespace WEB.Areas.PaymentTransaction.Controllers
 
             var purchase = await _purchaseManager.GetForPaymentAsync(id);
 
-            // ---------- ÖZET ALANLARI (PDF'te boş kalmasın) ----------
+            // --- ÖZETLER BOŞ KALMASIN ---
             if (!model.RequestDate.HasValue)
                 model.RequestDate = req.RequestDate ?? req.CreatedDate;
 
-            // CreatedDate non-nullable olduğu için default kontrolü
             if (model.CreatedDate == default)
                 model.CreatedDate = req.CreatedDate;
 
@@ -245,17 +248,20 @@ namespace WEB.Areas.PaymentTransaction.Controllers
             if (string.IsNullOrWhiteSpace(model.DepartmentName))
                 model.DepartmentName = req.Employee?.Department?.DepartmentName ?? "-";
 
+            // Ürün alanları
             if (string.IsNullOrWhiteSpace(model.ProductName))
-                model.ProductName = req.Product?.ProductName ?? (req.SpecialProductName ?? "-");
+                model.ProductName = req.Product?.ProductName ?? "-";
+
+            if (string.IsNullOrWhiteSpace(model.SpecialProductName))
+                model.SpecialProductName = req.SpecialProductName;   // <-- EKLENDİ
 
             if (model.RequestedAmount == null)
                 model.RequestedAmount = req.Amount;
 
-            // Fatura tarihi için varsayılan
             if (!model.InvoiceDate.HasValue)
                 model.InvoiceDate = DateTime.Today;
 
-            // Tedarikçi alanlarını da boşsa satın almadan doldur
+            // Tedarikçi alanları
             model.SupplierName ??= purchase?.SupplierName;
             model.SupplierTaxNo ??= purchase?.SupplierTaxNo;
             model.SupplierIban ??= purchase?.SupplierIban;
@@ -274,7 +280,7 @@ namespace WEB.Areas.PaymentTransaction.Controllers
                 return View(model);
             }
 
-            var pdfBytes = GeneratePaymentPdf(model);
+            var pdfBytes = GeneratePaymentPdf(model); // PDF içinde SpecialProductName kullanmak isterseniz bu fonksiyonda da yazdırabilirsiniz.
 
             var root = _env.WebRootPath ?? Path.Combine(_env.ContentRootPath, "wwwroot");
             var dir = Path.Combine(root, "uploads", "payments");
@@ -285,6 +291,7 @@ namespace WEB.Areas.PaymentTransaction.Controllers
             TempData["Success"] = "Ödeme kaydedildi ve PDF oluşturuldu.";
             return File(pdfBytes, "application/pdf", fileName);
         }
+
 
 
         // --- PDF ÜRETİCİ ---

@@ -22,12 +22,36 @@
         <div class="col-12">
             <div class="card my-4">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                    <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
-                        <h6 class="text-white text-capitalize ps-3">Roller</h6>
+                    <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3 d-flex align-items-center justify-content-between">
+                        <h6 class="text-white text-capitalize ps-3 mb-0">Roller</h6>
+
+                        <div class="pe-3">
+                            <form asp-area="Admin"
+                                  asp-controller="RoleFix"
+                                  asp-action="Normalize"
+                                  method="post"
+                                  class="d-inline"
+                                  onsubmit="return confirm('AspNetRoles.NormalizedName değerlerini güncelleyecek. Devam edilsin mi?');">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-outline-light">
+                                    Rolleri Normalize Et
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
 
                 <div class="card-body px-0 pb-2">
+                    @* TempData mesajları *@
+                    @if (TempData["Success"] is string s && !string.IsNullOrWhiteSpace(s))
+                    {
+                        <div class="alert alert-success mx-3 my-2">@s</div>
+                    }
+                    @if (TempData["Error"] is string e && !string.IsNullOrWhiteSpace(e))
+                    {
+                        <div class="alert alert-danger mx-3 my-2">@e</div>
+                    }
+
                     <div class="table-responsive p-0">
                         <table class="table align-items-center mb-0">
                             <thead>
@@ -73,31 +97,30 @@
                                         statusClass = "bg-gradient-danger";
                                     }
 
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">@role.Name</h6>
-                                                    @* İstersen burada Role Id veya açıklama gösterilebilir *@
-                                                </div>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex px-2 py-1">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm">@role.Name</h6>
                                             </div>
-                                        </td>
+                                        </div>
+                                    </td>
 
-                                        <td class="align-middle text-center">
-                                            <span class="badge badge-sm bg-gradient-success">@role.Status</span>
-                                        </td>
+                                    <td class="align-middle text-center">
+                                        <span class="badge badge-sm @statusClass">@role.Status</span>
+                                    </td>
 
-                                        <td class="align-middle text-center">
-                                            <span class="text-secondary text-xs font-weight-bold">
-                                                @role.CreatedDate.ToString("dd.MM.yyyy HH:mm")
-                                            </span>
-                                        </td>
+                                    <td class="align-middle text-center">
+                                        <span class="text-secondary text-xs font-weight-bold">
+                                            @role.CreatedDate.ToString("dd.MM.yyyy HH:mm")
+                                        </span>
+                                    </td>
 
                                     <td class="align-middle text-center">
                                         <span class="text-secondary text-xs font-weight-bold">
                                             @(role.UpdatedDate.HasValue
-                                             ? role.UpdatedDate.Value.ToString("dd.MM.yyyy HH:mm")
-                                             : "-")
+                                                                                        ? role.UpdatedDate.Value.ToString("dd.MM.yyyy HH:mm")
+                                                                                        : "-")
                                         </span>
                                     </td>
 
@@ -129,7 +152,7 @@
                                             </a>
                                         </td>
                                     </tr>
-                                }
+                                                                }
                             </tbody>
                         </table>
                     </div>

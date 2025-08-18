@@ -20,6 +20,7 @@ namespace WEB.Areas.PaymentTransaction.Models.PaymentTransactionVM
         public string? SupplierIban { get; set; }
         public string? SupplierEmail { get; set; }
         public string? SupplierPhone { get; set; }
+        public string? SpecialProductName { get; set; }
 
         // Offer meta
         public string? OfferNo { get; set; }

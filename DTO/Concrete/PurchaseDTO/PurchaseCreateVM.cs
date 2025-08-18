@@ -16,6 +16,7 @@ namespace DTO.Concrete.PurchaseDTO
         [Display(Name = "Ürün Adı")] public string? ProductName { get; set; }
         [Display(Name = "Talep Adedi")] public decimal? RequestedAmount { get; set; }
         public string? SpecPath { get; set; }
+        public string? SpecialProductName { get; set; }
 
         // Supplier
         [Display(Name = "Tedarikçi Adı")] public string? SupplierName { get; set; }

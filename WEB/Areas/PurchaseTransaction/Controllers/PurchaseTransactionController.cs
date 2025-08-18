@@ -204,6 +204,7 @@ namespace WEB.Areas.PurchaseTransaction.Controllers
         // --------------------------------------------------------------------
         // SATIN ALMA FORMU (GET)
         // --------------------------------------------------------------------
+        // --- GET: Buy ---------------------------------------------------------------
         [HttpGet("Buy/{id:guid}")]
         public async Task<IActionResult> Buy(Guid id)
         {
@@ -230,20 +231,18 @@ namespace WEB.Areas.PurchaseTransaction.Controllers
                 EmployeeFullName = $"{r.Employee?.FirstName} {r.Employee?.LastName}".Trim(),
                 DepartmentName = (r.Employee != null && r.Employee.Department != null) ? r.Employee.Department.DepartmentName : "-",
                 CategoryName = (r.Product != null && r.Product.SubCategory != null && r.Product.SubCategory.Category != null)
-                    ? r.Product.SubCategory.Category.CategoryName
-                    : "-",
+                                    ? r.Product.SubCategory.Category.CategoryName : "-",
                 SubCategoryName = (r.Product != null && r.Product.SubCategory != null)
-                    ? r.Product.SubCategory.SubCategoryName
-                    : "-",
-                ProductName = (r.Product != null) ? r.Product.ProductName : (r.SpecialProductName ?? "-"),
-
+                                    ? r.Product.SubCategory.SubCategoryName : "-",
+                ProductName = r.Product?.ProductName,
+                SpecialProductName = r.SpecialProductName, // <-- EKLENDİ
                 RequestedAmount = r.Amount == null ? (decimal?)null : (decimal?)r.Amount,
                 SpecPath = r.ProductFeaturesFilePath,
 
-                // Prefill (p varsa oradan, yoksa request miktarı)
-                Quantity = (p != null && p.Quantity != null)
-                    ? p.Quantity
-                    : (r.Amount == null ? (decimal?)null : (decimal?)r.Amount),
+                // p.Quantity: int?  -> VM.Quantity: decimal?
+                Quantity = p?.Quantity.HasValue == true
+                                    ? (decimal?)p.Quantity.Value
+                                    : (r.Amount == null ? (decimal?)null : (decimal?)r.Amount),
 
                 UnitPrice = p?.UnitPrice,
                 DiscountRate = p?.DiscountRate ?? 0,
@@ -253,19 +252,24 @@ namespace WEB.Areas.PurchaseTransaction.Controllers
                 VatAmount = p?.VatAmount,
                 GrandTotal = p?.GrandTotal,
                 Currency = p?.Currency ?? "TRY",
-                OfferPdfPath = p?.OfferPdfPath
+                OfferPdfPath = p?.OfferPdfPath,
+
+                OfferNo = p?.OfferNo,
+                OfferDate = p?.OfferDate,
+                PaymentTerms = p?.PaymentTerms,
+                Notes = p?.Notes,
+                DeliveryDate = p?.DeliveryDate
             };
 
             return View("Buy", vm);
         }
 
-        // --------------------------------------------------------------------
-        // SATIN ALMA FORMU (POST) -> ÖDEME BİRİMİNE GÖNDER
-        // --------------------------------------------------------------------
+        // --- POST: Buy --------------------------------------------------------------
         [HttpPost("Buy/{id:guid}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Buy(Guid id, DTO.Concrete.PurchaseDTO.PurchaseCreateVM model)
         {
+            // Validasyon
             if (model.Quantity is null || model.Quantity <= 0)
                 ModelState.AddModelError(nameof(model.Quantity), "Adet giriniz.");
 
@@ -275,24 +279,32 @@ namespace WEB.Areas.PurchaseTransaction.Controllers
             if (!ModelState.IsValid)
                 return View("Buy", model);
 
-            // Hesaplamalar (decimal güvenli)
-            var subtotal = (model.Quantity ?? 0) * (model.UnitPrice ?? 0);
-            var discountAmount = subtotal * (model.DiscountRate / 100m);
+            // Hesaplamalar
+            var qty = model.Quantity ?? 0m;
+            var unit = model.UnitPrice ?? 0m;
+            var discRate = model.DiscountRate < 0 ? 0 : model.DiscountRate;
+            var vatRate = model.VatRate < 0 ? 0 : model.VatRate;
+
+            var subtotal = qty * unit;
+            var discountAmount = subtotal * (discRate / 100m);
             var net = subtotal - discountAmount;
-            var vatAmount = net * (model.VatRate / 100m);
+            var vatAmount = net * (vatRate / 100m);
             var grand = net + vatAmount;
 
+            // Ekrana geri yaz
             model.Subtotal = subtotal;
             model.DiscountAmount = discountAmount;
             model.VatAmount = vatAmount;
             model.GrandTotal = grand;
 
-            // Teklif PDF kaydı (varsa)
+            // Teklif PDF kaydı
             string? savedOfferPath = null;
             if (model.OfferPdf != null && model.OfferPdf.Length > 0)
             {
-                var dir = Path.Combine(_env.WebRootPath ?? Path.Combine(_env.ContentRootPath, "wwwroot"), "uploads", "purchases");
+                var root = _env.WebRootPath ?? Path.Combine(_env.ContentRootPath, "wwwroot");
+                var dir = Path.Combine(root, "uploads", "purchases");
                 Directory.CreateDirectory(dir);
+
                 var fname = $"{Guid.NewGuid()}{Path.GetExtension(model.OfferPdf.FileName)}";
                 var fpath = Path.Combine(dir, fname);
                 using (var fs = System.IO.File.Create(fpath))
@@ -301,7 +313,7 @@ namespace WEB.Areas.PurchaseTransaction.Controllers
                 savedOfferPath = $"uploads/purchases/{fname}";
             }
 
-            // Purchase Upsert
+            // DTO (Quantity: decimal? -> int? açık dönüşüm)
             var purchaseDto = new CreateOrUpdatePurchaseDTO
             {
                 RequestId = id,
@@ -312,23 +324,29 @@ namespace WEB.Areas.PurchaseTransaction.Controllers
                 SupplierEmail = model.SupplierEmail,
                 SupplierPhone = model.SupplierPhone,
 
-                OfferNo = model.OfferNo,                 // EKLENDİ
-                OfferDate = model.OfferDate,             // EKLENDİ
-                PaymentTerms = model.PaymentTerms,       // EKLENDİ
-                Notes = model.Notes,                     // EKLENDİ
-                DeliveryDate = model.DeliveryDate,       // EKLENDİ
+                OfferNo = model.OfferNo,
+                OfferDate = model.OfferDate,
+                PaymentTerms = model.PaymentTerms,
+                Notes = model.Notes,
+                DeliveryDate = model.DeliveryDate,
 
-                Quantity = model.Quantity.HasValue ? (int?)Convert.ToInt32(model.Quantity.Value) : null,
+                Quantity = model.Quantity.HasValue
+                                   ? (int?)Convert.ToInt32(Math.Round(model.Quantity.Value, 0, MidpointRounding.AwayFromZero))
+                                   : (int?)null,
+
                 UnitPrice = model.UnitPrice,
-                DiscountRate = model.DiscountRate,
-                VatRate = model.VatRate,
-                Subtotal = model.Subtotal,
-                DiscountAmount = model.DiscountAmount,
-                VatAmount = model.VatAmount,
-                GrandTotal = model.GrandTotal,
+                DiscountRate = discRate,
+                VatRate = vatRate,
+                Subtotal = subtotal,
+                DiscountAmount = discountAmount,
+                VatAmount = vatAmount,
+                GrandTotal = grand,
                 Currency = model.Currency,
 
-                OfferPdfPath = savedOfferPath ?? model.OfferPdfPath
+                OfferPdfPath = savedOfferPath ?? model.OfferPdfPath,
+
+                // Özel ürün adını da taşı
+                SpecialProductName = model.SpecialProductName?.Trim()
             };
 
             var saved = await _purchaseManager.UpsertAsync(purchaseDto);
@@ -338,7 +356,6 @@ namespace WEB.Areas.PurchaseTransaction.Controllers
                 return View("Buy", model);
             }
 
-            // Talebi ödeme birimine gönder
             var update = new UpdateRequestDTO
             {
                 Status = Status.WaitingPayment,
@@ -356,6 +373,9 @@ namespace WEB.Areas.PurchaseTransaction.Controllers
             TempData["Success"] = "Satın alma emri oluşturuldu ve Ödeme Birimi’ne gönderildi.";
             return RedirectToAction("Index", "PaymentTransaction", new { area = "PaymentTransaction" });
         }
+
+
+
 
         // --------------------------------------------------------------------
         // HELPER

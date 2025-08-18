@@ -87,14 +87,28 @@ else
         </li>
 
         <!-- Talepler -->
+        <!-- Talepler -->
         @if (isAdmin || isRequester || isProcurement || isWarehouse || isFinance)
         {
-            <li class="nav-item">
-                <a class="nav-link text-white@(active("Request", "Requests", "Index"))"
-                   asp-area="Request" asp-controller="Requests" asp-action="Index">
-                    <i class="material-symbols-rounded me-2">view_list</i> Tüm Talepler
-                </a>
-            </li>
+            @* Talep listesi: Requester ise Benim Taleplerim; diğer roller Tüm Talepler *@
+            @if (isRequester && !isAdmin)
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-white@(active("Request", "Requests", "MyRequests"))"
+                       asp-area="Request" asp-controller="Requests" asp-action="MyRequests">
+                        <i class="material-symbols-rounded me-2">person</i> Benim Taleplerim
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-white@(active("Request", "Requests", "Index"))"
+                       asp-area="Request" asp-controller="Requests" asp-action="Index">
+                        <i class="material-symbols-rounded me-2">view_list</i> Tüm Talepler
+                    </a>
+                </li>
+            }
 
             @* Talep Oluştur sadece TalepOluşturanBirim (ve Admin) için *@
             @if (isRequester || isAdmin)

@@ -21,11 +21,24 @@ namespace BUSINESS.Manager.Concrete
 
         public async Task<bool> UpsertAsync(CreateOrUpdatePurchaseDTO dto)
         {
+            // dto.Quantity ister int? ister decimal? olsun, tek yerden int? üretelim
+            int? qtyInt = dto.Quantity.HasValue
+                ? (int?)Convert.ToInt32(
+                        Math.Round(
+                            Convert.ToDecimal(dto.Quantity.Value), // int? da olsa decimal? da olsa decimal'e çevir
+                            0,
+                            MidpointRounding.AwayFromZero))
+                : null;
+
             var existing = await _repo.GetByDefaultAsync(x => x.RequestId == dto.RequestId);
             if (existing is null)
             {
                 var entity = _mapper.Map<Purchase>(dto);
                 entity.RequestId = dto.RequestId;
+
+                // TIP UYUMLAMA: Quantity’i açıkça ayarla
+                entity.Quantity = qtyInt;
+
                 return await _repo.AddAsync(entity);
             }
             else
@@ -45,7 +58,7 @@ namespace BUSINESS.Manager.Concrete
                 existing.DeliveryDate = dto.DeliveryDate;
 
                 // Pricing
-                existing.Quantity = dto.Quantity;          // int?
+                existing.Quantity = qtyInt;              // <-- DÖNÜŞTÜRÜLMÜŞ int?
                 existing.UnitPrice = dto.UnitPrice;
                 existing.DiscountRate = dto.DiscountRate;
                 existing.VatRate = dto.VatRate;
@@ -65,7 +78,6 @@ namespace BUSINESS.Manager.Concrete
             var p = await _repo.GetByDefaultAsync(x => x.RequestId == requestId);
             if (p is null) return null;
 
-            // Manuel map (tip uyumları garanti olsun)
             return new GetPurchaseForPaymentDTO
             {
                 SupplierName = p.SupplierName,
@@ -80,7 +92,8 @@ namespace BUSINESS.Manager.Concrete
                 Notes = p.Notes,
                 DeliveryDate = p.DeliveryDate,
 
-                Quantity = p.Quantity.HasValue ? (decimal?)p.Quantity.Value : null, // int? -> decimal?
+                // int? -> decimal?
+                Quantity = p.Quantity.HasValue ? (decimal?)p.Quantity.Value : null,
                 UnitPrice = p.UnitPrice,
                 DiscountRate = p.DiscountRate,
                 VatRate = p.VatRate,
