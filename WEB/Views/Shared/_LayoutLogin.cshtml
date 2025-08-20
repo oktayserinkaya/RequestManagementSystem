@@ -1,55 +1,56 @@
 ﻿<!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>@ViewData["Title"] - Talep Sistemi</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Talep Yönetim Sistemi - @ViewData["Title"]</title>
 
-    <!-- Core CSS -->
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/WEB.styles.css" asp-append-version="true" />
+	<!-- Core CSS -->
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/WEB.styles.css" asp-append-version="true" />
 
-    <!-- Template CSS -->
-    <link href="~/TemplateResources/css/nucleo-icons.css" rel="stylesheet" />
-    <link href="~/TemplateResources/css/nucleo-svg.css" rel="stylesheet" />
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" />
-    <link id="pagestyle" href="~/TemplateResources/css/material-dashboard.css?v=3.2.0" rel="stylesheet" />
+	<!-- Template CSS -->
+	<link href="~/TemplateResources/css/nucleo-icons.css" rel="stylesheet" />
+	<link href="~/TemplateResources/css/nucleo-svg.css" rel="stylesheet" />
+	<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+	<link id="pagestyle" href="~/TemplateResources/css/material-dashboard.css?v=3.2.0" rel="stylesheet" />
 
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .login-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-    </style>
+	<style>
+		body {
+			background-color: #f8f9fa;
+		}
+
+		.login-container {
+			min-height: 93vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+	</style>
 </head>
 <body>
 
-    <div class="login-container">
-        <div class="container">
-            @RenderBody()
-        </div>
-    </div>
+	<div class="login-container">
+		<div class="container">
+			@RenderBody()
+		</div>
+	</div>
 
-    <footer class="footer py-3 mt-auto bg-transparent text-center">
-        <div class="text-muted">
-            &copy; 2025 Talep Sistemi - <a asp-controller="Home" asp-action="Privacy">Gizlilik</a>
-        </div>
-    </footer>
+	<footer class="footer py-3 mt-auto bg-transparent text-center">
+		<div class="text-muted">
+			&copy; 2025 Talep Sistemi - <a asp-controller="Home" asp-action="Privacy">Gizlilik</a>
+		</div>
+	</footer>
 
-    <!-- Core JS -->
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/TemplateResources/js/plugins/perfect-scrollbar.min.js"></script>
-    <script src="~/TemplateResources/js/plugins/smooth-scrollbar.min.js"></script>
-    <script src="~/TemplateResources/js/material-dashboard.min.js?v=3.2.0"></script>
+	<!-- Core JS -->
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/TemplateResources/js/plugins/perfect-scrollbar.min.js"></script>
+	<script src="~/TemplateResources/js/plugins/smooth-scrollbar.min.js"></script>
+	<script src="~/TemplateResources/js/material-dashboard.min.js?v=3.2.0"></script>
 
-    @await RenderSectionAsync("Scripts", required: false)
+	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
