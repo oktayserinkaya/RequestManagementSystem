@@ -17,7 +17,7 @@ namespace DATAACCESS.Context
         {
             base.OnModelCreating(builder);
 
-            // Identity tabloları için seed data
+        
             builder.ApplyConfiguration(new AppRoleSeedData());
             builder.ApplyConfiguration(new AppUserSeedData());
             builder.ApplyConfiguration(new UserRoleSeedData());

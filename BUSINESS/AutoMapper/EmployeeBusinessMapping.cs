@@ -13,7 +13,6 @@ namespace BUSINESS.AutoMapper
     {
         public EmployeeBusinessMapping()
         {
-            // BUSINESS.AutoMapper/EmployeeBusinessMapping.cs
             CreateMap<Employee, GetEmployeeDTO>()
                 .ForMember(d => d.DepartmentName, o => o.MapFrom(s => s.Department != null ? s.Department.DepartmentName : null))
                 .ForMember(d => d.TitleName, o => o.MapFrom(s => s.Title != null ? s.Title.TitleName : null));

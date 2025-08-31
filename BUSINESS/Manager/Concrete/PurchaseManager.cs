@@ -21,11 +21,11 @@ namespace BUSINESS.Manager.Concrete
 
         public async Task<bool> UpsertAsync(CreateOrUpdatePurchaseDTO dto)
         {
-            // dto.Quantity ister int? ister decimal? olsun, tek yerden int? üretelim
+           
             int? qtyInt = dto.Quantity.HasValue
                 ? (int?)Convert.ToInt32(
                         Math.Round(
-                            Convert.ToDecimal(dto.Quantity.Value), // int? da olsa decimal? da olsa decimal'e çevir
+                            Convert.ToDecimal(dto.Quantity.Value),
                             0,
                             MidpointRounding.AwayFromZero))
                 : null;
@@ -36,29 +36,28 @@ namespace BUSINESS.Manager.Concrete
                 var entity = _mapper.Map<Purchase>(dto);
                 entity.RequestId = dto.RequestId;
 
-                // TIP UYUMLAMA: Quantity’i açıkça ayarla
+               
                 entity.Quantity = qtyInt;
 
                 return await _repo.AddAsync(entity);
             }
             else
             {
-                // Supplier
                 existing.SupplierName = dto.SupplierName;
                 existing.SupplierTaxNo = dto.SupplierTaxNo;
                 existing.SupplierIban = dto.SupplierIban;
                 existing.SupplierEmail = dto.SupplierEmail;
                 existing.SupplierPhone = dto.SupplierPhone;
 
-                // Offer meta
+               
                 existing.OfferNo = dto.OfferNo;
                 existing.OfferDate = dto.OfferDate;
                 existing.PaymentTerms = dto.PaymentTerms;
                 existing.Notes = dto.Notes;
                 existing.DeliveryDate = dto.DeliveryDate;
 
-                // Pricing
-                existing.Quantity = qtyInt;              // <-- DÖNÜŞTÜRÜLMÜŞ int?
+               
+                existing.Quantity = qtyInt;             
                 existing.UnitPrice = dto.UnitPrice;
                 existing.DiscountRate = dto.DiscountRate;
                 existing.VatRate = dto.VatRate;
@@ -92,7 +91,7 @@ namespace BUSINESS.Manager.Concrete
                 Notes = p.Notes,
                 DeliveryDate = p.DeliveryDate,
 
-                // int? -> decimal?
+               
                 Quantity = p.Quantity.HasValue ? (decimal?)p.Quantity.Value : null,
                 UnitPrice = p.UnitPrice,
                 DiscountRate = p.DiscountRate,

@@ -19,7 +19,7 @@ namespace DTO.Concrete.RequestDTO
 
         public string? Description { get; set; }
 
-        // ⬇️ Eksik olan alanlar bunlardı:
+        
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? DepartmentName { get; set; }

@@ -7,7 +7,7 @@ using WEB.AutoMapper;
 using CORE.Interface;
 using BUSINESS.Manager.Interface;
 using BUSINESS.Manager.Concrete;
-using DATAACCESS.Services; // BaseService<>, UserService, RequestService, ... (RoleService, DepartmentService, vs.)
+using DATAACCESS.Services; 
 using CORE.IdentityEntities;
 
 namespace WEB.Autofac
@@ -20,12 +20,12 @@ namespace WEB.Autofac
             // Repositories
             // =========================
 
-            // Open-generic base repo
+            
             builder.RegisterGeneric(typeof(BaseService<>))
                    .As(typeof(IBaseRepository<>))
                    .InstancePerLifetimeScope();
 
-            // Concrete repos (DataAccess.Services içindeki Service sınıfları)
+            
             builder.RegisterType<UserService>()
                    .As<IUserRepository>()
                    .InstancePerLifetimeScope();
@@ -39,7 +39,7 @@ namespace WEB.Autofac
                    .InstancePerLifetimeScope();
 
             builder.RegisterType<CategoryService>()
-                   .As<ICategoryReposiitory>() // <-- Yazım hatası düzeltildi
+                   .As<ICategoryReposiitory>() 
                    .InstancePerLifetimeScope();
 
             builder.RegisterType<SubCategoryService>()
@@ -50,7 +50,7 @@ namespace WEB.Autofac
                    .As<IProductRepository>()
                    .InstancePerLifetimeScope();
 
-            // *** Eksik olanlar (çoğu Manager bunları bekler) ***
+           
             builder.RegisterType<RoleService>()
                    .As<IRoleRepository>()
                    .InstancePerLifetimeScope();
@@ -91,7 +91,7 @@ namespace WEB.Autofac
             // =========================
             var mappingAssemblies = new[]
             {
-                typeof(RequestBusinessMapping).Assembly, // Business profilleri
+                typeof(RequestBusinessMapping).Assembly, 
                 typeof(RequestMapping).Assembly,
                 typeof(RoleBusinessMapping).Assembly,
                 typeof(WEB.AutoMapper.RoleMapping).Assembly

@@ -34,7 +34,7 @@ namespace BUSINESS.Manager.Concrete
         }
         public async Task<bool> UpdateAsync(BaseDTO dto, Guid id)
         {
-            var entity = await _service.GetByIdAsync(id); // tracked olmalı (AsNoTracking YOK)
+            var entity = await _service.GetByIdAsync(id); 
             if (entity == null)
                 return false;
 
@@ -42,11 +42,11 @@ namespace BUSINESS.Manager.Concrete
 
             var entry = _service.Entry(entity);
 
-            // PK'yi asla modified yapma
+          
             foreach (var p in entry.Properties.Where(p => p.Metadata.IsPrimaryKey()))
                 p.IsModified = false;
 
-            // FK adayları – sizdeki isimlere göre listeyi düzenleyin
+           
             MarkUnmodified(entry, "AppUserId", "EmployeeId", "DepartmentId", "TitleId", "ProductId");
 
             return await _service.SaveChangesAsync() > 0;

@@ -5,7 +5,7 @@ using CORE.Interface;
 using DTO.Concrete.EmployeeDTO;
 using Microsoft.EntityFrameworkCore;
 
-namespace BUSINESS.Manager.Concrete   // ✅ namespace eklendi
+namespace BUSINESS.Manager.Concrete 
 {
     public class EmployeeManager
         : BaseManager<IEmployeeRepository, Employee>, IEmployeeManager
@@ -19,7 +19,7 @@ namespace BUSINESS.Manager.Concrete   // ✅ namespace eklendi
             _mapper = mapper;
         }
 
-        // AppUserId ile Employee + Department + Title çek
+       
         public async Task<GetEmployeeDTO?> GetWithDepartmentByAppUserIdAsync(Guid appUserId)
         {
             var entity = await _repo.GetByDefaultAsync(

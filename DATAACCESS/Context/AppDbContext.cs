@@ -31,7 +31,7 @@ namespace DATAACCESS.Context
             // ---------- Request ----------
             modelBuilder.Entity<Request>(entity =>
             {
-                // Identity tarafındaki AppUser'a referans gölge sütun
+               
                 entity.Property<Guid>("AppUserId");
 
                 entity.HasOne(r => r.Employee)
@@ -50,30 +50,30 @@ namespace DATAACCESS.Context
                       .OnDelete(DeleteBehavior.Restrict);
             });
 
-            // ---------- Purchase (Request ile 1–1) ----------
+           
             modelBuilder.Entity<Purchase>(b =>
             {
-                // 1–1 ilişki: Purchase(RequestId) -> Request(Id)
+           
                 b.HasOne(p => p.Request)
                  .WithOne(r => r.Purchase)
                  .HasForeignKey<Purchase>(p => p.RequestId)
                  .OnDelete(DeleteBehavior.Cascade);
 
-                // 1–1'i garantiye almak için unique index
+               
                 b.HasIndex(p => p.RequestId).IsUnique();
 
-                // Para alanları için hassasiyet
+               
                 b.Property(p => p.UnitPrice).HasColumnType("numeric(18,2)");
                 b.Property(p => p.Subtotal).HasColumnType("numeric(18,2)");
                 b.Property(p => p.DiscountAmount).HasColumnType("numeric(18,2)");
                 b.Property(p => p.VatAmount).HasColumnType("numeric(18,2)");
                 b.Property(p => p.GrandTotal).HasColumnType("numeric(18,2)");
 
-                // Yüzde alanları (opsiyon) — istersen decimal(5,2) yapabilirsin
+                
                 b.Property(p => p.DiscountRate).HasColumnType("numeric(5,2)");
                 b.Property(p => p.VatRate).HasColumnType("numeric(5,2)");
 
-                // Opsiyon: string uzunlukları
+               
                 b.Property(p => p.Currency).HasMaxLength(8);
                 b.Property(p => p.SupplierName).HasMaxLength(200);
                 b.Property(p => p.SupplierTaxNo).HasMaxLength(20);
@@ -83,7 +83,7 @@ namespace DATAACCESS.Context
                 b.Property(p => p.OfferPdfPath).HasMaxLength(500);
             });
 
-            // ---------- Seed Data ----------
+           
             modelBuilder.ApplyConfiguration(new EmployeeSeedData());
             modelBuilder.ApplyConfiguration(new ProductSeedData());
             modelBuilder.ApplyConfiguration(new TitleSeedData());

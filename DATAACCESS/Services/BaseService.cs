@@ -14,13 +14,13 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace DATAACCESS.Services
 {
-    // ❗ abstract kaldırıldı
+    
     public class BaseService<T> : IBaseRepository<T> where T : BaseEntity
     {
         private readonly AppDbContext _context;
         private readonly DbSet<T> _table;
 
-        // ❗ Primary ctor yerine normal PUBLIC ctor (daha öngörülebilir DI)
+
         public BaseService(AppDbContext context)
         {
             _context = context;

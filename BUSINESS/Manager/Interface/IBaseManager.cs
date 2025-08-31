@@ -32,24 +32,19 @@ namespace BUSINESS.Manager.Interface
 
         Task<bool> AnyAsync(Expression<Func<C, bool>> expression);
 
-        // TResult genel tip parametresi ile çalışan asenkron bir metot tanımlıyor
-        // Geriye TResult tipinde bir liste dönecek ve bu liste bir Task içinde olacak
+       
         Task<List<TResult>> GetFilteredListAsync<TResult>
             (
-            // Birinci parametre: Select ifadesi (projeksiyon)
-            // C tipindeki nesneleri TResult tipine dönüştüren bir lambda ifadesi
+            
             Expression<Func<C, TResult>> select,
 
-            // İkinci parametre: Where koşulu (filtreleme) - opsiyonel
-            // C tipindeki nesneleri filtreleyen bir lambda ifadesi, null olabilir
+          
             Expression<Func<C, bool>>? where = null,
 
-            // Üçüncü parametre: OrderBy ifadesi (sıralama) - opsiyonel
-            // IQueryable<C> alıp sıralanmış IOrderedQueryable<C> dönen bir fonksiyon, null olabilir
+            
             Func<IQueryable<C>, IOrderedQueryable<C>>? orderBy = null,
 
-            // Dördüncü parametre: Join ifadesi (ilişkili tablolar) - opsiyonel
-            // IQueryable<C> alıp include edilmiş IIncludableQueryable dönen bir fonksiyon, null olabilir
+           
             Func<IQueryable<C>, IIncludableQueryable<C, object>>? join = null
             );
         Task<int> GetCountAsync(Expression<Func<C, bool>>? predicate = null);

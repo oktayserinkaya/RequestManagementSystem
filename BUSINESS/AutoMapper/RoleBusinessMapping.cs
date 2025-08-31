@@ -15,7 +15,6 @@ namespace BUSINESS.AutoMapper
     {
         public RoleBusinessMapping()
         {
-            // Entity -> DTO (formatlama burada string'e dönüşüyor)
             CreateMap<AppRole, GetRoleDTO>()
                 .ForMember(d => d.UpdatedDate, o => o.MapFrom(s =>
                     s.UpdatedDate.HasValue
@@ -26,7 +25,6 @@ namespace BUSINESS.AutoMapper
                         ? "Aktif"
                         : (s.Status == Status.Modified ? "Güncellenmiş" : "Pasif")));
 
-            // DTO -> Entity (string -> enum, string -> DateTime?)
             CreateMap<GetRoleDTO, AppRole>()
                 .ForMember(d => d.Status, o => o.MapFrom(s =>
                     (s.Status != null && s.Status.Trim() == "Aktif")
@@ -39,7 +37,6 @@ namespace BUSINESS.AutoMapper
                         ? (DateTime?)null
                         : DateTime.Parse(s.UpdatedDate, CultureInfo.GetCultureInfo("tr-TR"))));
 
-            // Create / Update DTO'ları
             CreateMap<AppRole, CreateRoleDTO>().ReverseMap();
             CreateMap<AppRole, UpdateRoleDTO>().ReverseMap();
         }

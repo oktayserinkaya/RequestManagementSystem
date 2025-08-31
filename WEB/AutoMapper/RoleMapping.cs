@@ -9,14 +9,13 @@ namespace WEB.AutoMapper
     {
         public RoleMapping()
         {
-            // DTO -> VM (DTO.UpdatedDate = string, VM.UpdatedDate = DateTime?)
             CreateMap<GetRoleDTO, GetRoleVM>()
                 .ForMember(d => d.UpdatedDate, o => o.MapFrom(s =>
                     string.IsNullOrWhiteSpace(s.UpdatedDate) || s.UpdatedDate.Trim() == "-"
                         ? (DateTime?)null
                         : DateTime.Parse(s.UpdatedDate, CultureInfo.GetCultureInfo("tr-TR"))));
 
-            // Create/Update ekranları
+            
             CreateMap<CreateRoleDTO, CreateRoleVM>().ReverseMap();
             CreateMap<UpdateRoleDTO, UpdateRoleVM>().ReverseMap();
         }

@@ -14,24 +14,23 @@
 
     Func<string?, string?, string?, string> active = (a, c, act) => isHere(a, c, act) ? " active" : "";
 
-    // Alt menüyü açık tutma durumları
+    
     bool inRequest = isHere("Request", "Requests", null);
     bool inCommission = isHere("RequestEvaluation", "RequestEvaluation", null);
 
-    // Admin alt menü açık kalsın
     bool inAdminUsers = isHere("Admin", "Users", null);
     bool inAdminRoles = isHere("Admin", "Roles", null);
     bool inAdminMenu = inAdminUsers || inAdminRoles;
 
-    // Rol bayrakları
+    
     bool isAdmin = User.IsInRole("Admin");
     bool isCommissionR = User.IsInRole("IhtiyacTespitKomisyonu");
-    bool isRequester = User.IsInRole("TalepOluşturanBirim"); // Türkçe karakterli ad
+    bool isRequester = User.IsInRole("TalepOluşturanBirim"); 
     bool isProcurement = User.IsInRole("SatinAlmaBirimi");
     bool isWarehouse = User.IsInRole("DepoBirimi");
     bool isFinance = User.IsInRole("OdemeBirimi");
 
-    // Sadece komisyon rolü (başka hiçbir rol yok) ve admin değil
+    
     bool commissionOnly = isCommissionR && !(isAdmin || isRequester || isProcurement || isWarehouse || isFinance);
 }
 
@@ -86,7 +85,7 @@ else
             </a>
         </li>
 
-        <!-- Talepler -->
+       
         <!-- Talepler -->
         @if (isAdmin || isRequester || isProcurement || isWarehouse || isFinance)
         {
