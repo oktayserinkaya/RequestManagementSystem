@@ -21,6 +21,12 @@ namespace CORE.Enums
         [Display(Name = "Beklemede")]
         Pending,
 
+        [Display(Name = "Onaylandı")]
+        Approved,
+
+        [Display(Name = "Reddedildi")]
+        Rejected,
+
         [Display(Name = "Tamamlanmış")]
         Completed,
 

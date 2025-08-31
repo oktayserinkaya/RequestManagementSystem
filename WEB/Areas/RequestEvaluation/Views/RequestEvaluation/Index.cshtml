@@ -1,15 +1,16 @@
-﻿@model IEnumerable<WEB.Areas.RequestEvaluation.Models.RequestEvaluationVM.RequestEvaluationListVM>
+﻿@using CORE.Enums
+@model IEnumerable<WEB.Areas.RequestEvaluation.Models.RequestEvaluationVM.RequestEvaluationListVM>
 
-@{
+@* @{
     Func<string, string> statusClass = s => s switch
     {
-        "AKTİF" => "badge-aktif",
+        "ÖDENDİ" => "badge-aktif",
         "GÜNCELLENDİ" => "badge-guncellendi",
         "PASİF" => "badge-pasif",
         _ => "badge-pasif"
     };
 }
-
+ *@
 <style>
     .header-dark {
         background: linear-gradient(90deg,#2b2f36,#333843);
@@ -36,11 +37,31 @@
         font-weight: 700;
         letter-spacing: .3px;
         font-size: .7rem;
-        color: #fff;
-    }
+        color: white;
+/*         background: red;
+ */    }
 
     .badge-aktif {
-        background: #22c55e
+        /* background: #22c55e */
+        border-radius: 9999px;
+        padding: .35rem .7rem;
+        font-weight: 700;
+        letter-spacing: .3px;
+        font-size: .7rem;
+        background-color: green;
+        color: white;
+        
+    }
+
+    .badge-bekle {
+        /* background: #22c55e */
+        border-radius: 9999px;
+        padding: .35rem .7rem;
+        font-weight: 700;
+        letter-spacing: .3px;
+        font-size: .7rem;
+        background-color: yellow;
+        color: black;
     }
 
     .badge-guncellendi {
@@ -48,7 +69,14 @@
     }
 
     .badge-pasif {
-        background: #4b5563
+        /* background: #4b5563; */
+        border-radius: 9999px;
+        padding: .35rem .7rem;
+        font-weight: 700;
+        letter-spacing: .3px;
+        font-size: .7rem;
+        background-color: red;
+        color: white;
     }
 
     .btn-outline-rose {
@@ -56,10 +84,10 @@
         color: #ff3b6e
     }
 
-        .btn-outline-rose:hover {
-            background: #ff3b6e;
-            color: #fff
-        }
+    .btn-outline-rose:hover {
+        background: #ff3b6e;
+        color: #fff
+    }
 </style>
 
 <main>
@@ -118,7 +146,17 @@
                                             <div class="text-xs text-secondary mb-0">@item.TitleName</div>
                                         </td>
                                         <td class="align-middle text-center text-sm">
-                                            <span class="chip-badge @statusClass(item.StatusText)">@item.StatusText</span>
+                                            @if (item.Status==Status.Approved){
+                                                <span class="badge-aktif">@item.StatusText</span>
+                                            }
+                                            else if (item.Status == Status.Rejected)
+                                            {
+                                                <span class="badge-pasif">@item.StatusText</span>
+                                            }
+                                            else if (item.Status == Status.Pending)
+                                            {
+                                                <span class="badge-bekle">@item.StatusText</span>
+                                            }
                                         </td>
                                         <td class="align-middle text-center">
                                             <span class="text-secondary text-xs fw-bold">

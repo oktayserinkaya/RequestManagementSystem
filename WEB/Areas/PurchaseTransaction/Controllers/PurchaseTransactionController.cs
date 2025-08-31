@@ -90,7 +90,7 @@ namespace WEB.Areas.PurchaseTransaction.Controllers
                     },
 
                     where: x =>
-                        x.Status == Status.Modified &&
+                        x.Status == Status.Approved &&
                         (string.IsNullOrWhiteSpace(q) ||
                          ((x.Employee != null
                              ? (x.Employee.FirstName + " " + x.Employee.LastName)
@@ -209,7 +209,7 @@ namespace WEB.Areas.PurchaseTransaction.Controllers
         public async Task<IActionResult> Buy(Guid id)
         {
             var r = (await _requestManager.GetByDefaultsAsync<RequestEntity>(
-                x => x.Id == id && x.Status == Status.Modified,
+                x => x.Id == id && x.Status == Status.Approved,
                 join: q => q
                     .Include(r => r.Employee!).ThenInclude(e => e.Department!)
                     .Include(r => r.Product!).ThenInclude(p => p.SubCategory!).ThenInclude(sc => sc.Category!)
@@ -370,7 +370,7 @@ namespace WEB.Areas.PurchaseTransaction.Controllers
             }
 
             TempData["Success"] = "Satın alma emri oluşturuldu ve Ödeme Birimi’ne gönderildi.";
-            return RedirectToAction("Index", "PaymentTransaction", new { area = "PaymentTransaction" });
+            return RedirectToAction(nameof(Index));
         }
 
 

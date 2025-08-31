@@ -164,8 +164,8 @@ namespace WEB.Areas.PaymentTransaction.Controllers
                 DepartmentName = req.Employee?.Department?.DepartmentName ?? "-",
 
                 // Ürün bilgileri
-                ProductName = req.Product?.ProductName ?? "-",   // katalog adı
-                SpecialProductName = req.SpecialProductName,            // <-- EKLENDİ
+                ProductName = req.Product?.ProductName ?? "-",   
+                SpecialProductName = req.SpecialProductName,            
                 RequestedAmount = req.Amount,
                 SpecPath = req.ProductFeaturesFilePath,
 

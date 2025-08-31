@@ -1,4 +1,7 @@
-﻿namespace WEB.Areas.RequestEvaluation.Models.RequestEvaluationVM
+﻿using System;
+using CORE.Enums;
+
+namespace WEB.Areas.RequestEvaluation.Models.RequestEvaluationVM
 {
     public class RequestEvaluationListVM
     {
@@ -7,8 +10,16 @@
         public string CreatorEmail { get; set; } = "";
         public string DepartmentName { get; set; } = "";
         public string TitleName { get; set; } = "";
-        public string StatusText { get; set; } = "";
+
+        public Status Status { get; set; }
+
+        public string StatusText => Status switch
+        {
+            Status.Approved => "Onaylandı",
+            Status.Rejected => "Reddedildi",
+            _ => "Beklemede"
+        };
+
         public DateTime CreatedDate { get; set; }
     }
 }
-    

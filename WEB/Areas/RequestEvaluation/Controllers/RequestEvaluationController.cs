@@ -64,7 +64,7 @@ namespace WEB.Areas.RequestEvaluation.Controllers
                         CreatorEmail = r.Employee.Email ?? string.Empty,
                         DepartmentName = r.Employee.Department?.DepartmentName ?? "-",
                         TitleName = r.Employee.Title?.TitleName ?? "-",
-                        StatusText = ToTrStatus(r.Status),
+                        Status = r.Status,
                         CreatedDate = r.CreatedDate
                     })
                     .ToList();
@@ -147,7 +147,7 @@ namespace WEB.Areas.RequestEvaluation.Controllers
         {
             var dto = new UpdateRequestDTO
             {
-                Status = CORE.Enums.Status.Modified,   // Satın Alma’ya aktarılmış/Onaylanmış
+                Status = CORE.Enums.Status.Approved,   // Satın Alma’ya aktarılmış/Onaylanmış
                 UpdatedDate = DateTime.UtcNow
             };
 
@@ -160,7 +160,7 @@ namespace WEB.Areas.RequestEvaluation.Controllers
 
             TempData["Success"] = "Talep onaylandı ve Satın Alma birimine yönlendirildi.";
             
-            return RedirectToAction("Index", "Orders", new { area = "PurchaseTransaction" });
+            return RedirectToAction(nameof(Index));
         }
 
         // === RED ===
@@ -171,7 +171,7 @@ namespace WEB.Areas.RequestEvaluation.Controllers
         {
             var dto = new UpdateRequestDTO
             {
-                Status = CORE.Enums.Status.Passive,
+                Status = CORE.Enums.Status.Rejected,
                 UpdatedDate = DateTime.UtcNow
             };
 
@@ -257,9 +257,9 @@ namespace WEB.Areas.RequestEvaluation.Controllers
         private static string ToTrStatus(CORE.Enums.Status status) =>
             status switch
             {
-                CORE.Enums.Status.Active => "AKTİF",
-                CORE.Enums.Status.Modified => "GÜNCELLENDİ",
-                CORE.Enums.Status.Passive => "PASİF",
+                CORE.Enums.Status.Approved => "ONAYLANDI",
+                CORE.Enums.Status.Rejected => "REDDEDİLDİ",
+                CORE.Enums.Status.Pending => "BEKLEMEDE",
                 _ => status.ToString().ToUpperInvariant()
             };
 
