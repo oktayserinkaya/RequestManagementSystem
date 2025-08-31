@@ -159,7 +159,7 @@ namespace WEB.Areas.RequestEvaluation.Controllers
             }
 
             TempData["Success"] = "Talep onaylandı ve Satın Alma birimine yönlendirildi.";
-            // Onay sonrası direkt Satın Alma ekranına götür
+            
             return RedirectToAction("Index", "Orders", new { area = "PurchaseTransaction" });
         }
 

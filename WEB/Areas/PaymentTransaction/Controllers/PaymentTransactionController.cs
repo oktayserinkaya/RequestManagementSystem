@@ -253,7 +253,7 @@ namespace WEB.Areas.PaymentTransaction.Controllers
                 model.ProductName = req.Product?.ProductName ?? "-";
 
             if (string.IsNullOrWhiteSpace(model.SpecialProductName))
-                model.SpecialProductName = req.SpecialProductName;   // <-- EKLENDİ
+                model.SpecialProductName = req.SpecialProductName;  
 
             if (model.RequestedAmount == null)
                 model.RequestedAmount = req.Amount;
@@ -280,7 +280,7 @@ namespace WEB.Areas.PaymentTransaction.Controllers
                 return View(model);
             }
 
-            var pdfBytes = GeneratePaymentPdf(model); // PDF içinde SpecialProductName kullanmak isterseniz bu fonksiyonda da yazdırabilirsiniz.
+            var pdfBytes = GeneratePaymentPdf(model);
 
             var root = _env.WebRootPath ?? Path.Combine(_env.ContentRootPath, "wwwroot");
             var dir = Path.Combine(root, "uploads", "payments");

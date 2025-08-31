@@ -93,7 +93,7 @@ namespace WEB.Areas.Request.Controllers
             return View(model); // Views/Request/Requests/Index.cshtml
         }
 
-        // /Request/Requests/MyRequests  ← EKLENDİ
+        // /Request/Requests/MyRequests
         [HttpGet("MyRequests")]
         public async Task<IActionResult> MyRequests()
         {
@@ -115,7 +115,7 @@ namespace WEB.Areas.Request.Controllers
                     UpdatedDate = x.UpdatedDate,
                     StatusEnum = x.Status
                 },
-                where: x => x.Status != Status.Passive && x.AppUserId == userId, // SADECE KENDİ TALEPLERİ
+                where: x => x.Status != Status.Passive && x.AppUserId == userId, 
                 orderBy: q => q.OrderByDescending(z => z.CreatedDate),
                 join: q => q
                     .Include(z => z.Employee!).ThenInclude(z => z.Department!)
@@ -125,9 +125,8 @@ namespace WEB.Areas.Request.Controllers
             foreach (var item in model)
                 item.Status = item.StatusEnum.GetDisplayName();
 
-            // Ayrı view yapmadan mevcut tabloyu kullanalım:
-            return View("Index", model); // aynı tabloyu kullanır
-            // İstersen Views/Request/Requests/MyRequests.cshtml oluşturup orada da gösterebilirsin.
+           
+            return View("Index", model);
         }
 
         // GET: /Request/Requests/CreateRequest

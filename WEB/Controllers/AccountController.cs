@@ -10,7 +10,7 @@ using WEB.Models.ViewModels.AccountVM;
 
 namespace WEB.Controllers
 {
-    [Route("Account")] // -> /Account/...
+    [Route("Account")] 
     public class AccountController : Controller
     {
         private readonly IUserManager _userManager;
@@ -47,7 +47,7 @@ namespace WEB.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("Login")] // POST /Account/Login
+        [HttpPost("Login")] 
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginVM model)
         {
@@ -94,7 +94,7 @@ namespace WEB.Controllers
         }
 
         [Authorize]
-        [HttpPost("Logout")] // POST /Account/Logout
+        [HttpPost("Logout")] 
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
@@ -209,7 +209,7 @@ namespace WEB.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("AccessDenied")] // GET /Account/AccessDenied
+        [HttpGet("AccessDenied")]
         public IActionResult AccessDenied() => View();
     }
 }

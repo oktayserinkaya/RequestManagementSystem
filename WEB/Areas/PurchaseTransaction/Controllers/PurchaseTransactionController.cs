@@ -149,7 +149,7 @@ namespace WEB.Areas.PurchaseTransaction.Controllers
                 : "-";
             ViewBag.Product = (r.Product != null) ? r.Product.ProductName : (r.SpecialProductName ?? "-");
 
-            // Görselde/ekranda tek tip kullanmak için decimal? gösterelim
+          
             ViewBag.Amount = r.Amount == null ? (decimal?)null : (decimal?)r.Amount;
 
             ViewBag.RequestDate = r.RequestDate ?? r.CreatedDate;
@@ -235,7 +235,7 @@ namespace WEB.Areas.PurchaseTransaction.Controllers
                 SubCategoryName = (r.Product != null && r.Product.SubCategory != null)
                                     ? r.Product.SubCategory.SubCategoryName : "-",
                 ProductName = r.Product?.ProductName,
-                SpecialProductName = r.SpecialProductName, // <-- EKLENDİ
+                SpecialProductName = r.SpecialProductName, 
                 RequestedAmount = r.Amount == null ? (decimal?)null : (decimal?)r.Amount,
                 SpecPath = r.ProductFeaturesFilePath,
 
@@ -313,7 +313,6 @@ namespace WEB.Areas.PurchaseTransaction.Controllers
                 savedOfferPath = $"uploads/purchases/{fname}";
             }
 
-            // DTO (Quantity: decimal? -> int? açık dönüşüm)
             var purchaseDto = new CreateOrUpdatePurchaseDTO
             {
                 RequestId = id,
@@ -345,7 +344,7 @@ namespace WEB.Areas.PurchaseTransaction.Controllers
 
                 OfferPdfPath = savedOfferPath ?? model.OfferPdfPath,
 
-                // Özel ürün adını da taşı
+                
                 SpecialProductName = model.SpecialProductName?.Trim()
             };
 

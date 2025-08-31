@@ -163,7 +163,6 @@ namespace WEB.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Identity'deki gerçek rolü ID'den çek, gerekirse normalizasyonu hemen düzelt
             var identityRole = await _aspRoleManager.FindByIdAsync(roleId.ToString());
             if (identityRole == null)
             {
@@ -171,7 +170,6 @@ namespace WEB.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // PROAKTİF DÜZELTME: NormalizedName'i doğru değilse düzelt
             var normalized = _normalizer.NormalizeName(identityRole.Name);
             if (!string.Equals(identityRole.NormalizedName, normalized, StringComparison.Ordinal))
             {
@@ -217,7 +215,6 @@ namespace WEB.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // İŞLEM ÖNCESİ: NormalizedName'i garantiye al
             var normalized = _normalizer.NormalizeName(identityRole.Name);
             if (!string.Equals(identityRole.NormalizedName, normalized, StringComparison.Ordinal))
             {
@@ -269,7 +266,6 @@ namespace WEB.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // İŞLEM ÖNCESİ: NormalizedName'i garantiye al
             var normalized = _normalizer.NormalizeName(identityRole.Name);
             if (!string.Equals(identityRole.NormalizedName, normalized, StringComparison.Ordinal))
             {
@@ -303,7 +299,6 @@ namespace WEB.Areas.Admin.Controllers
             return RedirectToAction(nameof(AssignToRole), new { id = roleId.ToString() });
         }
 
-        // Yardımcı (gerekirse)
         private async Task<IActionResult> ReloadAssignToRoleView(Guid roleId)
         {
             var identityRole = await _aspRoleManager.FindByIdAsync(roleId.ToString());
@@ -313,7 +308,6 @@ namespace WEB.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // normalize'ı yine garanti altına al
             var normalized = _normalizer.NormalizeName(identityRole.Name);
             if (!string.Equals(identityRole.NormalizedName, normalized, StringComparison.Ordinal))
             {

@@ -6,8 +6,8 @@ using CORE.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WEB.Areas.Admin.Models.DashboardVM;     // DashboardIndexVM
-using WEB.Areas.Request.Models.RequestVM;      // GetRequestsVM
+using WEB.Areas.Admin.Models.DashboardVM;     
+using WEB.Areas.Request.Models.RequestVM;      
 using RequestEntity = CORE.Entities.Concrete.Request;
 
 namespace WEB.Controllers
