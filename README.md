@@ -1,25 +1,7 @@
 # Request Management System (Talep Yönetim Sistemi)
 
-<table style="width:100%;">
-  <tr>
-    <td style="width:50%; vertical-align:top;">
-      <h3>🚀 Kurulum</h3>
-      <pre>
-        git clone https://github.com/kullanici/proje.git
-        cd proje
-        dotnet run
-      </pre>
-    </td>
-    <td style="width:50%; vertical-align:top;">
-      <h3>✨ Özellikler</h3>
-      <ul>
-        <li>Kullanıcı kayıt & giriş</li>
-        <li>Rol bazlı yetkilendirme</li>
-        <li>E-posta bildirimleri</li>
-      </ul>
-    </td>
-  </tr>
-</table>
+| Request Management System | Talep Yönetim Sistemi |
+|---------------------------|-----------------------|
 
 https://github.com/user-attachments/assets/18cf5f04-2abb-4780-bcaf-2bbecd5c2f0e
 
