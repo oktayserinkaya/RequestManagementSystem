@@ -30,6 +30,7 @@ https://github.com/user-attachments/assets/2c8ebf28-456b-4efa-9011-b363d76e7ea0
 https://github.com/user-attachments/assets/3c70a90f-c737-45aa-a780-7028feb12b2e
 
 ### Technical Details About the Project
-- <p align="justify">The project was developed in n-tier architecture structure using ASP.Net Core MVC.</p>
-- <p align="justify">PostgreSQL was used as the database in the project. However, MS SQL can also be used with simple code modifications.</p>
-- While developing the project, two databases were used, one of which is “RMSDb” (tables such as categories of materials in the warehouse, materials, stock status, requests made, request evaluations, etc.) and the other is “RMSIdentityDb” (tables related to user transactions).
+<p align="justify">
+  - The project was developed in n-tier architecture structure using ASP.Net Core MVC.
+  - PostgreSQL was used as the database in the project. However, MS SQL can also be used with simple code modifications.</p>
+  - While developing the project, two databases were used, one of which is “RMSDb” (tables such as categories of materials in the warehouse, materials, stock status, requests made, request evaluations, etc.) and the other is “RMSIdentityDb” (tables related to user transactions).
