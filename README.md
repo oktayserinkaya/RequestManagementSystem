@@ -8,6 +8,12 @@
 <p align="justify">
   Bu metin GitHub’da genelde iki yana yaslı görünür.
   Uzun paragraflarda daha düzgün bir blok görüntüsü sağlar.
+  Bu metin GitHub’da genelde iki yana yaslı görünür.
+  Uzun paragraflarda daha düzgün bir blok görüntüsü sağlar.
+  Bu metin GitHub’da genelde iki yana yaslı görünür.
+  Uzun paragraflarda daha düzgün bir blok görüntüsü sağlar.
+  Bu metin GitHub’da genelde iki yana yaslı görünür.
+  Uzun paragraflarda daha düzgün bir blok görüntüsü sağlar.
 </p>
 
 
