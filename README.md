@@ -1,5 +1,27 @@
 # Request Management System (Talep Yönetim Sistemi)
 
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>🚀 Kurulum</h3>
+      <pre>
+git clone https://github.com/kullanici/proje.git
+cd proje
+dotnet run
+      </pre>
+      <p><b>Not:</b> Projeyi çalıştırmadan önce bağımlılıkları yüklemeyi unutmayın.</p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>✨ Özellikler</h3>
+      <ul>
+        <li>Kullanıcı kayıt & giriş</li>
+        <li>Rol bazlı yetkilendirme</li>
+        <li>E-posta bildirimleri</li>
+        <li>Responsive tasarım</li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
 https://github.com/user-attachments/assets/18cf5f04-2abb-4780-bcaf-2bbecd5c2f0e
 
