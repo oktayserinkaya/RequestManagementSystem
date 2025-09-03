@@ -1,6 +1,6 @@
 # Request Management System
 
-##**Contributors/Developers**
+##Contributors/Developers
 - Oktay SERİNKAYA
 - Hüseyin KAYAN
 
