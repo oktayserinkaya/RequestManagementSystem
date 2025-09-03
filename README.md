@@ -1,4 +1,4 @@
-# Request Management System
+# Request Management System (Talep Yönetim Sistemi)
 
 ### Contributors / Developers
 - [Oktay SERİNKAYA](https://github.com/oktayserinkaya)
