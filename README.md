@@ -4,7 +4,6 @@
 - [Oktay SERİNKAYA](https://github.com/oktayserinkaya)
 - [Hüseyin KAYAN](https://github.com/hsynkyn)
 <br>
-
 ### About the Project
 <p align="justify">
   Bu metin GitHub’da genelde iki yana yaslı görünür.
