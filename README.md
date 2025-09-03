@@ -11,6 +11,9 @@
 <p align="justify">
   For example, while ordinary users can only request materials on behalf of their assigned unit when they log in to the system, a user with request evaluation authority can review requests submitted by units and, taking into account the inventory status of the materials, approve the request to be fulfilled from the warehouse, decide whether a portion of the request can be fulfilled from the warehouse and the remainder through purchasing, or reject the request entirely. A user with a purchasing role processes purchase orders received from the request evaluation unit.
 </p>
+<p align="justify">
+  Since the user in the Admin role has all the authorizations, he/she can monitor the transactions of all units or perform unit operations.
+</p>
 
 
 https://github.com/user-attachments/assets/18cf5f04-2abb-4780-bcaf-2bbecd5c2f0e
