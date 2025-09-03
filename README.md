@@ -16,8 +16,7 @@
 </p>
 <p align="justify">
   Below are a few videos from the app, showing a user from each authorization group performing the actions. These will help you get a preview for the app.
-</p>
-
+</p><br>
 
 https://github.com/user-attachments/assets/18cf5f04-2abb-4780-bcaf-2bbecd5c2f0e
 
