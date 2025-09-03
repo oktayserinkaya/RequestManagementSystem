@@ -106,3 +106,5 @@ https://github.com/user-attachments/assets/3c70a90f-c737-45aa-a780-7028feb12b2e
   - `Install-Package Microsoft.VisualStudio.Web.CodeGeneration.Design -v 8.0.7`
   - `Install-Package Npgsql.EntityFrameworkCore.PostgreSQL -v 8.0.10`
   - `Install-Package QuestPDF -v 2025.7.0`
+
+### References
