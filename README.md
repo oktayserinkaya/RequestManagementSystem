@@ -111,3 +111,6 @@ https://github.com/user-attachments/assets/3c70a90f-c737-45aa-a780-7028feb12b2e
 
 ### References
   - [https://github.com/sinaemrebekar/GoLo-E-Commerce-.NET-MVC](https://github.com/sinaemrebekar/GoLo-E-Commerce-.NET-MVC)
+  - [https://getbootstrap.com/docs/5.3/forms/layout/](https://getbootstrap.com/docs/5.3/forms/layout/)
+  - [https://getbootstrap.com/docs/5.3/components/buttons/](https://getbootstrap.com/docs/5.3/components/buttons/)
+  - [https://getbootstrap.com/docs/5.3/components/modal/](https://getbootstrap.com/docs/5.3/components/modal/)
