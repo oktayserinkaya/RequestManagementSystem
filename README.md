@@ -3,8 +3,8 @@
 | Request Management System----------------------------- | Talep Yönetim Sistemi--------------------------------- |
 |--------------------------------------------------------|--------------------------------------------------------|
 | Contributors/Developers--------------------------------| Katkıda Bulunanlar/Geliştiriciler----------------------|
-| * Oktay SERİNKAYA                                      | * Oktay SERİNKAYA                                      |
-| * Hüseyin KAYAN                                        | * Hüseyin KAYAN                                        |
+| - Oktay SERİNKAYA                                      | - Oktay SERİNKAYA                                      |
+| - Hüseyin KAYAN                                        | - Hüseyin KAYAN                                        |
 
 https://github.com/user-attachments/assets/18cf5f04-2abb-4780-bcaf-2bbecd5c2f0e
 
