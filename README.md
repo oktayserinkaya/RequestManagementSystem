@@ -5,6 +5,11 @@
 - [Hüseyin KAYAN](https://github.com/hsynkyn)
 
 ### About the Project
+<p align="justify">
+  Bu metin GitHub’da genelde iki yana yaslı görünür.
+  Uzun paragraflarda daha düzgün bir blok görüntüsü sağlar.
+</p>
+
 
 https://github.com/user-attachments/assets/18cf5f04-2abb-4780-bcaf-2bbecd5c2f0e
 
