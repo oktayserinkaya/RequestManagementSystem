@@ -1,9 +1,5 @@
-# Request Management System (Talep Yönetim Sistemi)
+# Request Management System
 
-| Request Management System----------------------------- | Talep Yönetim Sistemi--------------------------------- |
-|--------------------------------------------------------|--------------------------------------------------------|
-| Contributors/Developers--------------------------------<br>| Katkıda Bulunanlar/Geliştiriciler----------------------<br>|
-  <ul><li>Oktay SERİNKAYA</li><li>Hüseyin KAYAN</li></ul> <ul><li>Oktay SERİNKAYA</li><li>Hüseyin KAYAN</li></ul>
 
 https://github.com/user-attachments/assets/18cf5f04-2abb-4780-bcaf-2bbecd5c2f0e
 
