@@ -3,7 +3,7 @@
 ### Contributors / Developers
 - [Oktay SERİNKAYA](https://github.com/oktayserinkaya)
 - [Hüseyin KAYAN](https://github.com/hsynkyn)
-
+<br>
 ### Introduction
 <p align="justify">
   The "Request Management System" application was developed to electronically manage requests from the supply warehouse by departments within a healthcare institution . Users log in to the application with their assigned username and password and perform transactions with the authorizations appropriate to their role within the application.
