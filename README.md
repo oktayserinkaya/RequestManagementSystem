@@ -1,8 +1,8 @@
 # Request Management System (Talep Yönetim Sistemi)
 
-| Request Management System | Talep Yönetim Sistemi     |
-|---------------------------|---------------------------|
-| This is an application    | Bu bir uygulamadır        |
+| Request Management System                | Talep Yönetim Sistemi                    |
+|------------------------------------------|------------------------------------------|
+| This is an application                   | Bu bir uygulamadır                       |
 
 https://github.com/user-attachments/assets/18cf5f04-2abb-4780-bcaf-2bbecd5c2f0e
 
