@@ -93,3 +93,16 @@ https://github.com/user-attachments/assets/3c70a90f-c737-45aa-a780-7028feb12b2e
 
 `/DTO`
   - `Install-Package Microsoft.AspNet.Mvc -v 5.3.0`
+
+<br>
+
+`/WEB`
+  - `Install-Package Autofac -v 8.0.3`
+  - `Install-Package Autofac.Extensions.DependencyInjection -v 10.0.0`
+  - `Install-Package FluentValidation -v 12.0.0`
+  - `Install-Package FluentValidation.AspNetCore -v 11.3.0`
+  - `Install-Package Microsoft.EntityFrameworkCore -v 8.0.10`
+  - `Install-Package Microsoft.EntityFrameworkCore.Tools -v 8.0.10`
+  - `Install-Package Microsoft.VisualStudio.Web.CodeGeneration.Design -v 8.0.7`
+  - `Install-Package Npgsql.EntityFrameworkCore.PostgreSQL -v 8.0.10`
+  - `Install-Package QuestPDF -v 2025.7.0`
