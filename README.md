@@ -4,7 +4,7 @@
 - [Oktay SERİNKAYA](https://github.com/oktayserinkaya)
 - [Hüseyin KAYAN](https://github.com/hsynkyn)
 
-### About the Project
+### Introduction
 <p align="justify">
   Bu metin GitHub’da genelde iki yana yaslı görünür.
   Uzun paragraflarda daha düzgün bir blok görüntüsü sağlar.
