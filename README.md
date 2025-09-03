@@ -1,7 +1,7 @@
 # Request Management System
 
 ## Contributors/Developers
-- Oktay SERİNKAYA
+- [Oktay SERİNKAYA](https://github.com/oktayserinkaya)
 - Hüseyin KAYAN
 
 ## About the Project
