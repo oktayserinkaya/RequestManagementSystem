@@ -5,9 +5,9 @@
     <td style="width:50%; vertical-align:top;">
       <h3>🚀 Kurulum</h3>
       <pre>
-git clone https://github.com/kullanici/proje.git
-cd proje
-dotnet run
+        git clone https://github.com/kullanici/proje.git
+        cd proje
+        dotnet run
       </pre>
     </td>
     <td style="width:50%; vertical-align:top;">
