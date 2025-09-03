@@ -1,10 +1,22 @@
 # Request Management System (Talep Yönetim Sistemi)
 
-| Sol Sütun Başlığı | Sağ Sütun Başlığı |
-|-------------------|-------------------|
-| Sol sütun içeriği | Sağ sütun içeriği |
-| Başka içerik      | Başka içerik      |
-
+<table>
+  <tr>
+    <td width="50%">
+      <h3>Sol Sütun</h3>
+      <p>Burası sol taraftaki içerik.</p>
+      <ul>
+        <li>Liste 1</li>
+        <li>Liste 2</li>
+      </ul>
+    </td>
+    <td width="50%">
+      <h3>Sağ Sütun</h3>
+      <p>Burası sağ taraftaki içerik.</p>
+      <img src="https://via.placeholder.com/150" alt="örnek görsel"/>
+    </td>
+  </tr>
+</table>
 
 https://github.com/user-attachments/assets/18cf5f04-2abb-4780-bcaf-2bbecd5c2f0e
 
