@@ -61,4 +61,4 @@ https://github.com/user-attachments/assets/3c70a90f-c737-45aa-a780-7028feb12b2e
 
 ### Migrations
 `/DATAACCESS`<br>
-  -`Add-Migration InitializeAppDb -Context AppDbContex -OutputDir "Migrations/AppDbMigrations"`
+  - `Add-Migration InitializeAppDb -Context AppDbContex -OutputDir "Migrations/AppDbMigrations"`
