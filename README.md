@@ -38,6 +38,8 @@ https://github.com/user-attachments/assets/3c70a90f-c737-45aa-a780-7028feb12b2e
 - <p align="justify">Asynchronous programming was used in this project where “Fluent Validation, Autofac, AutoMapper” technologies were used.</p>
 - <p align="justify">Efforts have been made to develop in accordance with SOLID principles.</p>
 
+<br>
+
 ### User Informations for the Project
 |           | Admin Panel | Request Creation Role | Request Evaluation Role | Purchasing Role | Payment Role |
 |-----------|-------------|-----------------------|-------------------------|-----------------|--------------|
