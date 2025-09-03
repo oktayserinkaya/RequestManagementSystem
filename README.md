@@ -1,6 +1,7 @@
 # Request Management System
 
-**Contributors**
+**Contributors/Developers**
+
 https://github.com/user-attachments/assets/18cf5f04-2abb-4780-bcaf-2bbecd5c2f0e
 
 https://github.com/user-attachments/assets/3fae4466-1d7e-4847-8f98-62547a35409f
