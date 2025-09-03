@@ -2,7 +2,8 @@
 
 ### Contributors / Developers
 - [Oktay SERİNKAYA](https://github.com/oktayserinkaya)
-- [Hüseyin KAYAN](https://github.com/hsynkyn)<br>
+- [Hüseyin KAYAN](https://github.com/hsynkyn)
+<br>
 
 ### Introduction
 <p align="justify">
