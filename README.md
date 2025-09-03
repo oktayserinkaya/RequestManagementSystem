@@ -40,4 +40,4 @@ https://github.com/user-attachments/assets/3c70a90f-c737-45aa-a780-7028feb12b2e
 |           | Admin Panel | Request Creation Role | Request Evaluation Role | Purchasing Role | Payment Role |
 |-----------|-------------|-----------------------|-------------------------|-----------------|--------------|
 | User Name | admin       | ahmetyilmaz           | elifkara                | mehmetdemir     | fatmaoz      |
-| Password  | 123         | 123                   | 123                     | 123             |              |
+| Password  | 123         | 123                   | 123                     | 123             | 123          |
