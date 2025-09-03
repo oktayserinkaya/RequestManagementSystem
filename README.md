@@ -1,8 +1,8 @@
 # Request Management System (Talep Yönetim Sistemi)
 
 ### Contributors / Developers
-- [Oktay SERİNKAYA](https://github.com/oktayserinkaya)
-- [Hüseyin KAYAN](https://github.com/hsynkyn)
+  - [Oktay SERİNKAYA](https://github.com/oktayserinkaya)
+  - [Hüseyin KAYAN](https://github.com/hsynkyn)
 
 <br>
 
@@ -33,11 +33,11 @@ https://github.com/user-attachments/assets/3c70a90f-c737-45aa-a780-7028feb12b2e
 <br>
 
 ### Technical Details About the Project
-- <p align="justify">The project was developed in n-tier architecture structure using ASP.Net Core MVC.</p>
-- <p align="justify">PostgreSQL was used as the database in the project. However, MS SQL can also be used with simple code modifications.</p>
-- <p align="justify">During developing the project, two databases were used, one of which is “RMSDb” (tables such as categories of materials in the warehouse, materials, stock status, requests made, request evaluations, etc.) and the other is “RMSIdentityDb” (tables related to user transactions).</p>
-- <p align="justify">Asynchronous programming was used in this project where “Fluent Validation, Autofac, AutoMapper” technologies were used.</p>
-- <p align="justify">Efforts have been made to develop in accordance with SOLID principles.</p>
+  - <p align="justify">The project was developed in n-tier architecture structure using ASP.Net Core MVC.</p>
+  - <p align="justify">PostgreSQL was used as the database in the project. However, MS SQL can also be used with simple code modifications.</p>
+  - <p align="justify">During developing the project, two databases were used, one of which is “RMSDb” (tables such as categories of materials in the warehouse, materials, stock status, requests made, request evaluations, etc.) and the other is “RMSIdentityDb” (tables related to user transactions).</p>
+  - <p align="justify">Asynchronous programming was used in this project where “Fluent Validation, Autofac, AutoMapper” technologies were used.</p>
+  - <p align="justify">Efforts have been made to develop in accordance with SOLID principles.</p>
 
 <br>
 
@@ -107,4 +107,7 @@ https://github.com/user-attachments/assets/3c70a90f-c737-45aa-a780-7028feb12b2e
   - `Install-Package Npgsql.EntityFrameworkCore.PostgreSQL -v 8.0.10`
   - `Install-Package QuestPDF -v 2025.7.0`
 
+<br>
+
 ### References
+  - (https://github.com/sinaemrebekar/GoLo-E-Commerce-.NET-MVC)
