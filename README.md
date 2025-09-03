@@ -6,14 +6,7 @@
 
 ### Introduction
 <p align="justify">
-  Bu metin GitHub’da genelde iki yana yaslı görünür.
-  Uzun paragraflarda daha düzgün bir blok görüntüsü sağlar.
-  Bu metin GitHub’da genelde iki yana yaslı görünür.
-  Uzun paragraflarda daha düzgün bir blok görüntüsü sağlar.
-  Bu metin GitHub’da genelde iki yana yaslı görünür.
-  Uzun paragraflarda daha düzgün bir blok görüntüsü sağlar.
-  Bu metin GitHub’da genelde iki yana yaslı görünür.
-  Uzun paragraflarda daha düzgün bir blok görüntüsü sağlar.
+  The "Request Management System" application was developed to electronically manage requests from the supply warehouse by departments within a healthcare institution . Users log in to the application with their assigned username and password and perform transactions with the authorizations appropriate to their role within the application.
 </p>
 
 
