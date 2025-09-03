@@ -88,3 +88,8 @@ https://github.com/user-attachments/assets/3c70a90f-c737-45aa-a780-7028feb12b2e
   - `Install-Package Microsoft.EntityFrameworkCore -v 8.0.10`
   - `Install-Package Microsoft.EntityFrameworkCore.Tools -v 8.0.10`
   - `Install-Package Npgsql.EntityFrameworkCore.PostgreSQL -v 8.0.10`
+
+<br>
+
+`/DTO`
+  - `Install-Package Microsoft.AspNet.Mvc -v 5.3.0`
