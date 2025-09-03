@@ -71,7 +71,8 @@ https://github.com/user-attachments/assets/3c70a90f-c737-45aa-a780-7028feb12b2e
 ### Installed Packages
 `/BUSINESS`
   - `Install-Package AutoMapper -v 14.0.0`
-  - `Install-Package Microsoft.AspNetCore.Identity.UI -v 8.0.11`<br>
+  - `Install-Package Microsoft.AspNetCore.Identity.UI -v 8.0.11`
+<br>
 `/CORE`
   - `Install-Package Microsoft.AspNetCore.Http.Features -v 5.0.17`
   - `Install-Package Microsoft.AspNetCore.Identity.EntityFrameworkCore -v 8.0.10`
