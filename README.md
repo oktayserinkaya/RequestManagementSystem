@@ -79,3 +79,12 @@ https://github.com/user-attachments/assets/3c70a90f-c737-45aa-a780-7028feb12b2e
   - `Install-Package Microsoft.AspNetCore.Http.Features -v 5.0.17`
   - `Install-Package Microsoft.AspNetCore.Identity.EntityFrameworkCore -v 8.0.10`
   - `Install-Package Microsoft.EntityFrameworkCore -v 8.0.10`
+
+<br>
+
+`/DATAACCESS`
+  - `Install-Package Microsoft.AspNetCore.Identity -v 2.3.1`
+  - `Install-Package Microsoft.AspNetCore.Identity.EntityFrameworkCore -v 8.0.10`
+  - `Install-Package Microsoft.EntityFrameworkCore -v 8.0.10`
+  - `Install-Package Microsoft.EntityFrameworkCore.Tools -v 8.0.10`
+  - `Install-Package Npgsql.EntityFrameworkCore.PostgreSQL -v 8.0.10`
